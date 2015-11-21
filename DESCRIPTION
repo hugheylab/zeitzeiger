@@ -1,0 +1,26 @@
+Package: zeitzeiger
+Version: 0.0.0.9000
+Type: Package
+Title: Regularized supervised learning for high-dimensional data from an
+    oscillatory system
+Description: ZeitZeiger is a method for predicting the value of a periodic
+    variable from a high-dimensional observation.
+Authors@R: person('Jake', 'Hughey', email='jakejhughey@gmail.com', role=c('aut', 'cre'))
+License: GPL-2
+URL: https://github.com/jakejh/zeitzeiger
+LazyData: TRUE
+Depends:
+    R (>= 3.2.1)
+Imports:
+    abind (>= 1.4-3),
+    bbmle (>= 1.0.17),
+    bigsplines (>= 1.0-7),
+    doParallel (>= 1.0.10),
+    PMA (>= 1.0.9)
+RoxygenNote: 5.0.0
+Suggests: knitr,
+    rmarkdown,
+    dplyr (>= 0.4.3),
+    ggplot2 (>= 1.0.1.9003),
+    reshape2 (>= 1.4.1)
+VignetteBuilder: knitr
