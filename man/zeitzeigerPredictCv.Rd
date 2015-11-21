@@ -40,7 +40,13 @@ The time with the highest likelihood is used as the initial value for the
 MLE optimizer.}
 }
 \value{
-A list consisting of the result from \code{zeitzeigerPredict} for each fold.
+A list of the same structure as \code{zeitzeigerPredict}, combining the results
+from each fold of cross-validation.
+\item{timeDepLike}{3-D array of likelihood, with dimensions for each observation,
+each element of \code{nSpc}, and each element of \code{timeRange}.}
+\item{mleFit}{List (for each element in \code{nSpc}) of lists (for each observation)
+of \code{mle2} objects.}
+\item{timePred}{Matrix of predicted times for observations by values of \code{nSpc}.}
 }
 \description{
 \code{zeitzeigerPredictCv} calls \code{zeitzeigerFit} for each fold of

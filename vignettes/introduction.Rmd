@@ -157,7 +157,7 @@ ggplot(dfLike) +
 ## Run cross-validation
 To determine the best parameters for training a ZeitZeiger predictor, we can run cross-validation. The cross-validation functions can process the folds in parallel, if `registerDoParallel` is set beforehand. Because the three steps of ZeitZeiger are separated, we need to first randomly assign each observation to a fold, then use the same assignments for `zeitzeigerFitCv` and `zeitzeigerPredictCv`.
 
-Here we'll run cross-validation over three values of `sumabsv` and four values of `nSPC`. Typically a few values of `sumabsv` will suffice, and `nSPC` in this example can only range from 1 to 10 (because 10 is the default value of `nTime`). `spcResultList` and `predResultList` are actually nested lists, first by values of `sumabsv`, then by folds.
+Here we'll run cross-validation over three values of `sumabsv` and four values of `nSPC`. Typically a few values of `sumabsv` will suffice, and `nSPC` in this example can only range from 1 to 10 (because 10 is the default value of `nTime`).
 ```{r}
 registerDoParallel(cores=2)
 

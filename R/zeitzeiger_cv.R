@@ -73,8 +73,14 @@ zeitzeigerSpcCv = function(fitResultList, nTime=10, useSpc=TRUE, sumabsv=1, orth
 #' The time with the highest likelihood is used as the initial value for the
 #' MLE optimizer.
 #'
-#' @return A list consisting of the result from \code{zeitzeigerPredict} for each fold.
-#'
+#' @return A list of the same structure as \code{zeitzeigerPredict}, combining the results
+#' from each fold of cross-validation.
+#' \item{timeDepLike}{3-D array of likelihood, with dimensions for each observation,
+#' each element of \code{nSpc}, and each element of \code{timeRange}.}
+#' \item{mleFit}{List (for each element in \code{nSpc}) of lists (for each observation)
+#' of \code{mle2} objects.}
+#' \item{timePred}{Matrix of predicted times for observations by values of \code{nSpc}.}
+
 #' @export
 zeitzeigerPredictCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(rparm=NA), constVar=TRUE,
 										 fitVarArgs=list(rparm=NA), nSpc=NA, betaSv=FALSE, timeRange=seq(0, 1, 0.01)) {
