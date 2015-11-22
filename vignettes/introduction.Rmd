@@ -56,6 +56,9 @@ x[,21] = x[,21] + baseSignal
 x[,22] = x[,22] - baseSignal
 for (ii in 23:30) {
 	x[,ii] = x[,ii] + runif(1, -amp, amp) * baseSignal}
+
+x[34, 11] = NA
+x[50, 24] = NA
 ```
 
 ## Create training and testing observations

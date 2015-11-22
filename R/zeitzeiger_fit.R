@@ -22,9 +22,10 @@ NULL
 zeitzeigerFit = function(x, time, fitMeanArgs=list(rparm=NA)) {
 	xFitMean = list()
 	xFitResid = x
+	idx = !is.na(x)
 	for (jj in 1:ncol(x)) {
-		xFitMean[[jj]] = do.call(bigspline, c(list(time, x[,jj], type='per', xmin=0, xmax=1), fitMeanArgs))
-		xFitResid[,jj] = predict(xFitMean[[jj]], newdata=time) - x[,jj]}
+		xFitMean[[jj]] = do.call(bigspline, c(list(time[idx[,jj]], x[idx[,jj], jj], type='per', xmin=0, xmax=1), fitMeanArgs))
+		xFitResid[idx[,jj], jj] = predict(xFitMean[[jj]], newdata=time[idx[,jj]]) - x[idx[,jj], jj]}
 	return(list(xFitMean=xFitMean, xFitResid=xFitResid))}
 
 
@@ -35,13 +36,15 @@ zeitzeigerFitVar = function(time, xFitResid, constVar=TRUE, fitVarArgs=list(rpar
 	options(warn=-1)
 	xFitVar = list()
 	if (constVar) {
-		sigmaAll = colMeans(xFitResid^2)
+		sigmaAll = colMeans(xFitResid^2, na.rm=TRUE)
 		for (jj in 1:ncol(xFitResid)) {
 			xFitVar[[jj]] = bigspline(c(0, 0.3, 0.7), rep(sigmaAll[jj], 3), type='per', xmin=0, xmax=1, rparm=NA, nknots=3)}
 	} else {
+		idx = !is.na(xFitResid)
 		for (jj in 1:ncol(xFitResid)) {
 			# todo: fix so that variance can't be less than zero
-			xFitVar[[jj]] = do.call(bigspline, c(list(time, xFitResid[,jj]^2, type='per', xmin=0, xmax=1), fitVarArgs))}}
+			xFitVar[[jj]] = do.call(bigspline, c(list(time[idx[,jj]], xFitResid[idx[,jj], jj]^2, type='per', xmin=0, xmax=1),
+															 fitVarArgs))}}
 	options(warn=warnOrig)
 	return(xFitVar)}
 
