@@ -7,7 +7,8 @@
 zeitzeigerFit(x, time, fitMeanArgs = list(rparm = NA))
 }
 \arguments{
-\item{x}{Matrix of measurements, with observations in rows and features in columns.}
+\item{x}{Matrix of measurements, with observations in rows and features in columns.
+Missing values are allowed.}
 
 \item{time}{Vector of values of the periodic variable for the observations, where 0
 corresponds to the lowest possible value and 1 corresponds to the highest possible value.}
