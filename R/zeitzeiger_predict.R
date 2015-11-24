@@ -18,8 +18,8 @@ zeitzeigerPredictGivenDensity = function(xTest, xFitMean, xFitVar, beta, timeRan
 #' Predict corresponding time for test observations.
 #'
 #' \code{zeitzeigerPredict} predicts the value of the periodic variable
-#' for test observations, given training data and SPCs. This is a wrapper
-#' around \code{bbmle::mle2}.
+#' for test observations, given training data and SPCs. This function
+#' calls \code{bbmle::mle2}.
 #'
 #' @param xTrain Matrix of measurements for training data, observations in rows
 #' and features in columns.
