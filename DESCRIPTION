@@ -17,8 +17,9 @@ Imports:
     bigsplines (>= 1.0-7),
     doParallel (>= 1.0.10),
     PMA (>= 1.0.9)
-RoxygenNote: 5.0.0
-Suggests: knitr,
+RoxygenNote: 5.0.1
+Suggests:
+    knitr,
     rmarkdown,
     dplyr (>= 0.4.3),
     ggplot2 (>= 1.0.1.9003),
