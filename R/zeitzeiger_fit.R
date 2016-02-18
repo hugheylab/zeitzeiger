@@ -30,6 +30,57 @@ zeitzeigerFit = function(x, time, fitMeanArgs=list(rparm=NA)) {
 	return(list(xFitMean=xFitMean, xFitResid=xFitResid))}
 
 
+#' Estimate significance of periodicity by permutation testing.
+#'
+#' \code{zeitzeigerSig} estimates the statistical significance of the periodic
+#' smoothing spline fit. At each permutation, the time vector is scrambled and then
+#' zeitzeigerFit is used to fit a periodic smoothing spline for each feature as a
+#' function of time. The p-value for each feature is calculated as the fraction
+#' of permutations that had a sum of squared residuals at least as small as the
+#' observed sum of squared residuals.
+#'
+#' @param x Matrix of measurements, with observations in rows and features in columns.
+#' Missing values are allowed.
+#' @param time Vector of values of the periodic variable for the observations, where 0
+#' corresponds to the lowest possible value and 1 corresponds to the highest possible value.
+#' @param fitMeanArgs List of arguments to pass to \code{bigspline}.
+#' @param nIter Number of permutations.
+#'
+#' @return Vector of p-values.
+#'
+#' @export
+zeitzeigerSig = function(x, time, fitMeanArgs=list(rparm=NA), nIter=1000) {
+	timeIdx = do.call(rbind, lapply(1:nIter, function(x) sample.int(length(time))))
+	residRand = foreach(ii=1:nIter, .combine=rbind) %dopar% {
+		timeRand = time[timeIdx[ii,]]
+		fitResult = zeitzeigerFit(x, timeRand, fitMeanArgs)
+		return(fitResult$xFitResid^2)}
+
+	fitResult = zeitzeigerFit(x, time)
+	residObs = fitResult$xFitResid^2
+	residObsMat = matrix(rep(residObs, nIter), nrow=nIter, byrow=TRUE)
+	return(colMeans(residObsMat >= residRand))}
+
+
+#' Calculate the signal-to-noise of the periodic spline fits.
+#'
+#' \code{zeitzeigerSnr} calculates the signal-to-noise of the spline fit for
+#' each feature, similar to an effect size. The SNR is calculated as the
+#' difference between the maximum and minimum fitted values, divided by the
+#' square root of the mean of the squared residuals.
+#'
+#' @param fitResult Output of \code{zeitzeigerFit}.
+#'
+#' @return Vector of signal-to-noise values.
+#'
+#' @export
+zeitzeigerSnr = function(fitResult) {
+	timeRes = 0.001
+	timeRange = seq(0, 1-timeRes, timeRes)
+	fitRange = do.call(rbind, lapply(fitResult$xFitMean, function(fit) range(predict(fit, newdata=timeRange))))
+	return((fitRange[,2] - fitRange[,1]) / sqrt(colMeans(fitResult$xFitResid^2)))}
+
+
 zeitzeigerFitVar = function(time, xFitResid, constVar=TRUE, fitVarArgs=list(rparm=NA)) {
 	# length(time): n
 	# dim(xFitResid): c(n, p)
