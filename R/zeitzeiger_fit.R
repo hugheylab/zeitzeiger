@@ -188,18 +188,22 @@ zeitzeigerLikelihood = function(xTest, xFitMean, xFitVar, beta=NA, timeRange=seq
 #'
 #' \code{calcTimeDiff} calculates the difference between values
 #' of a periodic variable in a sensible way, making the difference
-#' as close to zero as possible. Values should be scaled such that
-#' lowest possible value is 0 and highest possible value is 1.
+#' as close to zero as possible.
 #'
 #' @param time1 Vector.
 #' @param time2 Vector (same length as \code{time1}) or matrix
 #' (number of rows equal to length of \code{time1}). If \code{time2} is a
 #' matrix, \code{time1} is expanded to have the same number of columns.
+#' @param timeMultiple Maximum value of the periodic variable, i.e., the value
+#' that is equivalent to zero. Typically, all values in \code{time1} and
+#' \code{time2} should be between 0 and \code{timeMultiple}.
 #'
 #' @return Vector or matrix corresponding to \code{time2 - time1}.
 #'
 #' @export
-calcTimeDiff = function(time1, time2) {
+calcTimeDiff = function(time1, time2, timeMultiple=1) {
+	time1 = time1 / timeMultiple
+	time2 = time2 / timeMultiple
 	if (is.vector(time2)) {
 		d = unname(time2 - time1)
 		d2 = cbind(d, d-1, d+1)
@@ -212,4 +216,4 @@ calcTimeDiff = function(time1, time2) {
 			d2 = cbind(d, d-1, d+1)
 			d3 = apply(d2, MARGIN=1, function(x) x[which.min(abs(x))])
 			d4[,jj] = sapply(d3, function(x) ifelse(length(x)==0, NA, x))}}
-	return(d4)}
+	return(d4 * timeMultiple)}
