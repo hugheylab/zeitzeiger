@@ -194,16 +194,16 @@ zeitzeigerLikelihood = function(xTest, xFitMean, xFitVar, beta=NA, timeRange=seq
 #' @param time2 Vector (same length as \code{time1}) or matrix
 #' (number of rows equal to length of \code{time1}). If \code{time2} is a
 #' matrix, \code{time1} is expanded to have the same number of columns.
-#' @param timeMultiple Maximum value of the periodic variable, i.e., the value
+#' @param timeMax Maximum value of the periodic variable, i.e., the value
 #' that is equivalent to zero. Typically, all values in \code{time1} and
-#' \code{time2} should be between 0 and \code{timeMultiple}.
+#' \code{time2} should be between 0 and \code{timeMax}.
 #'
 #' @return Vector or matrix corresponding to \code{time2 - time1}.
 #'
 #' @export
-calcTimeDiff = function(time1, time2, timeMultiple=1) {
-	time1 = time1 / timeMultiple
-	time2 = time2 / timeMultiple
+calcTimeDiff = function(time1, time2, timeMax=1) {
+	time1 = time1 / timeMax
+	time2 = time2 / timeMax
 	if (is.vector(time2)) {
 		d = unname(time2 - time1)
 		d2 = cbind(d, d-1, d+1)
@@ -216,4 +216,4 @@ calcTimeDiff = function(time1, time2, timeMultiple=1) {
 			d2 = cbind(d, d-1, d+1)
 			d3 = apply(d2, MARGIN=1, function(x) x[which.min(abs(x))])
 			d4[,jj] = sapply(d3, function(x) ifelse(length(x)==0, NA, x))}}
-	return(d4 * timeMultiple)}
+	return(d4 * timeMax)}
