@@ -86,7 +86,7 @@ zzFit = zeitzeiger(xTrain, timeTrain, xTest, sumabsv=1, nSpc=2)
 ```
 
 ## Plot the periodic spline fits
-Before looking at the predictions, it's a good idea to check the quality of the spline fits. If necessary, fitting parameters can be adjusted using the `fitMeanArgs` argument, which get passed to `bigspline`.
+Before looking at the predictions, it's a good idea to check the quality of the spline fits. If necessary, fitting parameters can be adjusted using the `fitMeanArgs` argument, which gets passed to `bigspline`.
 ```{r}
 timeRange = seq(0, 1, 0.01)
 jj = 11
