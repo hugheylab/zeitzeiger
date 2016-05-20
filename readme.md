@@ -4,9 +4,10 @@
 
 ## Installation
 ```R
+source('https://bioconductor.org/biocLite.R')
 install.packages('devtools')
 devtools::install_github('hadley/ggplot2') # used in the vignette
-devtools::install_github('jakejh/zeitzeiger', build_vignettes=TRUE, dependencies=TRUE)
+devtools::install_github('jakejh/zeitzeiger', build_vignettes=TRUE, dependencies=TRUE, repos=BiocInstaller::biocinstallRepos())
 ```
 
 ## Getting started
