@@ -112,12 +112,12 @@ zeitzeigerFitVar = function(time, xFitResid, constVar=TRUE, fitVarArgs=list(rpar
 #' @param nTime Number of time-points by which to discretize the time-dependent
 #' behavior of each feature. Corresponds to the number of rows in the matrix for
 #' which the SPCs will be calculated.
-#' @param useSPC Logical indicating whether to use \code{SPC} (default) or \code{svd}.
+#' @param useSpc Logical indicating whether to use \code{SPC} (default) or \code{svd}.
 #' @param sumabsv L1-constraint on the SPCs, passed to \code{SPC}.
 #' @param orth Logical indicating whether to require left singular vectors
 #' be orthogonal to each other, passed to \code{SPC}.
 #'
-#' @return Result from \code{SPC}, unless \code{useSPC==FALSE}, then result from \code{svd}.
+#' @return Result from \code{SPC}, unless \code{useSpc==FALSE}, then result from \code{svd}.
 #'
 #' @export
 zeitzeigerSpc = function(xFitMean, xFitResid, nTime=10, useSpc=TRUE, sumabsv=1, orth=TRUE) {

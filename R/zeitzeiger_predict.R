@@ -41,8 +41,7 @@ zeitzeigerPredictGivenDensity = function(xTest, xFitMean, xFitVar, beta, timeRan
 #' @param betaSv Logical indicating whether to use the singular values of the SPCs
 #' as weights in the likelihood calculation.
 #' @param timeRange Vector of values of the periodic variable at which to calculate likelihood.
-#' The time with the highest likelihood is used as the initial value for the
-#' MLE optimizer.
+#' The time with the highest likelihood is used as the initial value for the MLE optimizer.
 #'
 #' @return
 #' \item{timeDepLike}{3-D array of likelihood, with dimensions for each test observation,
@@ -74,10 +73,10 @@ zeitzeigerPredict = function(xTrain, timeTrain, xTest, spcResult, fitMeanArgs=li
 	for (ii in 1:length(nSpc)) {
 		if (betaSv) {
 			beta = spcResult$d[1:nSpc[ii]]
+			# beta = spcResult$d[1:nSpc[ii]]^2 / sum(spcResult$d[1:nSpc[ii]]^2)
 		} else {
 			beta = rep_len(1, nSpc[ii])}
-		predResult = zeitzeigerPredictGivenDensity(zTest[,1:nSpc[ii], drop=FALSE], zFitMean[1:nSpc[ii]], zFitVar[1:nSpc[ii]],
-																 beta)
+		predResult = zeitzeigerPredictGivenDensity(zTest[,1:nSpc[ii], drop=FALSE], zFitMean[1:nSpc[ii]], zFitVar[1:nSpc[ii]], beta)
 		timeDepLike[,ii,] = predResult$timeDepLike
 		mleFit[[ii]] = predResult$mleFit
 		timePred[,ii] = predResult$timePred}
@@ -104,7 +103,7 @@ zeitzeigerPredict = function(xTrain, timeTrain, xTest, spcResult, fitMeanArgs=li
 #' @param nTime Number of time-points by which to discretize the time-dependent
 #' behavior of each feature. Corresponds to the number of rows in the matrix for
 #' which the SPCs will be calculated.
-#' @param useSPC Logical indicating whether to use \code{SPC} (default) or \code{svd}.
+#' @param useSpc Logical indicating whether to use \code{SPC} (default) or \code{svd}.
 #' @param sumabsv L1-constraint on the SPCs, passed to \code{SPC}.
 #' @param orth Logical indicating whether to require left singular vectors
 #' be orthogonal to each other, passed to \code{SPC}.
@@ -164,7 +163,7 @@ zeitzeiger = function(xTrain, timeTrain, xTest, fitMeanArgs=list(rparm=NA), cons
 #' @param nTime Number of time-points by which to discretize the time-dependent
 #' behavior of each feature. Corresponds to the number of rows in the matrix for
 #' which the SPCs will be calculated.
-#' @param useSPC Logical indicating whether to use \code{SPC} (default) or \code{svd}.
+#' @param useSpc Logical indicating whether to use \code{SPC} (default) or \code{svd}.
 #' @param sumabsv L1-constraint on the SPCs, passed to \code{SPC}.
 #' @param orth Logical indicating whether to require left singular vectors
 #' be orthogonal to each other, passed to \code{SPC}.
@@ -215,8 +214,7 @@ zeitzeigerBatch = function(ematList, trainStudyNames, sampleMetadata, studyColna
 
 		fitResult = zeitzeigerFit(xTrain, timeTrain, fitMeanArgs)
 		spcResult = zeitzeigerSpc(fitResult$xFitMean, fitResult$xFitResid, nTime, useSpc, sumabsv, orth)
-		predResult = zeitzeigerPredict(xTrain, timeTrain, xTest, spcResult, fitMeanArgs, constVar, fitVarArgs, nSpc, betaSv,
-												 timeRange)
+		predResult = zeitzeigerPredict(xTrain, timeTrain, xTest, spcResult, fitMeanArgs, constVar, fitVarArgs, nSpc, betaSv, timeRange)
 
 		dimnames(predResult$timeDepLike)[[1]] = rownames(xTest)
 		for (ii in 1:length(nSpc)) {

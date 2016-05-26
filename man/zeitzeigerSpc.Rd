@@ -16,15 +16,15 @@ zeitzeigerSpc(xFitMean, xFitResid, nTime = 10, useSpc = TRUE, sumabsv = 1,
 behavior of each feature. Corresponds to the number of rows in the matrix for
 which the SPCs will be calculated.}
 
+\item{useSpc}{Logical indicating whether to use \code{SPC} (default) or \code{svd}.}
+
 \item{sumabsv}{L1-constraint on the SPCs, passed to \code{SPC}.}
 
 \item{orth}{Logical indicating whether to require left singular vectors
 be orthogonal to each other, passed to \code{SPC}.}
-
-\item{useSPC}{Logical indicating whether to use \code{SPC} (default) or \code{svd}.}
 }
 \value{
-Result from \code{SPC}, unless \code{useSPC==FALSE}, then result from \code{svd}.
+Result from \code{SPC}, unless \code{useSpc==FALSE}, then result from \code{svd}.
 }
 \description{
 \code{zeitzeigerSpc} calculates the sparse principal components (SPCs),

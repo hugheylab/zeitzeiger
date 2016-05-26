@@ -38,8 +38,7 @@ A value of 2 means that the prediction will be based on the first 2 SPCs.}
 as weights in the likelihood calculation.}
 
 \item{timeRange}{Vector of values of the periodic variable at which to calculate likelihood.
-The time with the highest likelihood is used as the initial value for the
-MLE optimizer.}
+The time with the highest likelihood is used as the initial value for the MLE optimizer.}
 }
 \value{
 \item{timeDepLike}{3-D array of likelihood, with dimensions for each test observation,

@@ -32,6 +32,8 @@ Unused if \code{constVar==TRUE}.}
 behavior of each feature. Corresponds to the number of rows in the matrix for
 which the SPCs will be calculated.}
 
+\item{useSpc}{Logical indicating whether to use \code{SPC} (default) or \code{svd}.}
+
 \item{sumabsv}{L1-constraint on the SPCs, passed to \code{SPC}.}
 
 \item{orth}{Logical indicating whether to require left singular vectors
@@ -48,8 +50,6 @@ as weights in the likelihood calculation.}
 \item{timeRange}{Vector of values of the periodic variable at which to calculate likelihood.
 The time with the highest likelihood is used as the initial value for the
 MLE optimizer.}
-
-\item{useSPC}{Logical indicating whether to use \code{SPC} (default) or \code{svd}.}
 }
 \value{
 \item{fitResult}{Result from \code{zeitzeigerFit}}

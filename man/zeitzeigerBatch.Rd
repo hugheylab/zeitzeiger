@@ -45,6 +45,8 @@ Unused if \code{constVar==TRUE}.}
 behavior of each feature. Corresponds to the number of rows in the matrix for
 which the SPCs will be calculated.}
 
+\item{useSpc}{Logical indicating whether to use \code{SPC} (default) or \code{svd}.}
+
 \item{sumabsv}{L1-constraint on the SPCs, passed to \code{SPC}.}
 
 \item{orth}{Logical indicating whether to require left singular vectors
@@ -68,8 +70,6 @@ If \code{NA} (default), then there are no other covariates.}
 
 \item{featuresExclude}{Named list of character vectors corresponding to features
 to exclude from being used for prediction for the respective test datasets.}
-
-\item{useSPC}{Logical indicating whether to use \code{SPC} (default) or \code{svd}.}
 }
 \value{
 \item{spcResultList}{List of results from \code{zeitzeigerSpc}, one for each test dataset.}

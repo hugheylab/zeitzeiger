@@ -4,7 +4,7 @@
 \alias{calcTimeDiff}
 \title{Calculate difference between values of a periodic variable.}
 \usage{
-calcTimeDiff(time1, time2)
+calcTimeDiff(time1, time2, timeMax = 1)
 }
 \arguments{
 \item{time1}{Vector.}
@@ -12,6 +12,10 @@ calcTimeDiff(time1, time2)
 \item{time2}{Vector (same length as \code{time1}) or matrix
 (number of rows equal to length of \code{time1}). If \code{time2} is a
 matrix, \code{time1} is expanded to have the same number of columns.}
+
+\item{timeMax}{Maximum value of the periodic variable, i.e., the value
+that is equivalent to zero. Typically, all values in \code{time1} and
+\code{time2} should be between 0 and \code{timeMax}.}
 }
 \value{
 Vector or matrix corresponding to \code{time2 - time1}.
@@ -19,7 +23,6 @@ Vector or matrix corresponding to \code{time2 - time1}.
 \description{
 \code{calcTimeDiff} calculates the difference between values
 of a periodic variable in a sensible way, making the difference
-as close to zero as possible. Values should be scaled such that
-lowest possible value is 0 and highest possible value is 1.
+as close to zero as possible.
 }
 

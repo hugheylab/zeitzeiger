@@ -32,7 +32,7 @@ zeitzeigerFitCv = function(x, time, foldid, fitMeanArgs=list(rparm=NA)) {
 #' @param nTime Number of time-points by which to discretize the time-dependent
 #' behavior of each feature. Corresponds to the number of rows in the matrix for
 #' which the SPCs will be calculated.
-#' @param useSPC Logical indicating whether to use \code{SPC} (default) or \code{svd}.
+#' @param useSpc Logical indicating whether to use \code{SPC} (default) or \code{svd}.
 #' @param sumabsv L1-constraint on the SPCs, passed to \code{SPC}.
 #' @param orth Logical indicating whether to require left singular vectors
 #' be orthogonal to each other, passed to \code{SPC}.
@@ -90,8 +90,7 @@ zeitzeigerPredictCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(
 		idxTrain = foldid!=foldidNow
 		xTrain = x[idxTrain,, drop=FALSE]
 		xTest = x[!idxTrain,, drop=FALSE]
-		return(zeitzeigerPredict(xTrain, time[idxTrain], xTest, spcResult, fitMeanArgs, constVar, fitVarArgs, nSpc, betaSv,
-										 timeRange))}
+		return(zeitzeigerPredict(xTrain, time[idxTrain], xTest, spcResult, fitMeanArgs, constVar, fitVarArgs, nSpc, betaSv, timeRange))}
 
 	nSpcLen = dim(predResultList[[1]]$timePred)[2]
 	timeDepLike = array(NA, dim=c(nrow(x), nSpcLen, length(timeRange)))
