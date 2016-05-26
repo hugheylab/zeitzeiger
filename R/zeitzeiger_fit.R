@@ -36,8 +36,9 @@ zeitzeigerFit = function(x, time, fitMeanArgs=list(rparm=NA)) {
 #' smoothing spline fit. At each permutation, the time vector is scrambled and then
 #' zeitzeigerFit is used to fit a periodic smoothing spline for each feature as a
 #' function of time. The p-value for each feature is calculated as the fraction
-#' of permutations that had a sum of squared residuals at least as small as the
-#' observed sum of squared residuals.
+#' of permutations that had a signal-to-noise ratio at least as large as the
+#' observed signal-to-noise ratio. Make sure to first register the parallel backend
+#' using \code{registerDoParallel}.
 #'
 #' @param x Matrix of measurements, with observations in rows and features in columns.
 #' Missing values are allowed.
@@ -49,17 +50,16 @@ zeitzeigerFit = function(x, time, fitMeanArgs=list(rparm=NA)) {
 #' @return Vector of p-values.
 #'
 #' @export
-zeitzeigerSig = function(x, time, fitMeanArgs=list(rparm=NA), nIter=1000) {
+zeitzeigerSig = function(x, time, fitMeanArgs=list(rparm=NA), nIter=200) {
 	timeIdx = do.call(rbind, lapply(1:nIter, function(x) sample.int(length(time))))
-	residRand = foreach(ii=1:nIter, .combine=rbind) %dopar% {
+	snrRand = foreach(ii=1:nIter, .combine=rbind) %dopar% {
 		timeRand = time[timeIdx[ii,]]
 		fitResult = zeitzeigerFit(x, timeRand, fitMeanArgs)
-		return(fitResult$xFitResid^2)}
-
-	fitResult = zeitzeigerFit(x, time)
-	residObs = fitResult$xFitResid^2
-	residObsMat = matrix(rep(residObs, nIter), nrow=nIter, byrow=TRUE)
-	return(colMeans(residObsMat >= residRand))}
+		return(zeitzeigerSnr(fitResult))}
+	fitResult = zeitzeigerFit(x, time, fitMeanArgs)
+	snr = zeitzeigerSnr(fitResult)
+	snrMat = matrix(rep(snr, nIter), nrow=nIter, byrow=TRUE)
+	return(colMeans(snrMat <= snrRand))}
 
 
 #' Calculate the signal-to-noise of the periodic spline fits.

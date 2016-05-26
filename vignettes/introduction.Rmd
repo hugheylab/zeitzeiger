@@ -61,7 +61,7 @@ for (ii in 23:30) {
 ## Create training and testing observations
 Now we'll split the dataset into training and test sets.
 ```{r}
-idxTrain = 1:(round(nObs)*0.6)
+idxTrain = 1:round(nObs*0.6)
 
 xTrain = x[idxTrain,]
 timeTrain = time[idxTrain]

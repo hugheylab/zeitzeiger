@@ -4,7 +4,7 @@
 \alias{zeitzeigerSig}
 \title{Estimate significance of periodicity by permutation testing.}
 \usage{
-zeitzeigerSig(x, time, fitMeanArgs = list(rparm = NA), nIter = 1000)
+zeitzeigerSig(x, time, fitMeanArgs = list(rparm = NA), nIter = 200)
 }
 \arguments{
 \item{x}{Matrix of measurements, with observations in rows and features in columns.
@@ -25,7 +25,8 @@ Vector of p-values.
 smoothing spline fit. At each permutation, the time vector is scrambled and then
 zeitzeigerFit is used to fit a periodic smoothing spline for each feature as a
 function of time. The p-value for each feature is calculated as the fraction
-of permutations that had a sum of squared residuals at least as small as the
-observed sum of squared residuals.
+of permutations that had a signal-to-noise ratio at least as large as the
+observed signal-to-noise ratio. Make sure to first register the parallel backend
+using \code{registerDoParallel}.
 }
 
