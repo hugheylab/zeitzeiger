@@ -19,14 +19,14 @@ fxGroup = function(x, timeDiff, time, xFitMean, xFitVar, logArg=FALSE) {
 
 
 zeitzeigerPredictGivenDensityGroup = function(xTest, groupTest, xFitMean, xFitVar, beta, timeRange=seq(0, 1, 0.01)) {
-	groups = groupTest[,'group']
+	groups = groupTest[['group']]
 	groupsUnique = sort(unique(groups))
 	negLogLike = matrix(NA, nrow=length(groupsUnique), ncol=length(timeRange))
 	mleFit = list()
 
 	for (ii in 1:length(groupsUnique)) {
 		xTestNow = xTest[groups==groupsUnique[ii],, drop=FALSE]
-		timeDiffNow = groupTest[groups==groupsUnique[ii], 'timeDiff']
+		timeDiffNow = groupTest[groups==groupsUnique[ii],][['timeDiff']]
 		negLogLike[ii,] = -fxGroup(xTestNow, timeDiffNow, timeRange, xFitMean, xFitVar, logArg=TRUE) %*% matrix(beta)
 
 		timeStart = timeRange[which.min(negLogLike[ii,])]
@@ -100,8 +100,8 @@ zeitzeigerPredictGroup = function(xTrain, timeTrain, xTest, groupTest, spcResult
 		if (!all(nSpc %in% 1:length(spcResult$d)) || anyDuplicated(nSpc)>0) {
 			stop('nSpc must be unique integers in 1 to the number of singular vectors.')}}
 
-	timePred = matrix(NA, nrow=length(unique(groupTest[,'group'])), length(nSpc))
-	timeDepLike = array(NA, dim=c(length(unique(groupTest[,'group'])), length(nSpc), length(timeRange)))
+	timePred = matrix(NA, nrow=length(unique(groupTest[['group']])), length(nSpc))
+	timeDepLike = array(NA, dim=c(length(unique(groupTest[['group']])), length(nSpc), length(timeRange)))
 	mleFit = list() # list (for each nSpc) of lists (for each group)
 	for (ii in 1:length(nSpc)) {
 		if (betaSv) {
