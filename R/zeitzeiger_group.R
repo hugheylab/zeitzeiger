@@ -31,7 +31,7 @@ zeitzeigerPredictGivenDensityGroup = function(xTest, groupTest, xFitMean, xFitVa
 
 		timeStart = timeRange[which.min(negLogLike[ii,])]
 		names(timeStart) = 'time'
-		negLogLikeFunc = function(time) -sum(fxGroup(xTestNow, timeDiffNow, time, xFitMean, xFitVar) * beta)
+		negLogLikeFunc = function(time) -sum(fxGroup(xTestNow, timeDiffNow, time, xFitMean, xFitVar, logArg=TRUE) * beta)
 		bbmle::parnames(negLogLikeFunc) = names(timeStart)
 		warnOrig = getOption('warn')
 		options(warn=-1)
