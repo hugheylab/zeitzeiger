@@ -26,7 +26,7 @@ be orthogonal to each other, passed to \code{SPC}.}
 A list consisting of the result from \code{zeitzeigerSpc} for each fold.
 }
 \description{
-\code{zeitzeigerSpcCv} calls \code{zeitzeigerFit} for each fold of
+\code{zeitzeigerSpcCv} calls \code{zeitzeigerSpc} for each fold of
 cross-validation. This function uses \code{doParallel}, so prior to
 running this function, use \code{registerDoParallel} to set the number of cores.
 }

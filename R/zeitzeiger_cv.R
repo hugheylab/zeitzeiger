@@ -24,7 +24,7 @@ zeitzeigerFitCv = function(x, time, foldid, fitMeanArgs=list(rparm=NA)) {
 #' Calculate sparse principal components of time-dependent variation
 #' on cross-validation.
 #'
-#' \code{zeitzeigerSpcCv} calls \code{zeitzeigerFit} for each fold of
+#' \code{zeitzeigerSpcCv} calls \code{zeitzeigerSpc} for each fold of
 #' cross-validation. This function uses \code{doParallel}, so prior to
 #' running this function, use \code{registerDoParallel} to set the number of cores.
 #'
@@ -48,7 +48,7 @@ zeitzeigerSpcCv = function(fitResultList, nTime=10, useSpc=TRUE, sumabsv=1, orth
 
 #' Predict corresponding time for observations on cross-validation.
 #'
-#' \code{zeitzeigerPredictCv} calls \code{zeitzeigerFit} for each fold of
+#' \code{zeitzeigerPredictCv} calls \code{zeitzeigerPredict} for each fold of
 #' cross-validation. This function uses \code{doParallel}, so prior to
 #' running this function, use \code{registerDoParallel} to set the number of cores.
 #'
@@ -80,7 +80,7 @@ zeitzeigerSpcCv = function(fitResultList, nTime=10, useSpc=TRUE, sumabsv=1, orth
 #' \item{mleFit}{List (for each element in \code{nSpc}) of lists (for each observation)
 #' of \code{mle2} objects.}
 #' \item{timePred}{Matrix of predicted times for observations by values of \code{nSpc}.}
-
+#'
 #' @export
 zeitzeigerPredictCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(rparm=NA), constVar=TRUE,
 										 fitVarArgs=list(rparm=NA), nSpc=NA, betaSv=FALSE, timeRange=seq(0, 1, 0.01)) {
@@ -90,7 +90,8 @@ zeitzeigerPredictCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(
 		idxTrain = foldid!=foldidNow
 		xTrain = x[idxTrain,, drop=FALSE]
 		xTest = x[!idxTrain,, drop=FALSE]
-		return(zeitzeigerPredict(xTrain, time[idxTrain], xTest, spcResult, fitMeanArgs, constVar, fitVarArgs, nSpc, betaSv, timeRange))}
+		return(zeitzeigerPredict(xTrain, time[idxTrain], xTest, spcResult, fitMeanArgs, constVar,
+										 fitVarArgs, nSpc, betaSv, timeRange))}
 
 	nSpcLen = dim(predResultList[[1]]$timePred)[2]
 	timeDepLike = array(NA, dim=c(nrow(x), nSpcLen, length(timeRange)))
@@ -102,5 +103,68 @@ zeitzeigerPredictCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(
 		for (ii in 1:nSpcLen) {
 			mleFit[[ii]][foldid==foldidNow] = predResultList[[which(foldidUnique==foldidNow)]]$mleFit[[ii]]}
 		timePred[foldid==foldidNow,] = predResultList[[which(foldidUnique==foldidNow)]]$timePred}
+
+	return(list(timeDepLike=timeDepLike, mleFit=mleFit, timePred=timePred))}
+
+
+#' Predict corresponding time for groups of observations on cross-validation.
+#'
+#' \code{zeitzeigerPredictGroupCv} calls \code{zeitzeigerPredictGroup} for each
+#' fold of cross-validation. Thus, each fold is equivalent to a group. This
+#' function uses \code{doParallel}, so prior to running this function, use
+#' \code{registerDoParallel} to set the number of cores.
+#'
+#' @param x Matrix of measurements, observations in rows and features in columns.
+#' @param time Vector of values of the periodic variable for observations, where 0
+#' corresponds to the lowest possible value and 1 corresponds to the highest
+#' possible value.
+#' @param foldid Vector of values indicating which fold each observation is in.
+#' @param spcResultList Result from \code{zeitzeigerSpcCv}.
+#' @param fitMeanArgs List of arguments to pass to \code{bigspline} for fitting mean of each SPC.
+#' @param constVar Logical indicating whether to assume constant variance as a function
+#' of the periodic variable.
+#' @param fitVarArgs List of arguments to pass to \code{bigspline} for fitting variance of each SPC.
+#' Unused if \code{constVar==TRUE}.
+#' @param nSpc Vector of the number of SPCs to use for prediction. If \code{NA} (default),
+#' \code{nSpc} will become \code{1:K}, where \code{K} is the number of SPCs in \code{spcResult}.
+#' Each value in \code{nSpc} will correspond to one prediction for each test observation.
+#' A value of 2 means that the prediction will be based on the first 2 SPCs.
+#' @param betaSv Logical indicating whether to use the singular values of the SPCs
+#' as weights in the likelihood calculation.
+#' @param timeRange Vector of values of the periodic variable at which to calculate likelihood.
+#' The time with the highest likelihood is used as the initial value for the
+#' MLE optimizer.
+#'
+#' @return A list of the same structure as \code{zeitzeigerPredictGroup}, combining the
+#' results from each fold of cross-validation. Folds (i.e, groups) will be sorted by foldid.
+#' \item{timeDepLike}{3-D array of likelihood, with dimensions for each fold,
+#' each element of \code{nSpc}, and each element of \code{timeRange}.}
+#' \item{mleFit}{List (for each element in \code{nSpc}) of lists (for each fold)
+#' of \code{mle2} objects.}
+#' \item{timePred}{Matrix of predicted times for folds by values of \code{nSpc}.}
+#'
+#' @export
+zeitzeigerPredictGroupCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(rparm=NA),
+												constVar=TRUE, fitVarArgs=list(rparm=NA), nSpc=NA, betaSv=FALSE,
+												timeRange=seq(0, 1, 0.01)) {
+	foldidUnique = sort(unique(foldid))
+
+	groupDf = data.frame(time = time, group = foldid, stringsAsFactors=FALSE)
+	groupDf = groupDf %>%
+		inner_join(groupDf %>% group_by(group) %>% summarize(timeMin = min(time)), by='group') %>%
+		mutate(timeDiff = time - timeMin)
+
+	predResultList = foreach(foldidNow=foldidUnique, spcResult=spcResultList) %dopar% {
+		idxTrain = foldid!=foldidNow
+		xTrain = x[idxTrain,, drop=FALSE]
+		xTest = x[!idxTrain,, drop=FALSE]
+		groupTest = groupDf[!idxTrain,]
+
+		return(zeitzeigerPredictGroup(xTrain, time[idxTrain], xTest, groupTest, spcResult, fitMeanArgs,
+												constVar, fitVarArgs, nSpc, betaSv, timeRange))}
+
+	timeDepLike = abind::abind(lapply(predResultList, function(a) a$timeDepLike), along=1)
+	mleFit = lapply(predResultFit, function(a) a$mleFit)
+	timePred = do.call(rbind, lapply(predResultList, function(a) a$timePred))
 
 	return(list(timeDepLike=timeDepLike, mleFit=mleFit, timePred=timePred))}
