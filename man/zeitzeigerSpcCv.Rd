@@ -2,11 +2,10 @@
 % Please edit documentation in R/zeitzeiger_cv.R
 \name{zeitzeigerSpcCv}
 \alias{zeitzeigerSpcCv}
-\title{Calculate sparse principal components of time-dependent variation
-on cross-validation.}
+\title{Calculate sparse principal components of time-dependent variation on cross-validation.}
 \usage{
 zeitzeigerSpcCv(fitResultList, nTime = 10, useSpc = TRUE, sumabsv = 1,
-  orth = TRUE)
+  orth = TRUE, dopar = TRUE)
 }
 \arguments{
 \item{fitResultList}{Result from \code{zeitzeigerFitCv}.}
@@ -21,13 +20,15 @@ which the SPCs will be calculated.}
 
 \item{orth}{Logical indicating whether to require left singular vectors
 be orthogonal to each other, passed to \code{SPC}.}
+
+\item{dopar}{Logical indicating whether to process the folds in parallel. Before calling
+this function, use \code{doParallel::registerDoParallel} to register the parallel backend.}
 }
 \value{
 A list consisting of the result from \code{zeitzeigerSpc} for each fold.
 }
 \description{
-\code{zeitzeigerSpcCv} calls \code{zeitzeigerSpc} for each fold of
-cross-validation. This function uses \code{doParallel}, so prior to
-running this function, use \code{registerDoParallel} to set the number of cores.
+\code{zeitzeigerSpcCv} calls \code{zeitzeigerSpc} for each fold of cross-validation.
+By default, if a parallel backend is registered, this function processes the folds in parallel.
 }
 

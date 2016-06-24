@@ -1,32 +1,32 @@
 #' Estimate time-dependent mean on cross-validation.
 #'
-#' \code{zeitzeigerFitCv} calls \code{zeitzeigerFit} for each fold of
-#' cross-validation. This function uses \code{doParallel}, so prior to
-#' running this function, use \code{registerDoParallel} to set the number of cores.
+#' \code{zeitzeigerFitCv} calls \code{zeitzeigerFit} for each fold of cross-validation.
+#' By default, if a parallel backend is registered, this function processes the folds in parallel.
 #'
 #' @param x Matrix of measurements, with observations in rows and features in columns.
 #' @param time Vector of values of the periodic variable for the observations, where 0
 #' corresponds to the lowest possible value and 1 corresponds to the highest possible value.
 #' @param foldid Vector of values indicating which fold each observation is in.
 #' @param fitMeanArgs List of arguments to pass to \code{bigspline}.
+#' @param dopar Logical indicating whether to process the folds in parallel. Before calling
+#' this function, use \code{doParallel::registerDoParallel} to register the parallel backend.
 #'
 #' @return A list consisting of the result from \code{zeitzeigerFit} for each fold.
 #'
 #' @export
-zeitzeigerFitCv = function(x, time, foldid, fitMeanArgs=list(rparm=NA)) {
+zeitzeigerFitCv = function(x, time, foldid, fitMeanArgs=list(rparm=NA), dopar=TRUE) {
 	foldidUnique = sort(unique(foldid))
-	fitResultList = foreach(foldidNow=foldidUnique) %dopar% {
+	doOp = ifelse(dopar, `%dopar%`, `%do%`)
+	fitResultList = doOp(foreach(foldidNow=foldidUnique), {
 		idxTrain = foldid!=foldidNow
-		return(zeitzeigerFit(x[idxTrain,], time[idxTrain], fitMeanArgs))}
+		return(zeitzeigerFit(x[idxTrain,], time[idxTrain], fitMeanArgs))})
 	return(fitResultList)}
 
 
-#' Calculate sparse principal components of time-dependent variation
-#' on cross-validation.
+#' Calculate sparse principal components of time-dependent variation on cross-validation.
 #'
-#' \code{zeitzeigerSpcCv} calls \code{zeitzeigerSpc} for each fold of
-#' cross-validation. This function uses \code{doParallel}, so prior to
-#' running this function, use \code{registerDoParallel} to set the number of cores.
+#' \code{zeitzeigerSpcCv} calls \code{zeitzeigerSpc} for each fold of cross-validation.
+#' By default, if a parallel backend is registered, this function processes the folds in parallel.
 #'
 #' @param fitResultList Result from \code{zeitzeigerFitCv}.
 #' @param nTime Number of time-points by which to discretize the time-dependent
@@ -36,21 +36,23 @@ zeitzeigerFitCv = function(x, time, foldid, fitMeanArgs=list(rparm=NA)) {
 #' @param sumabsv L1-constraint on the SPCs, passed to \code{SPC}.
 #' @param orth Logical indicating whether to require left singular vectors
 #' be orthogonal to each other, passed to \code{SPC}.
+#' @param dopar Logical indicating whether to process the folds in parallel. Before calling
+#' this function, use \code{doParallel::registerDoParallel} to register the parallel backend.
 #'
 #' @return A list consisting of the result from \code{zeitzeigerSpc} for each fold.
 #'
 #' @export
-zeitzeigerSpcCv = function(fitResultList, nTime=10, useSpc=TRUE, sumabsv=1, orth=TRUE) {
-	spcResultList = foreach(fitResult=fitResultList) %dopar% {
-		return(zeitzeigerSpc(fitResult$xFitMean, fitResult$xFitResid, nTime, useSpc, sumabsv, orth))}
+zeitzeigerSpcCv = function(fitResultList, nTime=10, useSpc=TRUE, sumabsv=1, orth=TRUE, dopar=TRUE) {
+	doOp = ifelse(dopar, `%dopar%`, `%do%`)
+	spcResultList = doOp(foreach(fitResult=fitResultList), {
+		return(zeitzeigerSpc(fitResult$xFitMean, fitResult$xFitResid, nTime, useSpc, sumabsv, orth))})
 	return(spcResultList)}
 
 
 #' Predict corresponding time for observations on cross-validation.
 #'
-#' \code{zeitzeigerPredictCv} calls \code{zeitzeigerPredict} for each fold of
-#' cross-validation. This function uses \code{doParallel}, so prior to
-#' running this function, use \code{registerDoParallel} to set the number of cores.
+#' \code{zeitzeigerPredictCv} calls \code{zeitzeigerPredict} for each fold of cross-validation.
+#' By default, if a parallel backend is registered, this function processes the folds in parallel.
 #'
 #' @param x Matrix of measurements, observations in rows and features in columns.
 #' @param time Vector of values of the periodic variable for observations, where 0
@@ -72,6 +74,8 @@ zeitzeigerSpcCv = function(fitResultList, nTime=10, useSpc=TRUE, sumabsv=1, orth
 #' @param timeRange Vector of values of the periodic variable at which to calculate likelihood.
 #' The time with the highest likelihood is used as the initial value for the
 #' MLE optimizer.
+#' @param dopar Logical indicating whether to process the folds in parallel. Before calling
+#' this function, use \code{doParallel::registerDoParallel} to register the parallel backend.
 #'
 #' @return A list of the same structure as \code{zeitzeigerPredict}, combining the results
 #' from each fold of cross-validation.
@@ -83,15 +87,17 @@ zeitzeigerSpcCv = function(fitResultList, nTime=10, useSpc=TRUE, sumabsv=1, orth
 #'
 #' @export
 zeitzeigerPredictCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(rparm=NA), constVar=TRUE,
-										 fitVarArgs=list(rparm=NA), nSpc=NA, betaSv=FALSE, timeRange=seq(0, 1, 0.01)) {
+										 fitVarArgs=list(rparm=NA), nSpc=NA, betaSv=FALSE, timeRange=seq(0, 1, 0.01),
+										 dopar=TRUE) {
 	foldidUnique = sort(unique(foldid))
+	doOp = ifelse(dopar, `%dopar%`, `%do%`)
 
-	predResultList = foreach(foldidNow=foldidUnique, spcResult=spcResultList) %dopar% {
+	predResultList = doOp(foreach(foldidNow=foldidUnique, spcResult=spcResultList), {
 		idxTrain = foldid!=foldidNow
 		xTrain = x[idxTrain,, drop=FALSE]
 		xTest = x[!idxTrain,, drop=FALSE]
 		return(zeitzeigerPredict(xTrain, time[idxTrain], xTest, spcResult, fitMeanArgs, constVar,
-										 fitVarArgs, nSpc, betaSv, timeRange))}
+										 fitVarArgs, nSpc, betaSv, timeRange))})
 
 	nSpcLen = dim(predResultList[[1]]$timePred)[2]
 	timeDepLike = array(NA, dim=c(nrow(x), nSpcLen, length(timeRange)))
@@ -109,10 +115,9 @@ zeitzeigerPredictCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(
 
 #' Predict corresponding time for groups of observations on cross-validation.
 #'
-#' \code{zeitzeigerPredictGroupCv} calls \code{zeitzeigerPredictGroup} for each
-#' fold of cross-validation. Thus, each fold is equivalent to a group. This
-#' function uses \code{doParallel}, so prior to running this function, use
-#' \code{registerDoParallel} to set the number of cores.
+#' \code{zeitzeigerPredictGroupCv} calls \code{zeitzeigerPredictGroup} for each fold of
+#' cross-validation. Thus, each fold is equivalent to a group. By default, if a parallel
+#' backend is registered, this function processes the folds in parallel.
 #'
 #' @param x Matrix of measurements, observations in rows and features in columns.
 #' @param time Vector of values of the periodic variable for observations, where 0
@@ -134,6 +139,8 @@ zeitzeigerPredictCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(
 #' @param timeRange Vector of values of the periodic variable at which to calculate likelihood.
 #' The time with the highest likelihood is used as the initial value for the
 #' MLE optimizer.
+#' @param dopar Logical indicating whether to process the folds in parallel. Before calling
+#' this function, use \code{doParallel::registerDoParallel} to register the parallel backend.
 #'
 #' @return A list of the same structure as \code{zeitzeigerPredictGroup}, combining the
 #' results from each fold of cross-validation. Folds (i.e, groups) will be sorted by foldid.
@@ -146,22 +153,22 @@ zeitzeigerPredictCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(
 #' @export
 zeitzeigerPredictGroupCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(rparm=NA),
 												constVar=TRUE, fitVarArgs=list(rparm=NA), nSpc=NA, betaSv=FALSE,
-												timeRange=seq(0, 1, 0.01)) {
+												timeRange=seq(0, 1, 0.01), dopar=TRUE) {
 	foldidUnique = sort(unique(foldid))
+	doOp = ifelse(dopar, `%dopar%`, `%do%`)
 
 	groupDf = data.frame(time = time, group = foldid, stringsAsFactors=FALSE)
 	groupDf = groupDf %>%
 		inner_join(groupDf %>% group_by(group) %>% summarize(timeMin = min(time)), by='group') %>%
 		mutate(timeDiff = time - timeMin)
 
-	predResultList = foreach(foldidNow=foldidUnique, spcResult=spcResultList) %dopar% {
+	predResultList = doOp(foreach(foldidNow=foldidUnique, spcResult=spcResultList), {
 		idxTrain = foldid!=foldidNow
 		xTrain = x[idxTrain,, drop=FALSE]
 		xTest = x[!idxTrain,, drop=FALSE]
 		groupTest = groupDf[!idxTrain,]
-
 		return(zeitzeigerPredictGroup(xTrain, time[idxTrain], xTest, groupTest, spcResult, fitMeanArgs,
-												constVar, fitVarArgs, nSpc, betaSv, timeRange))}
+												constVar, fitVarArgs, nSpc, betaSv, timeRange))})
 
 	timeDepLike = abind::abind(lapply(predResultList, function(a) a$timeDepLike), along=1)
 	mleFit = lapply(predResultFit, function(a) a$mleFit)

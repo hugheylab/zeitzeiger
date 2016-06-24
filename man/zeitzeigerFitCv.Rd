@@ -4,7 +4,8 @@
 \alias{zeitzeigerFitCv}
 \title{Estimate time-dependent mean on cross-validation.}
 \usage{
-zeitzeigerFitCv(x, time, foldid, fitMeanArgs = list(rparm = NA))
+zeitzeigerFitCv(x, time, foldid, fitMeanArgs = list(rparm = NA),
+  dopar = TRUE)
 }
 \arguments{
 \item{x}{Matrix of measurements, with observations in rows and features in columns.}
@@ -15,13 +16,15 @@ corresponds to the lowest possible value and 1 corresponds to the highest possib
 \item{foldid}{Vector of values indicating which fold each observation is in.}
 
 \item{fitMeanArgs}{List of arguments to pass to \code{bigspline}.}
+
+\item{dopar}{Logical indicating whether to process the folds in parallel. Before calling
+this function, use \code{doParallel::registerDoParallel} to register the parallel backend.}
 }
 \value{
 A list consisting of the result from \code{zeitzeigerFit} for each fold.
 }
 \description{
-\code{zeitzeigerFitCv} calls \code{zeitzeigerFit} for each fold of
-cross-validation. This function uses \code{doParallel}, so prior to
-running this function, use \code{registerDoParallel} to set the number of cores.
+\code{zeitzeigerFitCv} calls \code{zeitzeigerFit} for each fold of cross-validation.
+By default, if a parallel backend is registered, this function processes the folds in parallel.
 }
 

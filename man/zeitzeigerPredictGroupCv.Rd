@@ -6,7 +6,8 @@
 \usage{
 zeitzeigerPredictGroupCv(x, time, foldid, spcResultList,
   fitMeanArgs = list(rparm = NA), constVar = TRUE, fitVarArgs = list(rparm
-  = NA), nSpc = NA, betaSv = FALSE, timeRange = seq(0, 1, 0.01))
+  = NA), nSpc = NA, betaSv = FALSE, timeRange = seq(0, 1, 0.01),
+  dopar = TRUE)
 }
 \arguments{
 \item{x}{Matrix of measurements, observations in rows and features in columns.}
@@ -38,6 +39,9 @@ as weights in the likelihood calculation.}
 \item{timeRange}{Vector of values of the periodic variable at which to calculate likelihood.
 The time with the highest likelihood is used as the initial value for the
 MLE optimizer.}
+
+\item{dopar}{Logical indicating whether to process the folds in parallel. Before calling
+this function, use \code{doParallel::registerDoParallel} to register the parallel backend.}
 }
 \value{
 A list of the same structure as \code{zeitzeigerPredictGroup}, combining the
@@ -49,9 +53,8 @@ of \code{mle2} objects.}
 \item{timePred}{Matrix of predicted times for folds by values of \code{nSpc}.}
 }
 \description{
-\code{zeitzeigerPredictGroupCv} calls \code{zeitzeigerPredictGroup} for each
-fold of cross-validation. Thus, each fold is equivalent to a group. This
-function uses \code{doParallel}, so prior to running this function, use
-\code{registerDoParallel} to set the number of cores.
+\code{zeitzeigerPredictGroupCv} calls \code{zeitzeigerPredictGroup} for each fold of
+cross-validation. Thus, each fold is equivalent to a group. By default, if a parallel
+backend is registered, this function processes the folds in parallel.
 }
 
