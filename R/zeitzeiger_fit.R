@@ -81,6 +81,26 @@ zeitzeigerSnr = function(fitResult) {
 	return((fitRange[,2] - fitRange[,1]) / sqrt(colMeans(fitResult$xFitResid^2)))}
 
 
+#' Estimate peaks and troughs.
+#'
+#' \code{zeitzeigerExtrema} estimates the extremum (peak or trough) for each feature
+#' by using \code{stats::optimize} and the periodic spline fit.
+#'
+#' @param fitResult Output of \code{zeitzeigerFit}.
+#' @param maximum Logical indicating whether to find maximum or minimum.
+#' @param dopar Logical indicating whether to process features in parallel.
+#'
+#' @return Matrix with a row for each feature and columns for location and value.
+#'
+#' @export
+zeitzeigerExtrema = function(fitResult, maximum=TRUE, dopar=TRUE) {
+	doOp = ifelse(dopar, `%dopar%`, `%do%`)
+	extrema = doOp(foreach(ii=1:length(fitResult$xFitMean), .combine=rbind), {
+		f = function(time) predict(fitResult$xFitMean[[ii]], newdata=time)
+		optResult = optimize(f, interval=c(0, 1), maximum=maximum)
+		matrix(do.call(c, optResult), nrow=1, dimnames=list(NULL, c('location', 'value')))})}
+
+
 zeitzeigerFitVar = function(time, xFitResid, constVar=TRUE, fitVarArgs=list(rparm=NA)) {
 	# length(time): n
 	# dim(xFitResid): c(n, p)

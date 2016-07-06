@@ -3,6 +3,7 @@
 export(calcTimeDiff)
 export(zeitzeiger)
 export(zeitzeigerBatch)
+export(zeitzeigerExtrema)
 export(zeitzeigerFit)
 export(zeitzeigerFitCv)
 export(zeitzeigerLikelihood)
