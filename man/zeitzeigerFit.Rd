@@ -4,7 +4,7 @@
 \alias{zeitzeigerFit}
 \title{Estimate time-dependent mean.}
 \usage{
-zeitzeigerFit(x, time, fitMeanArgs = list(rparm = NA))
+zeitzeigerFit(x, time, fitMeanArgs = list(rparm = NA), dopar = FALSE)
 }
 \arguments{
 \item{x}{Matrix of measurements, with observations in rows and features in columns.
@@ -14,6 +14,8 @@ Missing values are allowed.}
 corresponds to the lowest possible value and 1 corresponds to the highest possible value.}
 
 \item{fitMeanArgs}{List of arguments to pass to \code{bigspline}.}
+
+\item{dopar}{Logical indicating whether to process features in parallel.}
 }
 \value{
 \item{xFitMean}{List of results from \code{bigspline}. Length is number of columns in \code{x}.}

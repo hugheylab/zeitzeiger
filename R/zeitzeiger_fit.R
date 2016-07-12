@@ -14,20 +14,61 @@ NULL
 #' @param time Vector of values of the periodic variable for the observations, where 0
 #' corresponds to the lowest possible value and 1 corresponds to the highest possible value.
 #' @param fitMeanArgs List of arguments to pass to \code{bigspline}.
+#' @param dopar Logical indicating whether to process features in parallel.
 #'
 #' @return
 #' \item{xFitMean}{List of results from \code{bigspline}. Length is number of columns in \code{x}.}
 #' \item{xFitResid}{Matrix of residuals, same dimensions as \code{x}.}
 #'
 #' @export
-zeitzeigerFit = function(x, time, fitMeanArgs=list(rparm=NA)) {
-	xFitMean = list()
-	xFitResid = x
+zeitzeigerFit = function(x, time, fitMeanArgs=list(rparm=NA), dopar=FALSE) {
+	doOp = ifelse(dopar, `%dopar%`, `%do%`)
 	idx = !is.na(x)
-	for (jj in 1:ncol(x)) {
-		xFitMean[[jj]] = do.call(bigspline, c(list(time[idx[,jj]], x[idx[,jj], jj], type='per', xmin=0, xmax=1), fitMeanArgs))
-		xFitResid[idx[,jj], jj] = predict(xFitMean[[jj]], newdata=time[idx[,jj]]) - x[idx[,jj], jj]}
+	resultList = doOp(foreach(jj=1:ncol(x)), {
+		xFitMean = do.call(bigspline, c(list(time[idx[,jj]], x[idx[,jj], jj], type='per', xmin=0, xmax=1), fitMeanArgs))
+		xFitResid = predict(xFitMean, newdata=time) - x[,jj]
+		list(xFitMean, xFitResid)})
+	xFitMean = lapply(resultList, function(a) a[[1]])
+	xFitResid = do.call(cbind, lapply(resultList, function(a) a[[2]]))
 	return(list(xFitMean=xFitMean, xFitResid=xFitResid))}
+
+
+#' Estimate peaks and troughs.
+#'
+#' \code{zeitzeigerExtrema} estimates the extremum (peak or trough) for each feature
+#' by using \code{stats::optimize} and the periodic spline fit.
+#'
+#' @param fitResult Output of \code{zeitzeigerFit}.
+#' @param maximum Logical indicating whether to find maximum or minimum.
+#' @param dopar Logical indicating whether to process features in parallel.
+#'
+#' @return Matrix with a row for each feature and columns for location and value.
+#'
+#' @export
+zeitzeigerExtrema = function(fitResult, maximum=TRUE, dopar=TRUE) {
+	doOp = ifelse(dopar, `%dopar%`, `%do%`)
+	extrema = doOp(foreach(ii=1:length(fitResult$xFitMean), .combine=rbind), {
+		f = function(time) predict(fitResult$xFitMean[[ii]], newdata=time)
+		optResult = optimize(f, interval=c(0, 1), maximum=maximum)
+		matrix(do.call(c, optResult), nrow=1, dimnames=list(NULL, c('location', 'value')))})}
+
+
+#' Calculate the signal-to-noise of the periodic spline fits.
+#'
+#' \code{zeitzeigerSnr} calculates the signal-to-noise ratio of the spline fit
+#' for each feature, similar to an effect size. The SNR is calculated as the
+#' difference between the maximum and minimum fitted values, divided by the
+#' square root of the mean of the squared residuals.
+#'
+#' @param fitResult Output of \code{zeitzeigerFit}.
+#'
+#' @return Vector of signal-to-noise values.
+#'
+#' @export
+zeitzeigerSnr = function(fitResult, dopar=TRUE) {
+	maxVal = zeitzeigerExtrema(fitResult, dopar=dopar)[,'value']
+	minVal = zeitzeigerExtrema(fitResult, maximum=FALSE, dopar=dopar)[,'value']
+	return((maxVal - minVal) / sqrt(colMeans(fitResult$xFitResid^2)))}
 
 
 #' Estimate significance of periodicity by permutation testing.
@@ -50,55 +91,16 @@ zeitzeigerFit = function(x, time, fitMeanArgs=list(rparm=NA)) {
 #' @return Vector of p-values.
 #'
 #' @export
-zeitzeigerSig = function(x, time, fitMeanArgs=list(rparm=NA), nIter=200) {
+zeitzeigerSig = function(x, time, fitMeanArgs=list(rparm=NA), nIter=200, dopar=TRUE) {
 	timeIdx = do.call(rbind, lapply(1:nIter, function(x) sample.int(length(time))))
 	snrRand = foreach(ii=1:nIter, .combine=rbind) %dopar% {
 		timeRand = time[timeIdx[ii,]]
 		fitResult = zeitzeigerFit(x, timeRand, fitMeanArgs)
 		return(zeitzeigerSnr(fitResult))}
 	fitResult = zeitzeigerFit(x, time, fitMeanArgs)
-	snr = zeitzeigerSnr(fitResult)
+	snr = zeitzeigerSnr(fitResult, dopar=TRUE)
 	snrMat = matrix(rep(snr, nIter), nrow=nIter, byrow=TRUE)
 	return(colMeans(snrMat <= snrRand))}
-
-
-#' Calculate the signal-to-noise of the periodic spline fits.
-#'
-#' \code{zeitzeigerSnr} calculates the signal-to-noise of the spline fit for
-#' each feature, similar to an effect size. The SNR is calculated as the
-#' difference between the maximum and minimum fitted values, divided by the
-#' square root of the mean of the squared residuals.
-#'
-#' @param fitResult Output of \code{zeitzeigerFit}.
-#'
-#' @return Vector of signal-to-noise values.
-#'
-#' @export
-zeitzeigerSnr = function(fitResult) {
-	timeRes = 0.001
-	timeRange = seq(0, 1-timeRes, timeRes)
-	fitRange = do.call(rbind, lapply(fitResult$xFitMean, function(fit) range(predict(fit, newdata=timeRange))))
-	return((fitRange[,2] - fitRange[,1]) / sqrt(colMeans(fitResult$xFitResid^2)))}
-
-
-#' Estimate peaks and troughs.
-#'
-#' \code{zeitzeigerExtrema} estimates the extremum (peak or trough) for each feature
-#' by using \code{stats::optimize} and the periodic spline fit.
-#'
-#' @param fitResult Output of \code{zeitzeigerFit}.
-#' @param maximum Logical indicating whether to find maximum or minimum.
-#' @param dopar Logical indicating whether to process features in parallel.
-#'
-#' @return Matrix with a row for each feature and columns for location and value.
-#'
-#' @export
-zeitzeigerExtrema = function(fitResult, maximum=TRUE, dopar=TRUE) {
-	doOp = ifelse(dopar, `%dopar%`, `%do%`)
-	extrema = doOp(foreach(ii=1:length(fitResult$xFitMean), .combine=rbind), {
-		f = function(time) predict(fitResult$xFitMean[[ii]], newdata=time)
-		optResult = optimize(f, interval=c(0, 1), maximum=maximum)
-		matrix(do.call(c, optResult), nrow=1, dimnames=list(NULL, c('location', 'value')))})}
 
 
 zeitzeigerFitVar = function(time, xFitResid, constVar=TRUE, fitVarArgs=list(rparm=NA)) {
