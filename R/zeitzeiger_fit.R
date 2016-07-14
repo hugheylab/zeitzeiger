@@ -1,6 +1,7 @@
 #' @importFrom bigsplines bigspline
 #' @importFrom foreach foreach
 #' @importFrom foreach "%dopar%"
+#' @importFrom foreach "%do%"
 NULL
 
 
