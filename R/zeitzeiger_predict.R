@@ -76,7 +76,8 @@ zeitzeigerPredict = function(xTrain, timeTrain, xTest, spcResult, fitMeanArgs=li
 			# beta = spcResult$d[1:nSpc[ii]]^2 / sum(spcResult$d[1:nSpc[ii]]^2)
 		} else {
 			beta = rep_len(1, nSpc[ii])}
-		predResult = zeitzeigerPredictGivenDensity(zTest[,1:nSpc[ii], drop=FALSE], zFitMean[1:nSpc[ii]], zFitVar[1:nSpc[ii]], beta)
+		predResult = zeitzeigerPredictGivenDensity(zTest[,1:nSpc[ii], drop=FALSE], zFitMean[1:nSpc[ii]],
+																 zFitVar[1:nSpc[ii]], beta, timeRange)
 		timeDepLike[,ii,] = predResult$timeDepLike
 		mleFit[[ii]] = predResult$mleFit
 		timePred[,ii] = predResult$timePred}
