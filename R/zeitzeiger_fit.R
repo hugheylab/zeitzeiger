@@ -153,7 +153,7 @@ zeitzeigerSpc = function(xFitMean, xFitResid, nTime=10, useSpc=TRUE, sumabsv=1, 
 	z = xMeanScaled %*% diag(1/sqrt(colMeans(xFitResid^2)))
 
 	if (useSpc) {
-		spcResult = PMA::SPC(z, sumabsv=sumabsv, K=nrow(z), orth=orth, trace=FALSE, compute.pve=FALSE)
+		spcResult = PMA::SPC(z, sumabsv=sumabsv, K=min(dim(z)), orth=orth, trace=FALSE, compute.pve=FALSE)
 	} else {
 		spcResult = svd(z)}
 	return(spcResult)}
