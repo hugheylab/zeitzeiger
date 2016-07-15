@@ -45,7 +45,7 @@ zeitzeigerFitCv = function(x, time, foldid, fitMeanArgs=list(rparm=NA), dopar=TR
 zeitzeigerSpcCv = function(fitResultList, nTime=10, useSpc=TRUE, sumabsv=1, orth=TRUE, dopar=TRUE) {
 	doOp = ifelse(dopar, `%dopar%`, `%do%`)
 	spcResultList = doOp(foreach(fitResult=fitResultList), {
-		return(zeitzeigerSpc(fitResult$xFitMean, fitResult$xFitResid, nTime, useSpc, sumabsv, orth))})
+		zeitzeigerSpc(fitResult$xFitMean, fitResult$xFitResid, nTime, useSpc, sumabsv, orth)})
 	return(spcResultList)}
 
 
@@ -96,8 +96,8 @@ zeitzeigerPredictCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(
 		idxTrain = foldid!=foldidNow
 		xTrain = x[idxTrain,, drop=FALSE]
 		xTest = x[!idxTrain,, drop=FALSE]
-		return(zeitzeigerPredict(xTrain, time[idxTrain], xTest, spcResult, fitMeanArgs, constVar,
-										 fitVarArgs, nSpc, betaSv, timeRange))})
+		zeitzeigerPredict(xTrain, time[idxTrain], xTest, spcResult, fitMeanArgs, constVar,
+								fitVarArgs, nSpc, betaSv, timeRange)})
 
 	nSpcLen = dim(predResultList[[1]]$timePred)[2]
 	timeDepLike = array(NA, dim=c(nrow(x), nSpcLen, length(timeRange)))
@@ -167,8 +167,8 @@ zeitzeigerPredictGroupCv = function(x, time, foldid, spcResultList, fitMeanArgs=
 		xTrain = x[idxTrain,, drop=FALSE]
 		xTest = x[!idxTrain,, drop=FALSE]
 		groupTest = groupDf[!idxTrain,]
-		return(zeitzeigerPredictGroup(xTrain, time[idxTrain], xTest, groupTest, spcResult, fitMeanArgs,
-												constVar, fitVarArgs, nSpc, betaSv, timeRange))})
+		zeitzeigerPredictGroup(xTrain, time[idxTrain], xTest, groupTest, spcResult, fitMeanArgs,
+									  constVar, fitVarArgs, nSpc, betaSv, timeRange)})
 
 	timeDepLike = abind::abind(lapply(predResultList, function(a) a$timeDepLike), along=1)
 	mleFit = lapply(predResultFit, function(a) a$mleFit)

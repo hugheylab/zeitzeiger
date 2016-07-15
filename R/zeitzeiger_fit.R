@@ -93,13 +93,14 @@ zeitzeigerSnr = function(fitResult, dopar=TRUE) {
 #'
 #' @export
 zeitzeigerSig = function(x, time, fitMeanArgs=list(rparm=NA), nIter=200, dopar=TRUE) {
+	doOp = ifelse(dopar, `%dopar%`, `%do%`)
 	timeIdx = do.call(rbind, lapply(1:nIter, function(x) sample.int(length(time))))
-	snrRand = foreach(ii=1:nIter, .combine=rbind) %dopar% {
+	snrRand = doOp(foreach(ii=1:nIter, .combine=rbind), {
 		timeRand = time[timeIdx[ii,]]
 		fitResult = zeitzeigerFit(x, timeRand, fitMeanArgs)
-		return(zeitzeigerSnr(fitResult))}
+		zeitzeigerSnr(fitResult)})
 	fitResult = zeitzeigerFit(x, time, fitMeanArgs)
-	snr = zeitzeigerSnr(fitResult, dopar=TRUE)
+	snr = zeitzeigerSnr(fitResult, dopar=dopar)
 	snrMat = matrix(rep(snr, nIter), nrow=nIter, byrow=TRUE)
 	return(colMeans(snrMat <= snrRand))}
 
