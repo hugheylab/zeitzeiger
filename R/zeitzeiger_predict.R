@@ -238,3 +238,33 @@ zeitzeigerBatch = function(ematList, trainStudyNames, sampleMetadata, studyColna
 	timePred = do.call(rbind, lapply(batchResult, function(x) x$predResult$timePred))
 
 	return(list(spcResultList=spcResultList, timeDepLike=timeDepLike, mleFit=mleFit, timePred=timePred))}
+
+
+#' Combine predictions into an ensemble.
+#'
+#' \code{zeitzeigerEnsemble} makes predictions by finding the maximum of the sum of the log-likelihoods.
+#'
+#' @param timeDepLike List or 3-D array of time-dependent likelihood from \code{zeitzeigerPredict}.
+#' If a list, then each element (for each member of the ensemble) should be a matrix in which rows
+#' correspond to observations and columns correspond to time-points. If a 3-D array, the three
+#' dimensions should correspond to observations, time-points, and members of the ensemble.
+#' @param timeRange Vector of time-points at which the likelihood was calculated.
+#'
+#' @return
+#' \item{timeDepLike}{Matrix of likelihood for observations by time-points.}
+#' \item{timePred}{Vector of predicted times. Each predicted time will be an element of timeRange.}
+#'
+#' @export
+zeitzeigerEnsemble = function(timeDepLike, timeRange) {
+	if (is.list(timeDepLike)) {
+		if (!all(sapply(timeDepLike, is.matrix)) |
+			 !all(apply(sapply(timeDepLike, dim), 1, function(r) all(r==r[1])))) {
+			stop('If timeDepLike is a list, each element must be a matrix of the same size.')}
+		timeDepLike = abind::abind(timeDepLike, along=3)
+
+	} else if (!is.array(timeDepLike) | length(dim(timeDepLike)) != 3){
+		stop('timeDepLike must be a list or a 3-D array.')}
+
+	loglike = apply(log(timeDepLike), 1:2, sum)
+	timePred = timeRange[apply(loglike, 1, which.max)]
+	return(list(timeDepLike=exp(loglike), timePred=timePred))}
