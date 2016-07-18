@@ -50,6 +50,9 @@ of \code{mle2} objects.}
 \description{
 \code{zeitzeigerPredict} predicts the value of the periodic variable
 for test observations, given training data and SPCs. This function
-calls \code{bbmle::mle2}.
+calls \code{\link[bbmle]{mle2}}.
+}
+\seealso{
+\code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerSpc}}
 }
 

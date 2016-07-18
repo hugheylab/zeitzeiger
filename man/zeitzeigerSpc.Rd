@@ -31,4 +31,7 @@ Result from \code{SPC}, unless \code{useSpc==FALSE}, then result from \code{svd}
 given the time-dependent means and the residuals from \code{zeitzeigerFit}.
 This function calls \code{PMA::SPC}.
 }
+\seealso{
+\code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerPredict}}
+}
 

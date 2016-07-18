@@ -13,7 +13,7 @@ Missing values are allowed.}
 \item{time}{Vector of values of the periodic variable for the observations, where 0
 corresponds to the lowest possible value and 1 corresponds to the highest possible value.}
 
-\item{fitMeanArgs}{List of arguments to pass to \code{bigspline}.}
+\item{fitMeanArgs}{List of arguments to pass to \code{\link[bigsplines]{bigspline}}.}
 
 \item{dopar}{Logical indicating whether to process features in parallel.}
 }
@@ -24,5 +24,8 @@ corresponds to the lowest possible value and 1 corresponds to the highest possib
 \description{
 \code{zeitzeigerFit} estimates the mean of each feature as a function of the
 periodic variable, using a periodic smoothing spline.
+}
+\seealso{
+\code{\link[bigsplines]{bigspline}}, \code{\link{zeitzeigerSpc}}, \code{\link{zeitzeigerPredict}}
 }
 

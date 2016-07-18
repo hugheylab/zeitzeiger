@@ -14,12 +14,14 @@ NULL
 #' Missing values are allowed.
 #' @param time Vector of values of the periodic variable for the observations, where 0
 #' corresponds to the lowest possible value and 1 corresponds to the highest possible value.
-#' @param fitMeanArgs List of arguments to pass to \code{bigspline}.
+#' @param fitMeanArgs List of arguments to pass to \code{\link[bigsplines]{bigspline}}.
 #' @param dopar Logical indicating whether to process features in parallel.
 #'
 #' @return
 #' \item{xFitMean}{List of results from \code{bigspline}. Length is number of columns in \code{x}.}
 #' \item{xFitResid}{Matrix of residuals, same dimensions as \code{x}.}
+#'
+#' @seealso \code{\link[bigsplines]{bigspline}}, \code{\link{zeitzeigerSpc}}, \code{\link{zeitzeigerPredict}}
 #'
 #' @export
 zeitzeigerFit = function(x, time, fitMeanArgs=list(rparm=NA), dopar=FALSE) {
@@ -37,13 +39,15 @@ zeitzeigerFit = function(x, time, fitMeanArgs=list(rparm=NA), dopar=FALSE) {
 #' Estimate peaks and troughs.
 #'
 #' \code{zeitzeigerExtrema} estimates the extremum (peak or trough) for each feature
-#' by using \code{stats::optimize} and the periodic spline fit.
+#' by using \code{\link[stats]{optimize}} and the periodic spline fit.
 #'
 #' @param fitResult Output of \code{zeitzeigerFit}.
 #' @param maximum Logical indicating whether to find maximum or minimum.
 #' @param dopar Logical indicating whether to process features in parallel.
 #'
 #' @return Matrix with a row for each feature and columns for location and value.
+#'
+#' @seealso \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerSig}}, \code{\link{zeitzeigerSnr}}
 #'
 #' @export
 zeitzeigerExtrema = function(fitResult, maximum=TRUE, dopar=TRUE) {
@@ -64,6 +68,8 @@ zeitzeigerExtrema = function(fitResult, maximum=TRUE, dopar=TRUE) {
 #' @param fitResult Output of \code{zeitzeigerFit}.
 #'
 #' @return Vector of signal-to-noise values.
+#'
+#' @seealso \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerExtrema}}, \code{\link{zeitzeigerSig}}
 #'
 #' @export
 zeitzeigerSnr = function(fitResult, dopar=TRUE) {
@@ -90,6 +96,8 @@ zeitzeigerSnr = function(fitResult, dopar=TRUE) {
 #' @param nIter Number of permutations.
 #'
 #' @return Vector of p-values.
+#'
+#' @seealso \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerExtrema}}, \code{\link{zeitzeigerSnr}}
 #'
 #' @export
 zeitzeigerSig = function(x, time, fitMeanArgs=list(rparm=NA), nIter=200, dopar=TRUE) {
@@ -143,6 +151,8 @@ zeitzeigerFitVar = function(time, xFitResid, constVar=TRUE, fitVarArgs=list(rpar
 #'
 #' @return Result from \code{SPC}, unless \code{useSpc==FALSE}, then result from \code{svd}.
 #'
+#' @seealso \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerPredict}}
+#'
 #' @export
 zeitzeigerSpc = function(xFitMean, xFitResid, nTime=10, useSpc=TRUE, sumabsv=1, orth=TRUE) {
 	timeRange = seq(0, 1 - 1/nTime, 1/nTime)
@@ -173,26 +183,26 @@ fx = function(x, time, xFitMean, xFitVar, logArg=FALSE) {
 	return(like)}
 
 
-#' Calculate time-dependent likelihood.
-#'
-#' Given a matrix of test observations, the estimated time-dependent means
-#' and variances of the features, and a vector of times, \code{zeitzeigerLikelihood}
-#' calculates the likelihood of each time for each test observation. The calculation
-#' assumes that conditioned on the periodic variable, the densities of the features
-#' are normally distributed. The calculation also assumes that the features are
-#' independent.
-#'
-#' @param xTest Matrix of measurements, with observations in rows and features in columns.
-#' @param xFitMean List of bigsplines for time-dependent mean, length is number of features.
-#' @param xFitVar List of bigsplines for time-dependent variance, length is number of features.
-#' @param beta Vector of coefficients for weighted likelihood. If \code{NA} (default),
-#' then each feature is weighted equally.
-#' @param timeRange Vector of values of the periodic variable at which to calculate likelihood.
-#' @param logArg Logical indicating whether to return likilihood (default) or log-likelihood.
-#'
-#' @return Matrix with observations in rows and times in columns.
-#'
-#' @export
+# #' Calculate time-dependent likelihood.
+# #'
+# #' Given a matrix of test observations, the estimated time-dependent means
+# #' and variances of the features, and a vector of times, \code{zeitzeigerLikelihood}
+# #' calculates the likelihood of each time for each test observation. The calculation
+# #' assumes that conditioned on the periodic variable, the densities of the features
+# #' are normally distributed. The calculation also assumes that the features are
+# #' independent.
+# #'
+# #' @param xTest Matrix of measurements, with observations in rows and features in columns.
+# #' @param xFitMean List of bigsplines for time-dependent mean, length is number of features.
+# #' @param xFitVar List of bigsplines for time-dependent variance, length is number of features.
+# #' @param beta Vector of coefficients for weighted likelihood. If \code{NA} (default),
+# #' then each feature is weighted equally.
+# #' @param timeRange Vector of values of the periodic variable at which to calculate likelihood.
+# #' @param logArg Logical indicating whether to return likelihood (default) or log-likelihood.
+# #'
+# #' @return Matrix with observations in rows and times in columns.
+# #'
+# #' @export
 zeitzeigerLikelihood = function(xTest, xFitMean, xFitVar, beta=NA, timeRange=seq(0, 1, 0.01), logArg=FALSE) {
 	if (is.na(beta[1])) {
 		beta = rep_len(1, length(xFitMean))}

@@ -18,4 +18,7 @@ for each feature, similar to an effect size. The SNR is calculated as the
 difference between the maximum and minimum fitted values, divided by the
 square root of the mean of the squared residuals.
 }
+\seealso{
+\code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerExtrema}}, \code{\link{zeitzeigerSig}}
+}
 

@@ -60,4 +60,7 @@ MLE optimizer.}
 \code{zeitzeiger} sequentially calls \code{zeitzeigerFit}, \code{zeitzeigerSpc},
 and \code{zeitzeigerPredict}.
 }
+\seealso{
+\code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerSpc}}, \code{\link{zeitzeigerPredict}}
+}
 

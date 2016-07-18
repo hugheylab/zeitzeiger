@@ -83,6 +83,8 @@ zeitzeigerPredictGivenDensityGroup = function(xTest, groupTest, xFitMean, xFitVa
 #' of \code{mle2} objects.}
 #' \item{timePred}{Matrix of predicted times for each group of test observations by values of \code{nSpc}.}
 #'
+#' @seealso \code{\link{zeitzeigerPredict}}
+#'
 #' @export
 zeitzeigerPredictGroup = function(xTrain, timeTrain, xTest, groupTest, spcResult, fitMeanArgs=list(rparm=NA), constVar=TRUE,
 											 fitVarArgs=list(rparm=NA), nSpc=NA, betaSv=FALSE, timeRange=seq(0, 1, 0.01)) {

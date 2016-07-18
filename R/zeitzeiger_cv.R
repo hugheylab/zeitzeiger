@@ -13,6 +13,8 @@
 #'
 #' @return A list consisting of the result from \code{zeitzeigerFit} for each fold.
 #'
+#' @seealso \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerSpcCv}}, \code{\link{zeitzeigerPredictCv}}
+#'
 #' @export
 zeitzeigerFitCv = function(x, time, foldid, fitMeanArgs=list(rparm=NA), dopar=TRUE) {
 	foldidUnique = sort(unique(foldid))
@@ -40,6 +42,8 @@ zeitzeigerFitCv = function(x, time, foldid, fitMeanArgs=list(rparm=NA), dopar=TR
 #' this function, use \code{doParallel::registerDoParallel} to register the parallel backend.
 #'
 #' @return A list consisting of the result from \code{zeitzeigerSpc} for each fold.
+#'
+#' @seealso \code{\link{zeitzeigerSpc}}, \code{\link{zeitzeigerFitCv}}, \code{\link{zeitzeigerPredictCv}}
 #'
 #' @export
 zeitzeigerSpcCv = function(fitResultList, nTime=10, useSpc=TRUE, sumabsv=1, orth=TRUE, dopar=TRUE) {
@@ -84,6 +88,8 @@ zeitzeigerSpcCv = function(fitResultList, nTime=10, useSpc=TRUE, sumabsv=1, orth
 #' \item{mleFit}{List (for each element in \code{nSpc}) of lists (for each observation)
 #' of \code{mle2} objects.}
 #' \item{timePred}{Matrix of predicted times for observations by values of \code{nSpc}.}
+#'
+#' @seealso \code{\link{zeitzeigerPredict}}, \code{\link{zeitzeigerFitCv}}, \code{\link{zeitzeigerSpcCv}}
 #'
 #' @export
 zeitzeigerPredictCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(rparm=NA), constVar=TRUE,
@@ -149,6 +155,8 @@ zeitzeigerPredictCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(
 #' \item{mleFit}{List (for each element in \code{nSpc}) of lists (for each fold)
 #' of \code{mle2} objects.}
 #' \item{timePred}{Matrix of predicted times for folds by values of \code{nSpc}.}
+#'
+#' @seealso \code{\link{zeitzeigerFitCv}}, \code{\link{zeitzeigerSpcCv}}, \code{\link{zeitzeigerPredictGroup}}
 #'
 #' @export
 zeitzeigerPredictGroupCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(rparm=NA),

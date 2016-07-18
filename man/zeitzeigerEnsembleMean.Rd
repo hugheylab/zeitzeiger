@@ -23,4 +23,7 @@ among members of the ensemble.
 \code{zeitzeigerEnsembleMean} makes predictions by calculating the circular mean of the predictions
 across members of the ensemble.
 }
+\seealso{
+\code{\link{zeitzeigerPredict}}, \code{\link{zeitzeigerEnsembleLikelihood}}
+}
 

@@ -57,4 +57,7 @@ of \code{mle2} objects.}
 cross-validation. Thus, each fold is equivalent to a group. By default, if a parallel
 backend is registered, this function processes the folds in parallel.
 }
+\seealso{
+\code{\link{zeitzeigerFitCv}}, \code{\link{zeitzeigerSpcCv}}, \code{\link{zeitzeigerPredictGroup}}
+}
 

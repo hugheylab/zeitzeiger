@@ -31,4 +31,7 @@ A list consisting of the result from \code{zeitzeigerSpc} for each fold.
 \code{zeitzeigerSpcCv} calls \code{zeitzeigerSpc} for each fold of cross-validation.
 By default, if a parallel backend is registered, this function processes the folds in parallel.
 }
+\seealso{
+\code{\link{zeitzeigerSpc}}, \code{\link{zeitzeigerFitCv}}, \code{\link{zeitzeigerPredictCv}}
+}
 

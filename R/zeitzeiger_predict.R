@@ -19,7 +19,7 @@ zeitzeigerPredictGivenDensity = function(xTest, xFitMean, xFitVar, beta, timeRan
 #'
 #' \code{zeitzeigerPredict} predicts the value of the periodic variable
 #' for test observations, given training data and SPCs. This function
-#' calls \code{bbmle::mle2}.
+#' calls \code{\link[bbmle]{mle2}}.
 #'
 #' @param xTrain Matrix of measurements for training data, observations in rows
 #' and features in columns.
@@ -49,6 +49,8 @@ zeitzeigerPredictGivenDensity = function(xTest, xFitMean, xFitVar, beta, timeRan
 #' \item{mleFit}{List (for each element in \code{nSpc}) of lists (for each test observation)
 #' of \code{mle2} objects.}
 #' \item{timePred}{Matrix of predicted times for test observations by values of \code{nSpc}.}
+#'
+#' @seealso \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerSpc}}
 #'
 #' @export
 zeitzeigerPredict = function(xTrain, timeTrain, xTest, spcResult, fitMeanArgs=list(rparm=NA), constVar=TRUE,
@@ -123,6 +125,8 @@ zeitzeigerPredict = function(xTrain, timeTrain, xTest, spcResult, fitMeanArgs=li
 #' \item{spcResult}{Result from \code{zeitzeigerSpc}}
 #' \item{predResult}{Result from \code{zeitzeigerPredict}}
 #'
+#' @seealso \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerSpc}}, \code{\link{zeitzeigerPredict}}
+#'
 #' @export
 zeitzeiger = function(xTrain, timeTrain, xTest, fitMeanArgs=list(rparm=NA), constVar=TRUE, fitVarArgs=list(rparm=NA), nTime=10,
 							 useSpc=TRUE, sumabsv=2, orth=TRUE, nSpc=2, betaSv=FALSE, timeRange=seq(0, 1, 0.01)) {
@@ -136,8 +140,8 @@ zeitzeiger = function(xTrain, timeTrain, xTest, fitMeanArgs=list(rparm=NA), cons
 #' Train and test a ZeitZeiger predictor, accounting for batch effects.
 #'
 #' \code{zeitzeigerBatch} trains and tests a predictor on multiple datasets
-#' independently, using \code{ComBat} to correct for batch effects prior
-#' to running \code{zeitzeiger}. This function requires the \code{metapredict}
+#' independently, using \code{\link[sva]{ComBat}} to correct for batch effects prior
+#' to running \code{zeitzeiger}. This function requires the \code{\link{metapredict}}
 #' package.
 #'
 #' @param ematList Named list of matrices of measurements, one for each dataset,
@@ -190,6 +194,8 @@ zeitzeiger = function(xTrain, timeTrain, xTest, fitMeanArgs=list(rparm=NA), cons
 #' \item{mleFit}{List (for each element in \code{nSpc}) of lists (for each test observation)
 #' of \code{mle2} objects.}
 #' \item{timePred}{Matrix of predicted times for test observations by values of \code{nSpc}.}
+#'
+#' @seealso \code{\link{zeitzeiger}}, \code{\link[sva]{ComBat}}, \code{\link{metapredict}}
 #'
 #' @export
 zeitzeigerBatch = function(ematList, trainStudyNames, sampleMetadata, studyColname, batchColname, timeColname,
@@ -255,6 +261,8 @@ zeitzeigerBatch = function(ematList, trainStudyNames, sampleMetadata, studyColna
 #' \item{timeDepLike}{Matrix of likelihood for observations by time-points.}
 #' \item{timePred}{Vector of predicted times. Each predicted time will be an element of timeRange.}
 #'
+#' @seealso \code{\link{zeitzeigerPredict}}, \code{\link{zeitzeigerEnsembleMean}}
+#'
 #' @export
 zeitzeigerEnsembleLikelihood = function(timeDepLike, timeRange) {
 	if (is.list(timeDepLike)) {
@@ -284,6 +292,8 @@ zeitzeigerEnsembleLikelihood = function(timeDepLike, timeRange) {
 #' @return Matrix with a row for each observation and columns for the predicted time and the normalized
 #' magnitude of the circular mean. The latter can range from 0 to 1, with 1 indicating perfect agreement
 #' among members of the ensemble.
+#'
+#' @seealso \code{\link{zeitzeigerPredict}}, \code{\link{zeitzeigerEnsembleLikelihood}}
 #'
 #' @export
 zeitzeigerEnsembleMean = function(timePredInput, timeMax=1, na.rm=TRUE) {

@@ -60,4 +60,7 @@ of \code{mle2} objects.}
 for each group of test observations, where the amount of time between each
 observation in a group is known. This function calls \code{bbmle::mle2}.
 }
+\seealso{
+\code{\link{zeitzeigerPredict}}
+}
 

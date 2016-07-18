@@ -22,4 +22,7 @@ dimensions should correspond to observations, time-points, and members of the en
 \code{zeitzeigerEnsembleLikelihood} makes predictions by finding the maximum of the sum of the
 log-likelihoods.
 }
+\seealso{
+\code{\link{zeitzeigerPredict}}, \code{\link{zeitzeigerEnsembleMean}}
+}
 

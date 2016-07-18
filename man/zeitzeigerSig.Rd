@@ -30,4 +30,7 @@ of permutations that had a signal-to-noise ratio at least as large as the
 observed signal-to-noise ratio. Make sure to first register the parallel backend
 using \code{registerDoParallel}.
 }
+\seealso{
+\code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerExtrema}}, \code{\link{zeitzeigerSnr}}
+}
 

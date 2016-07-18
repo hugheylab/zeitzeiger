@@ -55,4 +55,7 @@ of \code{mle2} objects.}
 \code{zeitzeigerPredictCv} calls \code{zeitzeigerPredict} for each fold of cross-validation.
 By default, if a parallel backend is registered, this function processes the folds in parallel.
 }
+\seealso{
+\code{\link{zeitzeigerPredict}}, \code{\link{zeitzeigerFitCv}}, \code{\link{zeitzeigerSpcCv}}
+}
 
