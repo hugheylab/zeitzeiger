@@ -240,9 +240,10 @@ zeitzeigerBatch = function(ematList, trainStudyNames, sampleMetadata, studyColna
 	return(list(spcResultList=spcResultList, timeDepLike=timeDepLike, mleFit=mleFit, timePred=timePred))}
 
 
-#' Combine predictions into an ensemble.
+#' Combine predictions into an ensemble using the log-likelihood.
 #'
-#' \code{zeitzeigerEnsemble} makes predictions by finding the maximum of the sum of the log-likelihoods.
+#' \code{zeitzeigerEnsembleLikelihood} makes predictions by finding the maximum of the sum of the
+#' log-likelihoods.
 #'
 #' @param timeDepLike List or 3-D array of time-dependent likelihood from \code{zeitzeigerPredict}.
 #' If a list, then each element (for each member of the ensemble) should be a matrix in which rows
@@ -255,7 +256,7 @@ zeitzeigerBatch = function(ematList, trainStudyNames, sampleMetadata, studyColna
 #' \item{timePred}{Vector of predicted times. Each predicted time will be an element of timeRange.}
 #'
 #' @export
-zeitzeigerEnsemble = function(timeDepLike, timeRange) {
+zeitzeigerEnsembleLikelihood = function(timeDepLike, timeRange) {
 	if (is.list(timeDepLike)) {
 		if (!all(sapply(timeDepLike, is.matrix)) |
 			 !all(apply(sapply(timeDepLike, dim), 1, function(r) all(r==r[1])))) {
@@ -268,3 +269,31 @@ zeitzeigerEnsemble = function(timeDepLike, timeRange) {
 	loglike = apply(log(timeDepLike), 1:2, sum)
 	timePred = timeRange[apply(loglike, 1, which.max)]
 	return(list(timeDepLike=exp(loglike), timePred=timePred))}
+
+
+#' Combine predictions into an ensemble using the circular mean.
+#'
+#' \code{zeitzeigerEnsembleMean} makes predictions by calculating the circular mean of the predictions
+#' across members of the ensemble.
+#'
+#' @param timePredInput Matrix of predicted times in which rows correspond to observations and
+#' columns correspond to members of the ensemble.
+#' @param timeMax Maximum value of the periodic variable, i.e., the value that is equivalent to zero.
+#' @param na.rm Logical indicating whether \code{NA} values should be removed from the calculation.
+#'
+#' @return Matrix with a row for each observation and columns for the predicted time and the normalized
+#' magnitude of the circular mean. The latter can range from 0 to 1, with 1 indicating perfect agreement
+#' among members of the ensemble.
+#'
+#' @export
+zeitzeigerEnsembleMean = function(timePredInput, timeMax=1, na.rm=TRUE) {
+	x = cos(timePredInput / timeMax * 2 * pi)
+	y = sin(timePredInput / timeMax * 2 * pi)
+
+	xMean = rowMeans(x, na.rm=na.rm)
+	yMean = rowMeans(y, na.rm=na.rm)
+
+	timePred = atan2(yMean, xMean) / 2 / pi
+	timePred = ifelse(timePred < 0, timePred + 1, timePred) * timeMax
+	magnitude = sqrt(xMean^2 + yMean^2)
+	return(cbind(timePred, magnitude))}
