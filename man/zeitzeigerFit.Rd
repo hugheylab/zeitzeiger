@@ -15,7 +15,8 @@ corresponds to the lowest possible value and 1 corresponds to the highest possib
 
 \item{fitMeanArgs}{List of arguments to pass to \code{\link[bigsplines]{bigspline}}.}
 
-\item{dopar}{Logical indicating whether to process features in parallel.}
+\item{dopar}{Logical indicating whether to process features in parallel.
+Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.}
 }
 \value{
 \item{xFitMean}{List of results from \code{bigspline}. Length is number of columns in \code{x}.}

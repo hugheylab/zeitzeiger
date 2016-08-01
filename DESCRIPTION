@@ -1,5 +1,5 @@
 Package: zeitzeiger
-Version: 0.0.0.9018
+Version: 0.0.0.9019
 Type: Package
 Title: Regularized supervised learning for high-dimensional data from an
     oscillatory system
@@ -16,12 +16,14 @@ Imports:
     bbmle (>= 1.0.17),
     bigsplines (>= 1.0-7),
     doParallel (>= 1.0.10),
+    dplyr (>= 0.5.0),
+    foreach (>= 1.4.3),
+    magrittr (>= 1.5),
     PMA (>= 1.0.9)
 RoxygenNote: 5.0.1
 Suggests:
     knitr,
     rmarkdown,
-    dplyr (>= 0.4.3),
     ggplot2 (>= 1.0.1.9003),
     reshape2 (>= 1.4.1)
 VignetteBuilder: knitr

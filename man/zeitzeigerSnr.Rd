@@ -8,6 +8,9 @@ zeitzeigerSnr(fitResult, dopar = TRUE)
 }
 \arguments{
 \item{fitResult}{Output of \code{zeitzeigerFit}.}
+
+\item{dopar}{Logical indicating whether to process features in parallel.
+Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.}
 }
 \value{
 Vector of signal-to-noise values.

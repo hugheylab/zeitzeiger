@@ -7,9 +7,9 @@ fxGroup = function(x, timeDiff, time, xFitMean, xFitVar, logArg=FALSE) {
 	logLike = matrix(data=NA, nrow=length(time), ncol=ncol(x))
 
 	for (jj in 1:ncol(x)) {
-		xPredMean = predict(xFitMean[[jj]], newdata=timeRep)
-		xPredSd = sqrt(predict(xFitVar[[jj]], newdata=timeRep)) # safe if constVar==TRUE
-		logLikeTmp = dnorm(xRep[,jj], mean=xPredMean, sd=xPredSd, log=TRUE)
+		xPredMean = predict.bigspline(xFitMean[[jj]], newdata=timeRep)
+		xPredSd = sqrt(predict.bigspline(xFitVar[[jj]], newdata=timeRep)) # safe if constVar==TRUE
+		logLikeTmp = stats::dnorm(xRep[,jj], mean=xPredMean, sd=xPredSd, log=TRUE)
 		logLike[,jj] = rowSums(matrix(logLikeTmp, nrow=length(time)))}
 
 	if (logArg) {

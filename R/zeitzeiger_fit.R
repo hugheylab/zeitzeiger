@@ -1,8 +1,13 @@
 #' @importFrom bigsplines bigspline
+#' @importFrom bigsplines predict.bigspline
 #' @importFrom foreach foreach
 #' @importFrom foreach "%dopar%"
 #' @importFrom foreach "%do%"
+#' @importFrom magrittr "%>%"
 NULL
+
+globalVariables(c('fitResult', 'foldidNow', 'group', 'ii', 'jj', 'predResultFit', 'spcResult',
+						'testStudyName', 'timeMin')) # because codetools doesn't understand foreach
 
 
 #' Estimate time-dependent mean.
@@ -16,6 +21,7 @@ NULL
 #' corresponds to the lowest possible value and 1 corresponds to the highest possible value.
 #' @param fitMeanArgs List of arguments to pass to \code{\link[bigsplines]{bigspline}}.
 #' @param dopar Logical indicating whether to process features in parallel.
+#' Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.
 #'
 #' @return
 #' \item{xFitMean}{List of results from \code{bigspline}. Length is number of columns in \code{x}.}
@@ -29,7 +35,7 @@ zeitzeigerFit = function(x, time, fitMeanArgs=list(rparm=NA), dopar=FALSE) {
 	idx = !is.na(x)
 	resultList = doOp(foreach(jj=1:ncol(x)), {
 		xFitMean = do.call(bigspline, c(list(time[idx[,jj]], x[idx[,jj], jj], type='per', xmin=0, xmax=1), fitMeanArgs))
-		xFitResid = predict(xFitMean, newdata=time) - x[,jj]
+		xFitResid = predict.bigspline(xFitMean, newdata=time) - x[,jj]
 		list(xFitMean, xFitResid)})
 	xFitMean = lapply(resultList, function(a) a[[1]])
 	xFitResid = do.call(cbind, lapply(resultList, function(a) a[[2]]))
@@ -44,6 +50,7 @@ zeitzeigerFit = function(x, time, fitMeanArgs=list(rparm=NA), dopar=FALSE) {
 #' @param fitResult Output of \code{zeitzeigerFit}.
 #' @param maximum Logical indicating whether to find maximum or minimum.
 #' @param dopar Logical indicating whether to process features in parallel.
+#' Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.
 #'
 #' @return Matrix with a row for each feature and columns for location and value.
 #'
@@ -53,8 +60,8 @@ zeitzeigerFit = function(x, time, fitMeanArgs=list(rparm=NA), dopar=FALSE) {
 zeitzeigerExtrema = function(fitResult, maximum=TRUE, dopar=TRUE) {
 	doOp = ifelse(dopar, `%dopar%`, `%do%`)
 	extrema = doOp(foreach(ii=1:length(fitResult$xFitMean), .combine=rbind), {
-		f = function(time) predict(fitResult$xFitMean[[ii]], newdata=time)
-		optResult = optimize(f, interval=c(0, 1), maximum=maximum)
+		f = function(time) predict.bigspline(fitResult$xFitMean[[ii]], newdata=time)
+		optResult = stats::optimize(f, interval=c(0, 1), maximum=maximum)
 		matrix(do.call(c, optResult), nrow=1, dimnames=list(NULL, c('location', 'value')))})}
 
 
@@ -66,6 +73,8 @@ zeitzeigerExtrema = function(fitResult, maximum=TRUE, dopar=TRUE) {
 #' square root of the mean of the squared residuals.
 #'
 #' @param fitResult Output of \code{zeitzeigerFit}.
+#' @param dopar Logical indicating whether to process features in parallel.
+#' Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.
 #'
 #' @return Vector of signal-to-noise values.
 #'
@@ -94,6 +103,8 @@ zeitzeigerSnr = function(fitResult, dopar=TRUE) {
 #' corresponds to the lowest possible value and 1 corresponds to the highest possible value.
 #' @param fitMeanArgs List of arguments to pass to \code{bigspline}.
 #' @param nIter Number of permutations.
+#' @param dopar Logical indicating whether to process features in parallel.
+#' Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.
 #'
 #' @return Vector of p-values.
 #'
@@ -159,7 +170,7 @@ zeitzeigerSpc = function(xFitMean, xFitResid, nTime=10, useSpc=TRUE, sumabsv=1, 
 	xMean = matrix(data=NA, nrow=length(timeRange), ncol=length(xFitMean))
 
 	for (jj in 1:ncol(xMean)) {
-		xMean[,jj] = predict(xFitMean[[jj]], newdata=timeRange)}
+		xMean[,jj] = predict.bigspline(xFitMean[[jj]], newdata=timeRange)}
 	xMeanScaled = scale(xMean, center=TRUE, scale=FALSE)
 	z = xMeanScaled %*% diag(1/sqrt(colMeans(xFitResid^2)))
 
@@ -177,9 +188,9 @@ fx = function(x, time, xFitMean, xFitVar, logArg=FALSE) {
 		x = matrix(x, nrow=1)}
 	like = matrix(data=NA, nrow=length(time), ncol=ncol(x))
 	for (jj in 1:ncol(x)) {
-		xPredMean = predict(xFitMean[[jj]], newdata=time)
-		xPredSd = sqrt(pmax(predict(xFitVar[[jj]], newdata=time), 0.0025))
-		like[,jj] = dnorm(x[,jj], mean=xPredMean, sd=xPredSd, log=logArg)}
+		xPredMean = predict.bigspline(xFitMean[[jj]], newdata=time)
+		xPredSd = sqrt(pmax(predict.bigspline(xFitVar[[jj]], newdata=time), 0.0025))
+		like[,jj] = stats::dnorm(x[,jj], mean=xPredMean, sd=xPredSd, log=logArg)}
 	return(like)}
 
 

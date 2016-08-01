@@ -186,7 +186,9 @@ zeitzeiger = function(xTrain, timeTrain, xTest, fitMeanArgs=list(rparm=NA), cons
 #' If \code{NA} (default), then there are no other covariates.
 #' @param featuresExclude Named list of character vectors corresponding to features
 #' to exclude from being used for prediction for the respective test datasets.
-#'
+#' @param dopar Logical indicating whether to process the folds in parallel.
+#' Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.
+
 #' @return
 #' \item{spcResultList}{List of results from \code{zeitzeigerSpc}, one for each test dataset.}
 #' \item{timeDepLike}{3-D array of likelihood, with dimensions for each test observation
@@ -195,19 +197,20 @@ zeitzeiger = function(xTrain, timeTrain, xTest, fitMeanArgs=list(rparm=NA), cons
 #' of \code{mle2} objects.}
 #' \item{timePred}{Matrix of predicted times for test observations by values of \code{nSpc}.}
 #'
-#' @seealso \code{\link{zeitzeiger}}, \code{\link[sva]{ComBat}}, \code{\link{metapredict}}
+#' @seealso \code{\link{zeitzeiger}}, \code{\link{metapredict}}, \code{\link[sva]{ComBat}}
 #'
 #' @export
 zeitzeigerBatch = function(ematList, trainStudyNames, sampleMetadata, studyColname, batchColname, timeColname,
 									fitMeanArgs=list(rparm=NA), constVar=TRUE, fitVarArgs=list(rparm=NA), nTime=10, useSpc=TRUE,
 									sumabsv=2, orth=TRUE, nSpc=2, betaSv=FALSE, timeRange=seq(0, 1, 0.01), covariateName=NA,
-									featuresExclude=NULL) {
+									featuresExclude=NULL, dopar=TRUE) {
 	if (!requireNamespace('metapredict', quietly=TRUE)) {
 		stop('This function requires the metapredict package. Please see https://github.com/jakejh/metapredict.', call.=FALSE)}
 
+	doOp = ifelse(dopar, `%dopar%`, `%do%`)
 	testStudyNames = names(ematList)[!(names(ematList) %in% trainStudyNames)]
 
-	batchResult = foreach(testStudyName=testStudyNames) %dopar% {
+	batchResult = doOp(foreach(testStudyName=testStudyNames), {
 		ematListNow = ematList[c(trainStudyNames, testStudyName)]
 		if (!is.null(featuresExclude) && !is.na(featuresExclude[[testStudyName]])) {
 			ematListNow = lapply(ematListNow, function(emat) emat[!(rownames(emat) %in% featuresExclude[[testStudyName]]),])}
@@ -228,7 +231,7 @@ zeitzeigerBatch = function(ematList, trainStudyNames, sampleMetadata, studyColna
 			names(predResult$mleFit[[ii]]) = rownames(xTest)}
 		rownames(predResult$timePred) = rownames(xTest)
 
-		return(list(spcResult=spcResult, predResult=predResult))}
+		list(spcResult=spcResult, predResult=predResult)})
 
 	spcResultList = lapply(batchResult, function(x) x$spcResult)
 	names(spcResultList) = testStudyNames

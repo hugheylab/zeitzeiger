@@ -11,7 +11,8 @@ zeitzeigerExtrema(fitResult, maximum = TRUE, dopar = TRUE)
 
 \item{maximum}{Logical indicating whether to find maximum or minimum.}
 
-\item{dopar}{Logical indicating whether to process features in parallel.}
+\item{dopar}{Logical indicating whether to process features in parallel.
+Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.}
 }
 \value{
 Matrix with a row for each feature and columns for location and value.

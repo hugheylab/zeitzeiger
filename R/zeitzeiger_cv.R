@@ -8,8 +8,8 @@
 #' corresponds to the lowest possible value and 1 corresponds to the highest possible value.
 #' @param foldid Vector of values indicating which fold each observation is in.
 #' @param fitMeanArgs List of arguments to pass to \code{bigspline}.
-#' @param dopar Logical indicating whether to process the folds in parallel. Before calling
-#' this function, use \code{doParallel::registerDoParallel} to register the parallel backend.
+#' @param dopar Logical indicating whether to process the folds in parallel.
+#' Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.
 #'
 #' @return A list consisting of the result from \code{zeitzeigerFit} for each fold.
 #'
@@ -21,7 +21,7 @@ zeitzeigerFitCv = function(x, time, foldid, fitMeanArgs=list(rparm=NA), dopar=TR
 	doOp = ifelse(dopar, `%dopar%`, `%do%`)
 	fitResultList = doOp(foreach(foldidNow=foldidUnique), {
 		idxTrain = foldid!=foldidNow
-		return(zeitzeigerFit(x[idxTrain,], time[idxTrain], fitMeanArgs))})
+		zeitzeigerFit(x[idxTrain,], time[idxTrain], fitMeanArgs)})
 	return(fitResultList)}
 
 
@@ -38,8 +38,8 @@ zeitzeigerFitCv = function(x, time, foldid, fitMeanArgs=list(rparm=NA), dopar=TR
 #' @param sumabsv L1-constraint on the SPCs, passed to \code{SPC}.
 #' @param orth Logical indicating whether to require left singular vectors
 #' be orthogonal to each other, passed to \code{SPC}.
-#' @param dopar Logical indicating whether to process the folds in parallel. Before calling
-#' this function, use \code{doParallel::registerDoParallel} to register the parallel backend.
+#' @param dopar Logical indicating whether to process the folds in parallel.
+#' Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.
 #'
 #' @return A list consisting of the result from \code{zeitzeigerSpc} for each fold.
 #'
@@ -78,8 +78,8 @@ zeitzeigerSpcCv = function(fitResultList, nTime=10, useSpc=TRUE, sumabsv=1, orth
 #' @param timeRange Vector of values of the periodic variable at which to calculate likelihood.
 #' The time with the highest likelihood is used as the initial value for the
 #' MLE optimizer.
-#' @param dopar Logical indicating whether to process the folds in parallel. Before calling
-#' this function, use \code{doParallel::registerDoParallel} to register the parallel backend.
+#' @param dopar Logical indicating whether to process the folds in parallel.
+#' Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.
 #'
 #' @return A list of the same structure as \code{zeitzeigerPredict}, combining the results
 #' from each fold of cross-validation.
@@ -145,8 +145,8 @@ zeitzeigerPredictCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(
 #' @param timeRange Vector of values of the periodic variable at which to calculate likelihood.
 #' The time with the highest likelihood is used as the initial value for the
 #' MLE optimizer.
-#' @param dopar Logical indicating whether to process the folds in parallel. Before calling
-#' this function, use \code{doParallel::registerDoParallel} to register the parallel backend.
+#' @param dopar Logical indicating whether to process the folds in parallel.
+#' Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.
 #'
 #' @return A list of the same structure as \code{zeitzeigerPredictGroup}, combining the
 #' results from each fold of cross-validation. Folds (i.e, groups) will be sorted by foldid.
@@ -167,8 +167,10 @@ zeitzeigerPredictGroupCv = function(x, time, foldid, spcResultList, fitMeanArgs=
 
 	groupDf = data.frame(time = time, group = foldid, stringsAsFactors=FALSE)
 	groupDf = groupDf %>%
-		inner_join(groupDf %>% group_by(group) %>% summarize(timeMin = min(time)), by='group') %>%
-		mutate(timeDiff = time - timeMin)
+		dplyr::inner_join(groupDf %>%
+									dplyr::group_by(group) %>%
+									dplyr::summarize(timeMin = min(time)), by='group') %>%
+		dplyr::mutate(timeDiff = time - timeMin)
 
 	predResultList = doOp(foreach(foldidNow=foldidUnique, spcResult=spcResultList), {
 		idxTrain = foldid!=foldidNow

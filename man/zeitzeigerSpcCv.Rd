@@ -21,8 +21,8 @@ which the SPCs will be calculated.}
 \item{orth}{Logical indicating whether to require left singular vectors
 be orthogonal to each other, passed to \code{SPC}.}
 
-\item{dopar}{Logical indicating whether to process the folds in parallel. Before calling
-this function, use \code{doParallel::registerDoParallel} to register the parallel backend.}
+\item{dopar}{Logical indicating whether to process the folds in parallel.
+Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.}
 }
 \value{
 A list consisting of the result from \code{zeitzeigerSpc} for each fold.

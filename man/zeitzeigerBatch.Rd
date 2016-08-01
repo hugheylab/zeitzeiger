@@ -8,7 +8,8 @@ zeitzeigerBatch(ematList, trainStudyNames, sampleMetadata, studyColname,
   batchColname, timeColname, fitMeanArgs = list(rparm = NA),
   constVar = TRUE, fitVarArgs = list(rparm = NA), nTime = 10,
   useSpc = TRUE, sumabsv = 2, orth = TRUE, nSpc = 2, betaSv = FALSE,
-  timeRange = seq(0, 1, 0.01), covariateName = NA, featuresExclude = NULL)
+  timeRange = seq(0, 1, 0.01), covariateName = NA, featuresExclude = NULL,
+  dopar = TRUE)
 }
 \arguments{
 \item{ematList}{Named list of matrices of measurements, one for each dataset,
@@ -70,6 +71,9 @@ If \code{NA} (default), then there are no other covariates.}
 
 \item{featuresExclude}{Named list of character vectors corresponding to features
 to exclude from being used for prediction for the respective test datasets.}
+
+\item{dopar}{Logical indicating whether to process the folds in parallel.
+Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.}
 }
 \value{
 \item{spcResultList}{List of results from \code{zeitzeigerSpc}, one for each test dataset.}
@@ -86,6 +90,6 @@ to running \code{zeitzeiger}. This function requires the \code{\link{metapredict
 package.
 }
 \seealso{
-\code{\link{zeitzeiger}}, \code{\link[sva]{ComBat}}, \code{\link{metapredict}}
+\code{\link{zeitzeiger}}, \code{\link{metapredict}}, \code{\link[sva]{ComBat}}
 }
 

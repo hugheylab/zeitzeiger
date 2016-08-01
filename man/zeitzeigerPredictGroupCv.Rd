@@ -40,8 +40,8 @@ as weights in the likelihood calculation.}
 The time with the highest likelihood is used as the initial value for the
 MLE optimizer.}
 
-\item{dopar}{Logical indicating whether to process the folds in parallel. Before calling
-this function, use \code{doParallel::registerDoParallel} to register the parallel backend.}
+\item{dopar}{Logical indicating whether to process the folds in parallel.
+Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.}
 }
 \value{
 A list of the same structure as \code{zeitzeigerPredictGroup}, combining the
