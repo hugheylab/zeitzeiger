@@ -26,10 +26,10 @@ library('zeitzeiger')
 ```
 
 ## Generate example data
-Now we'll simulate data from an oscillatory system. Our simulated data will have 100 observations, with measurements of 1000 features and 10 time-points per period. Each feature will have Gaussian noise. We'll call the periodic variable here "time," which will go between 0 and 1.
+Now we'll simulate data from an oscillatory system. Our simulated data will have 100 observations, with measurements of 200 features and 10 time-points per period. Each feature will have Gaussian noise. We'll call the periodic variable here "time," which will go between 0 and 1.
 ```{r}
 nObs = 100
-nFeatures = 1000
+nFeatures = 200
 amp = 0.5
 
 time = rep((0:9)/10, length.out=nObs)
@@ -93,11 +93,11 @@ jj = 11
 
 df1 = data.frame(timeTrain, xTrain=xTrain[,jj])
 df2 = data.frame(timeRange,
-				 xPred = predict(fitResult$xFitMean[[jj]], newdata=timeRange),
-				 xObs = 2*cos(timeRange*2*pi))
+				  xPred = predict(fitResult$xFitMean[[jj]], newdata=timeRange),
+				  xObs = 2*cos(timeRange*2*pi))
 df2 = melt(df2, id.vars='timeRange')
 df2[,'variable'] = factor(df2[,'variable'], levels=c('xObs', 'xPred'),
-						  labels=c('Observed mean', 'Predicted mean'))
+				 		   labels=c('Observed mean', 'Predicted mean'))
 ```
 
 For feature 11, the fit looks good. In a real-world dataset, we wouldn't know the observed mean, so we could only compare the predicted mean to the observations.
@@ -113,8 +113,8 @@ ggplot() +
 We can calculate the difference between predicted time and observed time, i.e., the error, using `calcTimeDiff`. This function accounts for the fact that time is periodic, so `time=0` is equivalent to `time=1`. The error can range from -0.5 to 0.5.
 ```{r}
 dfTest = data.frame(timeObs = timeTest,
-					timePred = predResult$timePred,
-					timeError = calcTimeDiff(timeTest, predResult$timePred))
+					 timePred = predResult$timePred,
+					 timeError = calcTimeDiff(timeTest, predResult$timePred))
 ```
 
 There are many ways to examine prediction accuracy. A simple one is to plot predicted time vs. observed time. Ideally, all points would lie on the line `y=x`. These predictions are pretty good. A couple test observations with an observed time of 0 have a predicted time slightly less than 1, which is ok.
@@ -141,7 +141,7 @@ obs = 2
 dfLike = data.frame(timeRange, likelihood = predResult$timeDepLike[obs, 1,])
 
 dfVert = data.frame(type = c('Observed time', 'Predicted time'),
-					xint = c(timeTest[obs], predResult$timePred[obs]))
+					 xint = c(timeTest[obs], predResult$timePred[obs]))
 ```
 
 For this observation, notice how the likelihood starts increasing at times slightly less than 1, then continues to increase at times greater than 0.
@@ -155,7 +155,7 @@ ggplot(dfLike) +
 ```
 
 ## Run cross-validation
-To determine the best parameters for training a ZeitZeiger predictor, we can run cross-validation. The cross-validation functions can process the folds in parallel, if `registerDoParallel` is set beforehand. Because the three steps of ZeitZeiger are separated, we need to first randomly assign each observation to a fold, then use the same assignments for `zeitzeigerFitCv` and `zeitzeigerPredictCv`.
+To determine the best parameters for training a ZeitZeiger predictor, we can run cross-validation. The cross-validation functions can process the folds in parallel, if `registerDoParallel` is called beforehand. Because the three steps of ZeitZeiger are separated, we need to first randomly assign each observation to a fold, then use the same assignments for `zeitzeigerFitCv` and `zeitzeigerPredictCv`.
 
 Here we'll run cross-validation over three values of `sumabsv` and four values of `nSPC`. Typically a few values of `sumabsv` will suffice, and `nSPC` in this example can only range from 1 to 10 (because 10 is the default value of `nTime`).
 ```{r}
@@ -183,18 +183,18 @@ Before plotting, we need to reorganize the output, making a `data.frame` with th
 timePredList = lapply(predResultList, function(a) a$timePred)
 
 cvResult = data.frame(do.call(rbind, timePredList),
-					  timeObs = rep(time, length(sumabsv)),
-					  sumabsv = rep(sumabsv, each=length(time)),
-					  obs = rep(1:nObs, length(sumabsv)),
-					  stringsAsFactors=FALSE)
+					   timeObs = rep(time, length(sumabsv)),
+					   sumabsv = rep(sumabsv, each=length(time)),
+					   obs = rep(1:nObs, length(sumabsv)),
+					   stringsAsFactors=FALSE)
 
 cvResultMolten = melt(cvResult, id.vars=c('obs', 'timeObs', 'sumabsv'),
-					  variable.name='nSpc', value.name='timePred')
+					   variable.name='nSpc', value.name='timePred')
 cvResultMolten[,'nSpc'] = as.integer(sapply(as.character(cvResultMolten[,'nSpc']),
 										   function(a) substr(a, 2, nchar(a))))
 cvResultMolten[,'sumabsv'] = factor(cvResultMolten[,'sumabsv'])
 cvResultMolten[,'timeError'] = calcTimeDiff(cvResultMolten[,'timeObs'],
-											cvResultMolten[,'timePred'])
+											 cvResultMolten[,'timePred'])
 ```
 
 Now calculate the median absolute error for each set of parameter values.
@@ -219,7 +219,7 @@ fitResultFinal = zeitzeigerFit(x, time)
 spcResultFinal = zeitzeigerSpc(fitResultFinal$xFitMean, fitResultFinal$xFitResid, sumabsv=1.5)
 
 dfVar = data.frame(spc = 1:length(spcResultFinal$d),
-				   propVar = spcResultFinal$d^2 / sum(spcResultFinal$d^2))
+				    propVar = spcResultFinal$d^2 / sum(spcResultFinal$d^2))
 ```
 
 Only the first three SPCs explain any appreciable amount of the variance in how the features change over time. This makes sense, as accuracy stopped improving or got worse at `nSpc=4`.
