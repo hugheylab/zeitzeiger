@@ -1,0 +1,172 @@
+---
+title: "Using ZeitZeiger to quantify rhythmic behavior"
+author: "Jake Hughey"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using ZeitZeiger to quantify rhythmic behavior}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = '#>')
+```
+
+Although ZeitZeiger was originally designed to make predictions, it can also be used to find associations. In other words, ZeitZeiger can quantify each feature's rhythmicity, including signal-to-noise, phase, and significance.
+
+To do this, ZeitZeiger fits a periodic smoothing spline for each feature. The advantages of this approach are that it does not assume any particular waveform and it can easily handle observations randomly spaced in time (i.e., with no defined sampling interval). The disadvantage is that the results depend on the spline fitting parameters. I recommend starting with a small value for `nknots`, and increasing only if the fits appear too smoothed. An example would be
+`zeitzeigerFit(x, time, fitMeanArgs=list(rparm=NA, nknots=3))`.
+
+If your data have a defined sampling interval, I recommend also trying RAIN ([paper](http://dx.doi.org/10.1177/0748730414553029), [R package](https://bioconductor.org/packages/release/bioc/html/rain.html)) and/or MetaCycle ([paper](http://www.ncbi.nlm.nih.gov/pubmed/27378304), [R package](https://cran.r-project.org/web/packages/MetaCycle/index.html)).
+
+As when using ZeitZeiger to make predictions, values of time should be scaled to be between 0 and 1 (so the period of the oscillator is 1). If you want to evaluate rhythmicity for different periods (e.g., if data were collected under constant conditions), rescale your time values accordingly (`%%` may be useful).
+
+## Load the necessary packages
+First let's load the necessary packages.
+```{r, message=FALSE}
+library('doParallel')
+library('dplyr')
+library('ggplot2')
+library('zeitzeiger')
+```
+
+## Generate example data
+Now we'll simulate data from an oscillatory system. Our simulated data will have 50 observations, and the features will cover a range of values of signal-to-noise and phase. To keep things simple, we'll use sinusoidal waveforms, iid Gaussian noise, and evenly spaced time-points.
+```{r}
+registerDoParallel(cores=2)
+nObs = 50
+nTime = 10
+nIter = 10
+params = expand.grid(snr = c(0, 0.5, 1, 2, 4), phase = c(0, 0.25, 0.5, 0.75))
+
+paramsRep = params[rep(1:nrow(params), each=nIter),]
+rownames(paramsRep) = NULL
+
+time = rep_len(seq(0, 1 - 1/nTime, length.out=nTime), length.out=nObs)
+set.seed(37203)
+x = foreach(ii=1:nrow(params), .combine=cbind) %do% {
+	if (params[ii, 'snr']==0) {
+		xNow = matrix(rnorm(nObs * nIter), nrow=nObs)
+	} else {
+		xNoise = matrix(rnorm(nObs * nIter, sd = 2 / params[ii, 'snr']), nrow=nObs)
+		xNow = apply(xNoise, 2, function(x) x + cos(2*pi * (time - params[ii, 'phase'])))}}
+``` 
+
+## Fit a periodic spline for each feature
+The first step in quantifying periodicity is the same as the first step when making predictions.
+```{r}
+fitMeanArgs = list(rparm=NA, nknots=3)
+fitResult = zeitzeigerFit(x, time, fitMeanArgs, dopar=TRUE)
+```
+
+## Examine the fits
+We can look at the fits for a few features.
+```{r, fig.width=5, fig.height=3}
+timeRange = seq(0, 1, 0.01)
+df = data.frame(time = rep(timeRange, times=2),
+			condition = rep(c('True signal', 'Spline fit'), each=length(timeRange))) %>%
+	mutate(condition = factor(condition, levels=c('True signal', 'Spline fit')))
+
+idx = 16
+df[['expr']] = c(cos(2 * pi * (timeRange - paramsRep[idx, 'phase'])),
+				predict(fitResult$xFitMean[[idx]], newdata=timeRange))
+
+ggplot(data.frame(time, expr=x[,idx])) +
+	geom_line(aes(x=time, y=expr, linetype=condition), data=df) +
+	geom_point(aes(x=time, y=expr), shape=1) +
+	scale_x_continuous(limits=c(0, 1)) +
+	labs(x='Time', y='Expression', title='SNR ≈ 0.5') +
+	theme_bw() + theme(legend.title=element_blank())
+```
+
+```{r, fig.width=5, fig.height=3}
+idx = 78
+df[['expr']] = c(cos(2 * pi * (timeRange - paramsRep[idx, 'phase'])),
+				predict(fitResult$xFitMean[[idx]], newdata=timeRange))
+
+ggplot(data.frame(time, expr=x[,idx])) +
+	geom_line(aes(x=time, y=expr, linetype=condition), data=df) +
+	geom_point(aes(x=time, y=expr), shape=1) +
+	scale_x_continuous(limits=c(0, 1)) +
+	labs(x='Time', y='Expression', title='SNR ≈ 1') +
+	theme_bw() + theme(legend.title=element_blank())
+```
+
+```{r, fig.width=5, fig.height=3}
+idx = 135
+df[['expr']] = c(cos(2 * pi * (timeRange - paramsRep[idx, 'phase'])),
+				predict(fitResult$xFitMean[[idx]], newdata=timeRange))
+
+ggplot(data.frame(time, expr=x[,idx])) +
+	geom_line(aes(x=time, y=expr, linetype=condition), data=df) +
+	geom_point(aes(x=time, y=expr), shape=1) +
+	scale_x_continuous(limits=c(0, 1)) +
+	labs(x='Time', y='Expression', title='SNR ≈ 2') +
+	theme_bw() + theme(legend.title=element_blank())
+```
+
+```{r, fig.width=5, fig.height=3}
+idx = 197
+df[['expr']] = c(cos(2 * pi * (timeRange - paramsRep[idx, 'phase'])),
+				predict(fitResult$xFitMean[[idx]], newdata=timeRange))
+
+ggplot(data.frame(time, expr=x[,idx])) +
+	geom_line(aes(x=time, y=expr, linetype=condition), data=df) +
+	geom_point(aes(x=time, y=expr), shape=1) +
+	scale_x_continuous(limits=c(0, 1)) +
+	labs(x='Time', y='Expression', title='SNR ≈ 4') +
+	theme_bw() + theme(legend.title=element_blank())
+```
+
+## Estimate the signal-to-noise ratio
+The SNR of each feature corresponds to the maximum fitted value minus the minimum fitted value, divided by the root mean square error of the spline fit.
+```{r}
+snrEst = zeitzeigerSnr(fitResult)
+```
+
+## Estimate the extrema
+Because ZeitZeiger does not assume a particular waveform, estimating phase amounts to estimating the peak time and/or trough time. `zeitzeigerExtrema` returns both the locations and the values of the extrema (by default, of the peaks). Here we just want the locations of the peaks.
+```{r}
+phaseEst = zeitzeigerExtrema(fitResult)[,'location']
+```
+
+## Estimate statistical significance
+If necessary, ZeitZeiger can also calculate p-values using permutation testing, which makes it very slow. In genome-wide datasets, I generally find the distribution of SNR (across all genes) more useful than statistical significance. Again, for smaller datasets or for datasets with a defined sampling interval, use RAIN and/or MetaCycle.
+```{r}
+sig = zeitzeigerSig(x, time, fitMeanArgs, nIter=50)
+```
+
+## Plot the results
+First we'll combine all the results into a single dataframe.
+```{r}
+result = data.frame(paramsRep, snrEst, phaseEst, sig) %>%
+	mutate(snrFactor = factor(snr),
+			snrChar = paste('SNR =', snr),
+			phaseFactor = factor(phase))
+```
+
+For weakly rhythmic behavior in small datasets, ZeitZeiger may underestimate the SNR.
+```{r, fig.width=4, fig.height=3}
+ggplot(result) +
+	geom_boxplot(aes(x=snrFactor, y=snrEst), outlier.shape=1) +
+	labs(x='Expected SNR', y='Estimated SNR') +
+	theme_bw()
+```
+
+Not surprisingly, estimates of phase improve with increasing SNR. Remember, phase 1 is equivalent to phase 0.
+```{r, fig.width=4, fig.height=4}
+ggplot(result %>% filter(snr > 0)) +
+	facet_wrap(~ snrChar, ncol=2) +
+	geom_jitter(aes(x=phaseFactor, y=phaseEst), size=2, shape=1, height=0, width=0.2) +
+	labs(x='Expected phase', y='Estimated phase') +
+	theme_bw()
+```
+
+Because we only ran 50 iterations for estimating significance, most features with strong rhythmicity have a p-value of zero.
+```{r, fig.width=4, fig.height=3}
+ggplot(result) +
+	geom_boxplot(aes(x=snrFactor, y=sig), outlier.shape=1) +
+	labs(x='Expected SNR', y='Nominal p-value') +
+	theme_bw()
+```
