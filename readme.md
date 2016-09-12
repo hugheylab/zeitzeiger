@@ -10,7 +10,6 @@ To see how we used `zeitzeiger` to analyze circadian gene expression from human 
 ```R
 source('https://bioconductor.org/biocLite.R')
 install.packages('devtools')
-devtools::install_github('hadley/ggplot2') # used in the vignettes
 devtools::install_github('jakejh/zeitzeiger', repos=BiocInstaller::biocinstallRepos(), build_vignettes=TRUE, dependencies=TRUE)
 ```
 
