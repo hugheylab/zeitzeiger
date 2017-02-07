@@ -16,7 +16,7 @@
 #' @seealso \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerSpcCv}}, \code{\link{zeitzeigerPredictCv}}
 #'
 #' @export
-zeitzeigerFitCv = function(x, time, foldid, fitMeanArgs=list(rparm=NA), dopar=TRUE) {
+zeitzeigerFitCv = function(x, time, foldid, fitMeanArgs=list(rparm=NA, nknots=3), dopar=TRUE) {
 	foldidUnique = sort(unique(foldid))
 	doOp = ifelse(dopar, `%dopar%`, `%do%`)
 	fitResultList = doOp(foreach(foldidNow=foldidUnique), {
@@ -92,9 +92,9 @@ zeitzeigerSpcCv = function(fitResultList, nTime=10, useSpc=TRUE, sumabsv=1, orth
 #' @seealso \code{\link{zeitzeigerPredict}}, \code{\link{zeitzeigerFitCv}}, \code{\link{zeitzeigerSpcCv}}
 #'
 #' @export
-zeitzeigerPredictCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(rparm=NA), constVar=TRUE,
-										 fitVarArgs=list(rparm=NA), nSpc=NA, betaSv=FALSE, timeRange=seq(0, 1, 0.01),
-										 dopar=TRUE) {
+zeitzeigerPredictCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(rparm=NA, nknots=3),
+										 constVar=TRUE, fitVarArgs=list(rparm=NA), nSpc=NA, betaSv=FALSE,
+										 timeRange=seq(0, 1, 0.01), dopar=TRUE) {
 	foldidUnique = sort(unique(foldid))
 	doOp = ifelse(dopar, `%dopar%`, `%do%`)
 
@@ -159,7 +159,7 @@ zeitzeigerPredictCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(
 #' @seealso \code{\link{zeitzeigerFitCv}}, \code{\link{zeitzeigerSpcCv}}, \code{\link{zeitzeigerPredictGroup}}
 #'
 #' @export
-zeitzeigerPredictGroupCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(rparm=NA),
+zeitzeigerPredictGroupCv = function(x, time, foldid, spcResultList, fitMeanArgs=list(rparm=NA, nknots=3),
 												constVar=TRUE, fitVarArgs=list(rparm=NA), nSpc=NA, betaSv=FALSE,
 												timeRange=seq(0, 1, 0.01), dopar=TRUE) {
 	foldidUnique = sort(unique(foldid))

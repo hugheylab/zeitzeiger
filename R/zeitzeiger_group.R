@@ -86,8 +86,10 @@ zeitzeigerPredictGivenDensityGroup = function(xTest, groupTest, xFitMean, xFitVa
 #' @seealso \code{\link{zeitzeigerPredict}}
 #'
 #' @export
-zeitzeigerPredictGroup = function(xTrain, timeTrain, xTest, groupTest, spcResult, fitMeanArgs=list(rparm=NA), constVar=TRUE,
-											 fitVarArgs=list(rparm=NA), nSpc=NA, betaSv=FALSE, timeRange=seq(0, 1, 0.01)) {
+zeitzeigerPredictGroup = function(xTrain, timeTrain, xTest, groupTest, spcResult,
+											 fitMeanArgs=list(rparm=NA, nknots=3), constVar=TRUE,
+											 fitVarArgs=list(rparm=NA), nSpc=NA, betaSv=FALSE,
+											 timeRange=seq(0, 1, 0.01)) {
 	zTrain = xTrain %*% spcResult$v
 	zTest = xTest %*% spcResult$v
 

@@ -30,7 +30,7 @@ globalVariables(c('fitResult', 'foldidNow', 'group', 'ii', 'jj', 'predResultFit'
 #' @seealso \code{\link[bigsplines]{bigspline}}, \code{\link{zeitzeigerSpc}}, \code{\link{zeitzeigerPredict}}
 #'
 #' @export
-zeitzeigerFit = function(x, time, fitMeanArgs=list(rparm=NA), dopar=FALSE) {
+zeitzeigerFit = function(x, time, fitMeanArgs=list(rparm=NA, nknots=3), dopar=FALSE) {
 	doOp = ifelse(dopar, `%dopar%`, `%do%`)
 	idx = !is.na(x)
 	resultList = doOp(foreach(jj=1:ncol(x)), {
@@ -111,7 +111,7 @@ zeitzeigerSnr = function(fitResult, dopar=TRUE) {
 #' @seealso \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerExtrema}}, \code{\link{zeitzeigerSnr}}
 #'
 #' @export
-zeitzeigerSig = function(x, time, fitMeanArgs=list(rparm=NA), nIter=200, dopar=TRUE) {
+zeitzeigerSig = function(x, time, fitMeanArgs=list(rparm=NA, nknots=3), nIter=200, dopar=TRUE) {
 	doOp = ifelse(dopar, `%dopar%`, `%do%`)
 	timeIdx = do.call(rbind, lapply(1:nIter, function(x) sample.int(length(time))))
 	snrRand = doOp(foreach(ii=1:nIter, .combine=rbind), {

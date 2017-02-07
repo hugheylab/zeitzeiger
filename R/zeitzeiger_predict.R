@@ -53,8 +53,9 @@ zeitzeigerPredictGivenDensity = function(xTest, xFitMean, xFitVar, beta, timeRan
 #' @seealso \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerSpc}}
 #'
 #' @export
-zeitzeigerPredict = function(xTrain, timeTrain, xTest, spcResult, fitMeanArgs=list(rparm=NA), constVar=TRUE,
-									  fitVarArgs=list(rparm=NA), nSpc=NA, betaSv=FALSE, timeRange=seq(0, 1, 0.01)) {
+zeitzeigerPredict = function(xTrain, timeTrain, xTest, spcResult, fitMeanArgs=list(rparm=NA, nknots=3),
+									  constVar=TRUE, fitVarArgs=list(rparm=NA), nSpc=NA, betaSv=FALSE,
+									  timeRange=seq(0, 1, 0.01)) {
 	zTrain = xTrain %*% spcResult$v
 	zTest = xTest %*% spcResult$v
 
@@ -128,8 +129,9 @@ zeitzeigerPredict = function(xTrain, timeTrain, xTest, spcResult, fitMeanArgs=li
 #' @seealso \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerSpc}}, \code{\link{zeitzeigerPredict}}
 #'
 #' @export
-zeitzeiger = function(xTrain, timeTrain, xTest, fitMeanArgs=list(rparm=NA), constVar=TRUE, fitVarArgs=list(rparm=NA), nTime=10,
-							 useSpc=TRUE, sumabsv=2, orth=TRUE, nSpc=2, betaSv=FALSE, timeRange=seq(0, 1, 0.01)) {
+zeitzeiger = function(xTrain, timeTrain, xTest, fitMeanArgs=list(rparm=NA, nknots=3), constVar=TRUE,
+							 fitVarArgs=list(rparm=NA), nTime=10, useSpc=TRUE, sumabsv=2, orth=TRUE, nSpc=2,
+							 betaSv=FALSE, timeRange=seq(0, 1, 0.01)) {
 	fitResult = zeitzeigerFit(xTrain, timeTrain, fitMeanArgs)
 	spcResult = zeitzeigerSpc(fitResult$xFitMean, fitResult$xFitResid, nTime, useSpc, sumabsv, orth)
 	predResult = zeitzeigerPredict(xTrain, timeTrain, xTest, spcResult, fitMeanArgs, constVar, fitVarArgs, nSpc, betaSv,
@@ -201,9 +203,9 @@ zeitzeiger = function(xTrain, timeTrain, xTest, fitMeanArgs=list(rparm=NA), cons
 #'
 #' @export
 zeitzeigerBatch = function(ematList, trainStudyNames, sampleMetadata, studyColname, batchColname, timeColname,
-									fitMeanArgs=list(rparm=NA), constVar=TRUE, fitVarArgs=list(rparm=NA), nTime=10, useSpc=TRUE,
-									sumabsv=2, orth=TRUE, nSpc=2, betaSv=FALSE, timeRange=seq(0, 1, 0.01), covariateName=NA,
-									featuresExclude=NULL, dopar=TRUE) {
+									fitMeanArgs=list(rparm=NA, nknots=3), constVar=TRUE, fitVarArgs=list(rparm=NA),
+									nTime=10, useSpc=TRUE, sumabsv=2, orth=TRUE, nSpc=2, betaSv=FALSE,
+									timeRange=seq(0, 1, 0.01), covariateName=NA, featuresExclude=NULL, dopar=TRUE) {
 	if (!requireNamespace('metapredict', quietly=TRUE)) {
 		stop('This function requires the metapredict package. Please see https://github.com/jakejh/metapredict.', call.=FALSE)}
 
