@@ -24,4 +24,3 @@ square root of the mean of the squared residuals.
 \seealso{
 \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerExtrema}}, \code{\link{zeitzeigerSig}}
 }
-

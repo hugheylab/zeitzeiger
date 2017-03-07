@@ -5,8 +5,8 @@
 \title{Predict corresponding time for observations on cross-validation.}
 \usage{
 zeitzeigerPredictCv(x, time, foldid, spcResultList, fitMeanArgs = list(rparm =
-  NA), constVar = TRUE, fitVarArgs = list(rparm = NA), nSpc = NA,
-  betaSv = FALSE, timeRange = seq(0, 1, 0.01), dopar = TRUE)
+  NA, nknots = 3), constVar = TRUE, fitVarArgs = list(rparm = NA),
+  nSpc = NA, betaSv = FALSE, timeRange = seq(0, 1, 0.01), dopar = TRUE)
 }
 \arguments{
 \item{x}{Matrix of measurements, observations in rows and features in columns.}
@@ -58,4 +58,3 @@ By default, if a parallel backend is registered, this function processes the fol
 \seealso{
 \code{\link{zeitzeigerPredict}}, \code{\link{zeitzeigerFitCv}}, \code{\link{zeitzeigerSpcCv}}
 }
-

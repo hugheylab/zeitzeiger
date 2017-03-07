@@ -4,7 +4,7 @@
 \alias{zeitzeigerFitCv}
 \title{Estimate time-dependent mean on cross-validation.}
 \usage{
-zeitzeigerFitCv(x, time, foldid, fitMeanArgs = list(rparm = NA),
+zeitzeigerFitCv(x, time, foldid, fitMeanArgs = list(rparm = NA, nknots = 3),
   dopar = TRUE)
 }
 \arguments{
@@ -30,4 +30,3 @@ By default, if a parallel backend is registered, this function processes the fol
 \seealso{
 \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerSpcCv}}, \code{\link{zeitzeigerPredictCv}}
 }
-

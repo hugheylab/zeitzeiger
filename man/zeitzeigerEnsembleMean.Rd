@@ -26,4 +26,3 @@ across members of the ensemble.
 \seealso{
 \code{\link{zeitzeigerPredict}}, \code{\link{zeitzeigerEnsembleLikelihood}}
 }
-

@@ -5,7 +5,7 @@
 \title{Calculate sparse principal components of time-dependent variation.}
 \usage{
 zeitzeigerSpc(xFitMean, xFitResid, nTime = 10, useSpc = TRUE, sumabsv = 1,
-  orth = TRUE)
+  orth = TRUE, ...)
 }
 \arguments{
 \item{xFitMean}{List of bigsplines, length is number of features.}
@@ -22,6 +22,8 @@ which the SPCs will be calculated.}
 
 \item{orth}{Logical indicating whether to require left singular vectors
 be orthogonal to each other, passed to \code{SPC}.}
+
+\item{...}{Other arguments passed to \code{SPC}.}
 }
 \value{
 Result from \code{SPC}, unless \code{useSpc==FALSE}, then result from \code{svd}.
@@ -34,4 +36,3 @@ This function calls \code{PMA::SPC}.
 \seealso{
 \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerPredict}}
 }
-

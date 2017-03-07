@@ -5,7 +5,7 @@
 \title{Train and test a ZeitZeiger predictor, accounting for batch effects.}
 \usage{
 zeitzeigerBatch(ematList, trainStudyNames, sampleMetadata, studyColname,
-  batchColname, timeColname, fitMeanArgs = list(rparm = NA),
+  batchColname, timeColname, fitMeanArgs = list(rparm = NA, nknots = 3),
   constVar = TRUE, fitVarArgs = list(rparm = NA), nTime = 10,
   useSpc = TRUE, sumabsv = 2, orth = TRUE, nSpc = 2, betaSv = FALSE,
   timeRange = seq(0, 1, 0.01), covariateName = NA, featuresExclude = NULL,
@@ -92,4 +92,3 @@ package.
 \seealso{
 \code{\link{zeitzeiger}}, \code{\link{metapredict}}, \code{\link[sva]{ComBat}}
 }
-

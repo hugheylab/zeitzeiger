@@ -34,4 +34,3 @@ By default, if a parallel backend is registered, this function processes the fol
 \seealso{
 \code{\link{zeitzeigerSpc}}, \code{\link{zeitzeigerFitCv}}, \code{\link{zeitzeigerPredictCv}}
 }
-

@@ -4,7 +4,8 @@
 \alias{zeitzeigerFit}
 \title{Estimate time-dependent mean.}
 \usage{
-zeitzeigerFit(x, time, fitMeanArgs = list(rparm = NA), dopar = FALSE)
+zeitzeigerFit(x, time, fitMeanArgs = list(rparm = NA, nknots = 3),
+  dopar = FALSE)
 }
 \arguments{
 \item{x}{Matrix of measurements, with observations in rows and features in columns.
@@ -29,4 +30,3 @@ periodic variable, using a periodic smoothing spline.
 \seealso{
 \code{\link[bigsplines]{bigspline}}, \code{\link{zeitzeigerSpc}}, \code{\link{zeitzeigerPredict}}
 }
-

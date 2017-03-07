@@ -25,4 +25,3 @@ Vector or matrix corresponding to \code{time2 - time1}.
 of a periodic variable in a sensible way, making the difference
 as close to zero as possible.
 }
-

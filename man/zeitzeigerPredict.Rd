@@ -5,8 +5,9 @@
 \title{Predict corresponding time for test observations.}
 \usage{
 zeitzeigerPredict(xTrain, timeTrain, xTest, spcResult,
-  fitMeanArgs = list(rparm = NA), constVar = TRUE, fitVarArgs = list(rparm
-  = NA), nSpc = NA, betaSv = FALSE, timeRange = seq(0, 1, 0.01))
+  fitMeanArgs = list(rparm = NA, nknots = 3), constVar = TRUE,
+  fitVarArgs = list(rparm = NA), nSpc = NA, betaSv = FALSE,
+  timeRange = seq(0, 1, 0.01))
 }
 \arguments{
 \item{xTrain}{Matrix of measurements for training data, observations in rows
@@ -55,4 +56,3 @@ calls \code{\link[bbmle]{mle2}}.
 \seealso{
 \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerSpc}}
 }
-

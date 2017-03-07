@@ -4,8 +4,8 @@
 \alias{zeitzeigerSig}
 \title{Estimate significance of periodicity by permutation testing.}
 \usage{
-zeitzeigerSig(x, time, fitMeanArgs = list(rparm = NA), nIter = 200,
-  dopar = TRUE)
+zeitzeigerSig(x, time, fitMeanArgs = list(rparm = NA, nknots = 3),
+  nIter = 200, dopar = TRUE)
 }
 \arguments{
 \item{x}{Matrix of measurements, with observations in rows and features in columns.
@@ -36,4 +36,3 @@ using \code{registerDoParallel}.
 \seealso{
 \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerExtrema}}, \code{\link{zeitzeigerSnr}}
 }
-

@@ -25,4 +25,3 @@ log-likelihoods.
 \seealso{
 \code{\link{zeitzeigerPredict}}, \code{\link{zeitzeigerEnsembleMean}}
 }
-

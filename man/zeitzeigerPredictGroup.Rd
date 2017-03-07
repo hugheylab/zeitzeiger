@@ -5,8 +5,9 @@
 \title{Predict corresponding time for groups of test observations.}
 \usage{
 zeitzeigerPredictGroup(xTrain, timeTrain, xTest, groupTest, spcResult,
-  fitMeanArgs = list(rparm = NA), constVar = TRUE, fitVarArgs = list(rparm
-  = NA), nSpc = NA, betaSv = FALSE, timeRange = seq(0, 1, 0.01))
+  fitMeanArgs = list(rparm = NA, nknots = 3), constVar = TRUE,
+  fitVarArgs = list(rparm = NA), nSpc = NA, betaSv = FALSE,
+  timeRange = seq(0, 1, 0.01))
 }
 \arguments{
 \item{xTrain}{Matrix of measurements for training data, observations in rows
@@ -63,4 +64,3 @@ observation in a group is known. This function calls \code{bbmle::mle2}.
 \seealso{
 \code{\link{zeitzeigerPredict}}
 }
-

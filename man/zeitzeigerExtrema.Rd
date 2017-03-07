@@ -24,4 +24,3 @@ by using \code{\link[stats]{optimize}} and the periodic spline fit.
 \seealso{
 \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerSig}}, \code{\link{zeitzeigerSnr}}
 }
-

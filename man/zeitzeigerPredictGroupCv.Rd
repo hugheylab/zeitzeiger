@@ -5,9 +5,9 @@
 \title{Predict corresponding time for groups of observations on cross-validation.}
 \usage{
 zeitzeigerPredictGroupCv(x, time, foldid, spcResultList,
-  fitMeanArgs = list(rparm = NA), constVar = TRUE, fitVarArgs = list(rparm
-  = NA), nSpc = NA, betaSv = FALSE, timeRange = seq(0, 1, 0.01),
-  dopar = TRUE)
+  fitMeanArgs = list(rparm = NA, nknots = 3), constVar = TRUE,
+  fitVarArgs = list(rparm = NA), nSpc = NA, betaSv = FALSE,
+  timeRange = seq(0, 1, 0.01), dopar = TRUE)
 }
 \arguments{
 \item{x}{Matrix of measurements, observations in rows and features in columns.}
@@ -60,4 +60,3 @@ backend is registered, this function processes the folds in parallel.
 \seealso{
 \code{\link{zeitzeigerFitCv}}, \code{\link{zeitzeigerSpcCv}}, \code{\link{zeitzeigerPredictGroup}}
 }
-

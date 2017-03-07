@@ -159,13 +159,14 @@ zeitzeigerFitVar = function(time, xFitResid, constVar=TRUE, fitVarArgs=list(rpar
 #' @param sumabsv L1-constraint on the SPCs, passed to \code{SPC}.
 #' @param orth Logical indicating whether to require left singular vectors
 #' be orthogonal to each other, passed to \code{SPC}.
+#' @param ... Other arguments passed to \code{SPC}.
 #'
 #' @return Result from \code{SPC}, unless \code{useSpc==FALSE}, then result from \code{svd}.
 #'
 #' @seealso \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerPredict}}
 #'
 #' @export
-zeitzeigerSpc = function(xFitMean, xFitResid, nTime=10, useSpc=TRUE, sumabsv=1, orth=TRUE) {
+zeitzeigerSpc = function(xFitMean, xFitResid, nTime=10, useSpc=TRUE, sumabsv=1, orth=TRUE, ...) {
 	timeRange = seq(0, 1 - 1/nTime, 1/nTime)
 	xMean = matrix(data=NA, nrow=length(timeRange), ncol=length(xFitMean))
 
@@ -175,7 +176,7 @@ zeitzeigerSpc = function(xFitMean, xFitResid, nTime=10, useSpc=TRUE, sumabsv=1, 
 	z = xMeanScaled %*% diag(1/sqrt(colMeans(xFitResid^2)))
 
 	if (useSpc) {
-		spcResult = PMA::SPC(z, sumabsv=sumabsv, K=min(dim(z)), orth=orth, trace=FALSE, compute.pve=FALSE)
+		spcResult = PMA::SPC(z, sumabsv=sumabsv, K=min(dim(z)), orth=orth, trace=FALSE, compute.pve=FALSE, ...)
 	} else {
 		spcResult = svd(z)}
 	return(spcResult)}
