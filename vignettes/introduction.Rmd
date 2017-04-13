@@ -18,10 +18,8 @@ ZeitZeiger is a method for supervised learning on high-dimensional data from an 
 ## Load the necessary packages
 First let's load the necessary packages.
 ```{r, message=FALSE}
+library('tidyverse')
 library('doParallel')
-library('dplyr')
-library('ggplot2')
-library('reshape2')
 library('zeitzeiger')
 ```
 
@@ -94,17 +92,17 @@ jj = 11
 df1 = data.frame(timeTrain, xTrain=xTrain[,jj])
 df2 = data.frame(timeRange,
 				  xPred = predict(fitResult$xFitMean[[jj]], newdata=timeRange),
-				  xObs = 2*cos(timeRange*2*pi))
-df2 = melt(df2, id.vars='timeRange')
-df2[,'variable'] = factor(df2[,'variable'], levels=c('xObs', 'xPred'),
-				 		   labels=c('Observed mean', 'Predicted mean'))
+				  xObs = 2*cos(timeRange*2*pi)) %>%
+	gather(key=key, value=value, -timeRange) %>%
+	mutate(key = factor(key, levels=c('xObs', 'xPred'),
+							labels=c('Observed mean', 'Predicted mean')))
 ```
 
 For feature 11, the fit looks good. In a real-world dataset, we wouldn't know the observed mean, so we could only compare the predicted mean to the observations.
 ```{r, fig.width=4, fig.height=3}
 ggplot() +
 	geom_point(aes(x=timeTrain, y=xTrain), data=df1, shape=1, size=2) +
-	geom_line(aes(x=timeRange, y=value, linetype=variable), data=df2) +
+	geom_line(aes(x=timeRange, y=value, linetype=key), data=df2) +
 	labs(x='Time', y=sprintf('Feature %d', jj)) +
 	theme_bw() + theme(legend.position=c(0.5, 0.85), legend.title=element_blank())
 ```
@@ -188,25 +186,23 @@ cvResult = data.frame(do.call(rbind, timePredList),
 					   obs = rep(1:nObs, length(sumabsv)),
 					   stringsAsFactors=FALSE)
 
-cvResultMolten = melt(cvResult, id.vars=c('obs', 'timeObs', 'sumabsv'),
-					   variable.name='nSpc', value.name='timePred')
-cvResultMolten[,'nSpc'] = as.integer(sapply(as.character(cvResultMolten[,'nSpc']),
+cvResultGath = gather(cvResult, key=nSpc, value=timePred, -obs, -timeObs, -sumabsv)
+cvResultGath$nSpc = as.integer(sapply(as.character(cvResultGath$nSpc),
 										   function(a) substr(a, 2, nchar(a))))
-cvResultMolten[,'sumabsv'] = factor(cvResultMolten[,'sumabsv'])
-cvResultMolten[,'timeError'] = calcTimeDiff(cvResultMolten[,'timeObs'],
-											 cvResultMolten[,'timePred'])
+cvResultGath$sumabsv = factor(cvResultGath$sumabsv)
+cvResultGath$timeError = calcTimeDiff(cvResultGath$timeObs, cvResultGath$timePred)
 ```
 
 Now calculate the median absolute error for each set of parameter values.
 ```{r}
-cvResultMoltenGroup = cvResultMolten %>%
+cvResultGathGroup = cvResultGath %>%
 	group_by(sumabsv, nSpc) %>%
-	summarize(medae=median(abs(timeError)))
+	summarize(medae = median(abs(timeError)))
 ```
 
 In this example dataset, the best accuracy seems to be at `sumabsv=1.5` and `nSpc=3`.
 ```{r, fig.width=3, fig.height=3}
-ggplot(cvResultMoltenGroup) +
+ggplot(cvResultGathGroup) +
 	geom_point(aes(x=nSpc, y=medae, shape=sumabsv, color=sumabsv), size=2) +
 	labs(x='Number of SPCs', y='Median absolute error') +
 	theme_bw() + theme(legend.position=c(0.7, 0.7))
@@ -235,14 +231,13 @@ Now we can project the observations from feature-space to SPC-space, to look at 
 ```{r, fig.width=5, fig.height=5}
 z = x %*% spcResultFinal$v[,1:3]
 colnames(z) = c('SPC 1', 'SPC 2', 'SPC 3')
-zMolten = melt(data.frame(z, obs=1:nObs, Time=time), id.vars=c('obs', 'Time'),
-			   variable.name='SPC', value.name='Abundance')
-zMolten[,'SPC'] = gsub('.', ' ', zMolten[,'SPC'], fixed=TRUE)
+zGath = gather(data.frame(z, obs=1:nObs, Time=time, check.names=FALSE),
+				key=SPC, value=Abundance, -obs, -Time)
 ```
 
 We see that each SPC corresponds to one of the three signals that we created in the dataset. The signs are reversed, but that's ok. So these are the patterns that ZeitZeiger was using to predict the time.
 ```{r, fig.width=5, fig.height=5}
-ggplot(zMolten) +
+ggplot(zGath) +
 	facet_grid(SPC ~ ., scales='free_y') +
 	geom_point(aes(x=Time, y=Abundance), size=2, shape=1) + theme_bw()
 ```
@@ -255,15 +250,15 @@ colnames(v) = c('SPC 1', 'SPC 2', 'SPC 3')
 v = v[apply(v, 1, function(r) any(r!=0)),]
 v[v==0] = NA
 v = v[do.call(order, v),]
-v[,'feature'] = rownames(v)
-vMolten = melt(v, id.vars='feature', variable.name='spc', value.name='Coefficient')
-vMolten[,'feature'] = factor(vMolten[,'feature'], levels=rev(v[,'feature']))
+v$feature = rownames(v)
+vGath = gather(v, key=spc, value=Coefficient, -feature) %>%
+	mutate(feature = factor(feature, levels=rev(v$feature)))
 ```
 
 Sure enough, ZeitZeiger found all the features with strong signal. In addition, the sign and value of the coefficient for each feature in its respective SPC correspond to what we simulated.
 ```{r, fig.width=5, fig.height=5}
-ggplot(vMolten) + facet_wrap(~ spc, nrow=1) +
+ggplot(vGath) + facet_wrap(~ spc, nrow=1) +
 	geom_bar(aes(x=feature, y=Coefficient), stat='identity') +
 	labs(x='Feature') + coord_flip() +
-	theme_bw() + theme(panel.margin=unit(1.2, 'lines'))
+	theme_bw() + theme(panel.spacing=unit(1.2, 'lines'))
 ```
