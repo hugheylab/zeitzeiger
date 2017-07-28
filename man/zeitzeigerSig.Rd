@@ -28,10 +28,10 @@ Vector of p-values.
 \code{zeitzeigerSig} estimates the statistical significance of the periodic
 smoothing spline fit. At each permutation, the time vector is scrambled and then
 zeitzeigerFit is used to fit a periodic smoothing spline for each feature as a
-function of time. The p-value for each feature is calculated as the fraction
+function of time. The p-value for each feature is calculated based on the
 of permutations that had a signal-to-noise ratio at least as large as the
-observed signal-to-noise ratio. Make sure to first register the parallel backend
-using \code{registerDoParallel}.
+observed signal-to-noise ratio, adjusted by the method of Phipson and Smyth (2010).
+Make sure to first register the parallel backend using \code{registerDoParallel}.
 }
 \seealso{
 \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerExtrema}}, \code{\link{zeitzeigerSnr}}

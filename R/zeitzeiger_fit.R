@@ -34,7 +34,8 @@ zeitzeigerFit = function(x, time, fitMeanArgs=list(rparm=NA, nknots=3), dopar=FA
 	doOp = ifelse(dopar, `%dopar%`, `%do%`)
 	idx = !is.na(x)
 	resultList = doOp(foreach(jj=1:ncol(x)), {
-		xFitMean = do.call(bigspline, c(list(time[idx[,jj]], x[idx[,jj], jj], type='per', xmin=0, xmax=1), fitMeanArgs))
+		xFitMean = do.call(bigspline, c(list(time[idx[,jj]], x[idx[,jj], jj], type='per', xmin=0, xmax=1),
+												  fitMeanArgs))
 		xFitResid = predict.bigspline(xFitMean, newdata=time) - x[,jj]
 		list(xFitMean, xFitResid)})
 	xFitMean = lapply(resultList, function(a) a[[1]])
@@ -92,10 +93,10 @@ zeitzeigerSnr = function(fitResult, dopar=TRUE) {
 #' \code{zeitzeigerSig} estimates the statistical significance of the periodic
 #' smoothing spline fit. At each permutation, the time vector is scrambled and then
 #' zeitzeigerFit is used to fit a periodic smoothing spline for each feature as a
-#' function of time. The p-value for each feature is calculated as the fraction
+#' function of time. The p-value for each feature is calculated based on the
 #' of permutations that had a signal-to-noise ratio at least as large as the
-#' observed signal-to-noise ratio. Make sure to first register the parallel backend
-#' using \code{registerDoParallel}.
+#' observed signal-to-noise ratio, adjusted by the method of Phipson and Smyth (2010).
+#' Make sure to first register the parallel backend using \code{registerDoParallel}.
 #'
 #' @param x Matrix of measurements, with observations in rows and features in columns.
 #' Missing values are allowed.
@@ -121,7 +122,10 @@ zeitzeigerSig = function(x, time, fitMeanArgs=list(rparm=NA, nknots=3), nIter=20
 	fitResult = zeitzeigerFit(x, time, fitMeanArgs)
 	snr = zeitzeigerSnr(fitResult, dopar=dopar)
 	snrMat = matrix(rep(snr, nIter), nrow=nIter, byrow=TRUE)
-	return(colMeans(snrMat <= snrRand))}
+	# assume x values within a feature are unique, find number of unique permutations of time vector
+	totalNperm = factorial(length(time)) / prod(factorial(table(time)))
+	sig = statmod::permp(colSums(snrMat <= snrRand), nIter, total.nperm=totalNperm, twosided=FALSE)
+	return(sig)}
 
 
 zeitzeigerFitVar = function(time, xFitResid, constVar=TRUE, fitVarArgs=list(rparm=NA)) {
@@ -133,13 +137,14 @@ zeitzeigerFitVar = function(time, xFitResid, constVar=TRUE, fitVarArgs=list(rpar
 	if (constVar) {
 		sigmaAll = colMeans(xFitResid^2, na.rm=TRUE)
 		for (jj in 1:ncol(xFitResid)) {
-			xFitVar[[jj]] = bigspline(c(0, 0.3, 0.7), rep(sigmaAll[jj], 3), type='per', xmin=0, xmax=1, rparm=NA, nknots=3)}
+			xFitVar[[jj]] = bigspline(c(0, 0.3, 0.7), rep(sigmaAll[jj], 3), type='per', xmin=0, xmax=1,
+											  rparm=NA, nknots=3)}
 	} else {
 		idx = !is.na(xFitResid)
 		for (jj in 1:ncol(xFitResid)) {
 			# todo: fix so that variance can't be less than zero
-			xFitVar[[jj]] = do.call(bigspline, c(list(time[idx[,jj]], xFitResid[idx[,jj], jj]^2, type='per', xmin=0, xmax=1),
-															 fitVarArgs))}}
+			xFitVar[[jj]] = do.call(bigspline, c(list(time[idx[,jj]], xFitResid[idx[,jj], jj]^2, type='per',
+																	xmin=0, xmax=1), fitVarArgs))}}
 	options(warn=warnOrig)
 	return(xFitVar)}
 
