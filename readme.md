@@ -13,12 +13,12 @@ Install the package in your local version of R:
 ```R
 source('https://bioconductor.org/biocLite.R')
 install.packages('devtools')
-devtools::install_github('jakejh/zeitzeiger', repos=BiocInstaller::biocinstallRepos(), build_vignettes=TRUE, dependencies=TRUE)
+devtools::install_github('hugheylab/zeitzeiger', repos=BiocInstaller::biocinstallRepos(), build_vignettes=TRUE, dependencies=TRUE)
 ```
 
-Or use a pre-built [docker image](https://hub.docker.com/r/jakejh/hugheyverse), which has all dependencies already installed:
+Or use a pre-built [docker image](https://hub.docker.com/r/hugheylab/hugheyverse), which has all dependencies already installed:
 ```
-docker pull jakejh/hugheyverse
+docker pull hugheylab/hugheyverse
 ```
 
 ## Getting started
