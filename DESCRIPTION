@@ -7,7 +7,7 @@ Description: ZeitZeiger is a method for predicting the value of a periodic
     variable from a high-dimensional observation.
 Authors@R: person('Jake', 'Hughey', email='jakejhughey@gmail.com', role=c('aut', 'cre'))
 License: GPL-2
-URL: https://github.com/jakejh/zeitzeiger
+URL: https://github.com/hugheylab/zeitzeiger
 LazyData: TRUE
 Depends:
     R (>= 3.2.1)
