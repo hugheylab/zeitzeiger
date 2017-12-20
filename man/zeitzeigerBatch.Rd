@@ -86,9 +86,9 @@ of \code{mle2} objects.}
 \description{
 \code{zeitzeigerBatch} trains and tests a predictor on multiple datasets
 independently, using \code{\link[sva]{ComBat}} to correct for batch effects prior
-to running \code{zeitzeiger}. This function requires the \code{\link{metapredict}}
+to running \code{zeitzeiger}. This function requires the \code{\link[metapredict]{metapredict}}
 package.
 }
 \seealso{
-\code{\link{zeitzeiger}}, \code{\link{metapredict}}, \code{\link[sva]{ComBat}}
+\code{\link{zeitzeiger}}, \code{\link[metapredict]{metapredict}}, \code{\link[sva]{ComBat}}
 }

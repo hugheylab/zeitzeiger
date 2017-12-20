@@ -143,7 +143,7 @@ zeitzeiger = function(xTrain, timeTrain, xTest, fitMeanArgs=list(rparm=NA, nknot
 #'
 #' \code{zeitzeigerBatch} trains and tests a predictor on multiple datasets
 #' independently, using \code{\link[sva]{ComBat}} to correct for batch effects prior
-#' to running \code{zeitzeiger}. This function requires the \code{\link{metapredict}}
+#' to running \code{zeitzeiger}. This function requires the \code{\link[metapredict]{metapredict}}
 #' package.
 #'
 #' @param ematList Named list of matrices of measurements, one for each dataset,
@@ -199,7 +199,7 @@ zeitzeiger = function(xTrain, timeTrain, xTest, fitMeanArgs=list(rparm=NA, nknot
 #' of \code{mle2} objects.}
 #' \item{timePred}{Matrix of predicted times for test observations by values of \code{nSpc}.}
 #'
-#' @seealso \code{\link{zeitzeiger}}, \code{\link{metapredict}}, \code{\link[sva]{ComBat}}
+#' @seealso \code{\link{zeitzeiger}}, \code{\link[metapredict]{metapredict}}, \code{\link[sva]{ComBat}}
 #'
 #' @export
 zeitzeigerBatch = function(ematList, trainStudyNames, sampleMetadata, studyColname, batchColname, timeColname,
@@ -207,7 +207,8 @@ zeitzeigerBatch = function(ematList, trainStudyNames, sampleMetadata, studyColna
 									nTime=10, useSpc=TRUE, sumabsv=2, orth=TRUE, nSpc=2, betaSv=FALSE,
 									timeRange=seq(0, 1, 0.01), covariateName=NA, featuresExclude=NULL, dopar=TRUE) {
 	if (!requireNamespace('metapredict', quietly=TRUE)) {
-		stop('This function requires the metapredict package. Please see https://github.com/jakejh/metapredict.', call.=FALSE)}
+		stop('This function requires the metapredict package. Please see https://github.com/hugheylab/metapredict.',
+			  call.=FALSE)}
 
 	doOp = ifelse(dopar, `%dopar%`, `%do%`)
 	testStudyNames = names(ematList)[!(names(ematList) %in% trainStudyNames)]
@@ -226,7 +227,8 @@ zeitzeigerBatch = function(ematList, trainStudyNames, sampleMetadata, studyColna
 
 		fitResult = zeitzeigerFit(xTrain, timeTrain, fitMeanArgs)
 		spcResult = zeitzeigerSpc(fitResult$xFitMean, fitResult$xFitResid, nTime, useSpc, sumabsv, orth)
-		predResult = zeitzeigerPredict(xTrain, timeTrain, xTest, spcResult, fitMeanArgs, constVar, fitVarArgs, nSpc, betaSv, timeRange)
+		predResult = zeitzeigerPredict(xTrain, timeTrain, xTest, spcResult, fitMeanArgs, constVar, fitVarArgs,
+												 nSpc, betaSv, timeRange)
 
 		dimnames(predResult$timeDepLike)[[1]] = rownames(xTest)
 		for (ii in 1:length(nSpc)) {
