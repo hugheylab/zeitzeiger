@@ -32,7 +32,8 @@ function of time. The p-value for each feature is calculated based on the
 of permutations that had a signal-to-noise ratio at least as large as the
 observed signal-to-noise ratio, adjusted by the method of Phipson and Smyth (2010).
 Make sure to first register the parallel backend using \code{registerDoParallel}.
+For genome-scale data, this function will be very slow.
 }
 \seealso{
-\code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerExtrema}}, \code{\link{zeitzeigerSnr}}
+\code{\link{zeitzeigerFit}}
 }

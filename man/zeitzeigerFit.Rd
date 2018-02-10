@@ -28,5 +28,6 @@ Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backen
 periodic variable, using a periodic smoothing spline.
 }
 \seealso{
-\code{\link[bigsplines]{bigspline}}, \code{\link{zeitzeigerSpc}}, \code{\link{zeitzeigerPredict}}
+\code{\link[bigsplines]{bigspline}}, \code{\link{zeitzeigerSpc}}, \code{\link{zeitzeigerPredict}},
+\code{\link{zeitzeigerProp}}
 }

@@ -27,7 +27,8 @@ globalVariables(c('fitResult', 'foldidNow', 'group', 'ii', 'jj', 'predResultFit'
 #' \item{xFitMean}{List of results from \code{bigspline}. Length is number of columns in \code{x}.}
 #' \item{xFitResid}{Matrix of residuals, same dimensions as \code{x}.}
 #'
-#' @seealso \code{\link[bigsplines]{bigspline}}, \code{\link{zeitzeigerSpc}}, \code{\link{zeitzeigerPredict}}
+#' @seealso \code{\link[bigsplines]{bigspline}}, \code{\link{zeitzeigerSpc}}, \code{\link{zeitzeigerPredict}},
+#' \code{\link{zeitzeigerProp}}
 #'
 #' @export
 zeitzeigerFit = function(x, time, fitMeanArgs=list(rparm=NA, nknots=3), dopar=FALSE) {
@@ -46,7 +47,8 @@ zeitzeigerFit = function(x, time, fitMeanArgs=list(rparm=NA, nknots=3), dopar=FA
 #' Estimate peaks and troughs.
 #'
 #' \code{zeitzeigerExtrema} estimates the extremum (peak or trough) for each feature
-#' by using \code{\link[stats]{optimize}} and the periodic spline fit.
+#' by using \code{\link[stats]{optimize}} and the periodic spline fit. This function
+#' is now deprecated, and it is recommended to instead use \code{\link{zeitzeigerProp}}.
 #'
 #' @param fitResult Output of \code{zeitzeigerFit}.
 #' @param maximum Logical indicating whether to find maximum or minimum.
@@ -55,7 +57,7 @@ zeitzeigerFit = function(x, time, fitMeanArgs=list(rparm=NA, nknots=3), dopar=FA
 #'
 #' @return Matrix with a row for each feature and columns for location and value.
 #'
-#' @seealso \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerSig}}, \code{\link{zeitzeigerSnr}}
+#' @seealso \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerProp}}
 #'
 #' @export
 zeitzeigerExtrema = function(fitResult, maximum=TRUE, dopar=TRUE) {
@@ -69,9 +71,9 @@ zeitzeigerExtrema = function(fitResult, maximum=TRUE, dopar=TRUE) {
 #' Calculate the signal-to-noise of the periodic spline fits.
 #'
 #' \code{zeitzeigerSnr} calculates the signal-to-noise ratio of the spline fit
-#' for each feature, similar to an effect size. The SNR is calculated as the
-#' difference between the maximum and minimum fitted values, divided by the
-#' square root of the mean of the squared residuals.
+#' for each feature. The SNR is calculated as the peak-to-trough difference,
+#' divided by the square root of the mean of the squared residuals. This function
+#' is now deprecated, and it is recommended to instead use \code{\link{zeitzeigerProp}}.
 #'
 #' @param fitResult Output of \code{zeitzeigerFit}.
 #' @param dopar Logical indicating whether to process features in parallel.
@@ -79,13 +81,38 @@ zeitzeigerExtrema = function(fitResult, maximum=TRUE, dopar=TRUE) {
 #'
 #' @return Vector of signal-to-noise values.
 #'
-#' @seealso \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerExtrema}}, \code{\link{zeitzeigerSig}}
+#' @seealso \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerProp}}
 #'
 #' @export
 zeitzeigerSnr = function(fitResult, dopar=TRUE) {
 	maxVal = zeitzeigerExtrema(fitResult, dopar=dopar)[,'value']
 	minVal = zeitzeigerExtrema(fitResult, maximum=FALSE, dopar=dopar)[,'value']
 	return((maxVal - minVal) / sqrt(colMeans(fitResult$xFitResid^2)))}
+
+
+#' Calculate the rhythmic properties of each feature.
+#'
+#' \code{zeitzeigerProp} calculates the rhythmic properties of each feature's
+#' spline fit: location and value of peak, location and value of trough,
+#' amplitude measured peak to trough, and signal-to-noise ratio (amplitude
+#' divided by the square root of the mean of the squared residuals).
+#'
+#' @param fitResult Output of \code{zeitzeigerFit}.
+#' @param dopar Logical indicating whether to process features in parallel.
+#' Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.
+#'
+#' @return Data frame with a row for each feature.
+#'
+#' @seealso \code{\link{zeitzeigerFit}}
+#'
+#' @export
+zeitzeigerProp = function(fitResult, dopar=TRUE) {
+	peak = zeitzeigerExtrema(fitResult, dopar=dopar)
+	trough = zeitzeigerExtrema(fitResult, maximum=FALSE, dopar=dopar)
+	amp = peak[,'value'] - trough[,'value']
+	snr = amp / sqrt(colMeans(fitResult$xFitResid^2))
+	return(data.frame(snr = snr, amp = amp, peakLoc = peak[,'location'], peakVal = peak[,'value'],
+							troughLoc = trough[,'location'], troughVal = trough[,'value']))}
 
 
 #' Estimate significance of periodicity by permutation testing.
@@ -97,6 +124,7 @@ zeitzeigerSnr = function(fitResult, dopar=TRUE) {
 #' of permutations that had a signal-to-noise ratio at least as large as the
 #' observed signal-to-noise ratio, adjusted by the method of Phipson and Smyth (2010).
 #' Make sure to first register the parallel backend using \code{registerDoParallel}.
+#' For genome-scale data, this function will be very slow.
 #'
 #' @param x Matrix of measurements, with observations in rows and features in columns.
 #' Missing values are allowed.
@@ -109,7 +137,7 @@ zeitzeigerSnr = function(fitResult, dopar=TRUE) {
 #'
 #' @return Vector of p-values.
 #'
-#' @seealso \code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerExtrema}}, \code{\link{zeitzeigerSnr}}
+#' @seealso \code{\link{zeitzeigerFit}}
 #'
 #' @export
 zeitzeigerSig = function(x, time, fitMeanArgs=list(rparm=NA, nknots=3), nIter=200, dopar=TRUE) {

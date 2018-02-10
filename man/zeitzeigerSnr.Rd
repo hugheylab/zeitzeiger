@@ -17,10 +17,10 @@ Vector of signal-to-noise values.
 }
 \description{
 \code{zeitzeigerSnr} calculates the signal-to-noise ratio of the spline fit
-for each feature, similar to an effect size. The SNR is calculated as the
-difference between the maximum and minimum fitted values, divided by the
-square root of the mean of the squared residuals.
+for each feature. The SNR is calculated as the peak-to-trough difference,
+divided by the square root of the mean of the squared residuals. This function
+is now deprecated, and it is recommended to instead use \code{\link{zeitzeigerProp}}.
 }
 \seealso{
-\code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerExtrema}}, \code{\link{zeitzeigerSig}}
+\code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerProp}}
 }

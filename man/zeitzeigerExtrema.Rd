@@ -19,8 +19,9 @@ Matrix with a row for each feature and columns for location and value.
 }
 \description{
 \code{zeitzeigerExtrema} estimates the extremum (peak or trough) for each feature
-by using \code{\link[stats]{optimize}} and the periodic spline fit.
+by using \code{\link[stats]{optimize}} and the periodic spline fit. This function
+is now deprecated, and it is recommended to instead use \code{\link{zeitzeigerProp}}.
 }
 \seealso{
-\code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerSig}}, \code{\link{zeitzeigerSnr}}
+\code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerProp}}
 }
