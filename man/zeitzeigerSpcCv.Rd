@@ -4,8 +4,8 @@
 \alias{zeitzeigerSpcCv}
 \title{Calculate sparse principal components of time-dependent variation on cross-validation.}
 \usage{
-zeitzeigerSpcCv(fitResultList, nTime = 10, useSpc = TRUE, sumabsv = 1,
-  orth = TRUE, dopar = TRUE)
+zeitzeigerSpcCv(fitResultList, nTime = 10, useSpc = TRUE,
+  sumabsv = 1, orth = TRUE, dopar = TRUE)
 }
 \arguments{
 \item{fitResultList}{Result from \code{zeitzeigerFitCv}.}

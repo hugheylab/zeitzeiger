@@ -4,10 +4,10 @@
 \alias{zeitzeiger}
 \title{Train and test a ZeitZeiger predictor.}
 \usage{
-zeitzeiger(xTrain, timeTrain, xTest, fitMeanArgs = list(rparm = NA, nknots =
-  3), constVar = TRUE, fitVarArgs = list(rparm = NA), nTime = 10,
-  useSpc = TRUE, sumabsv = 2, orth = TRUE, nSpc = 2, betaSv = FALSE,
-  timeRange = seq(0, 1, 0.01))
+zeitzeiger(xTrain, timeTrain, xTest, fitMeanArgs = list(rparm = NA,
+  nknots = 3), constVar = TRUE, fitVarArgs = list(rparm = NA),
+  nTime = 10, useSpc = TRUE, sumabsv = 2, orth = TRUE, nSpc = 2,
+  betaSv = FALSE, timeRange = seq(0, 1, 0.01))
 }
 \arguments{
 \item{xTrain}{Matrix of measurements for training data, observations in rows

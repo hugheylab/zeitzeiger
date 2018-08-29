@@ -4,8 +4,8 @@
 \alias{zeitzeigerFitCv}
 \title{Estimate time-dependent mean on cross-validation.}
 \usage{
-zeitzeigerFitCv(x, time, foldid, fitMeanArgs = list(rparm = NA, nknots = 3),
-  dopar = TRUE)
+zeitzeigerFitCv(x, time, foldid, fitMeanArgs = list(rparm = NA, nknots =
+  3), dopar = TRUE)
 }
 \arguments{
 \item{x}{Matrix of measurements, with observations in rows and features in columns.}

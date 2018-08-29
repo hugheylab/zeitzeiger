@@ -4,8 +4,8 @@
 \alias{zeitzeigerSpc}
 \title{Calculate sparse principal components of time-dependent variation.}
 \usage{
-zeitzeigerSpc(xFitMean, xFitResid, nTime = 10, useSpc = TRUE, sumabsv = 1,
-  orth = TRUE, ...)
+zeitzeigerSpc(xFitMean, xFitResid, nTime = 10, useSpc = TRUE,
+  sumabsv = 1, orth = TRUE, ...)
 }
 \arguments{
 \item{xFitMean}{List of bigsplines, length is number of features.}
