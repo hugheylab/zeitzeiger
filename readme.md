@@ -20,6 +20,7 @@ drat::addRepo('hugheylab')
 
 Now you can install the package.
 ```R
+setRepositories(ind = c(1:5, 9))
 install.packages('zeitzeiger', type = 'source')
 ```
 You can update the package using `update.packages()`.
