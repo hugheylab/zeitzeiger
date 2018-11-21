@@ -2,7 +2,7 @@
 % Please edit documentation in R/zeitzeiger_cv.R
 \name{zeitzeigerSpcCv}
 \alias{zeitzeigerSpcCv}
-\title{Calculate sparse principal components of time-dependent variation on cross-validation.}
+\title{Calculate sparse principal components of time-dependent variation on cross-validation}
 \usage{
 zeitzeigerSpcCv(fitResultList, nTime = 10, useSpc = TRUE,
   sumabsv = 1, orth = TRUE, dopar = TRUE)

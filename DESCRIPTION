@@ -1,30 +1,33 @@
 Package: zeitzeiger
-Version: 1.0.0.6
-Type: Package
 Title: Regularized supervised learning for high-dimensional data from an
-    oscillatory system
+  oscillatory system
+Version: 2.0.0
+Authors@R: as.person('Jake Hughey <jakejhughey@gmail.com> [aut, cre]')
 Description: ZeitZeiger is a method for predicting the value of a periodic
-    variable from a high-dimensional observation.
-Authors@R: person('Jake', 'Hughey', email='jakejhughey@gmail.com', role=c('aut', 'cre'))
-License: GPL-2
+  variable from a high-dimensional observation.
 URL: https://github.com/hugheylab/zeitzeiger
+License: GPL-2
+Encoding: UTF-8
 LazyData: TRUE
+RoxygenNote: 6.1.1
+Roxygen: list(markdown = TRUE)
 Depends:
-    R (>= 3.2.1)
+  R (>= 3.2)
 biocViews:
 Imports:
-    abind (>= 1.4-3),
-    bbmle (>= 1.0.17),
-    bigsplines (>= 1.0-7),
-    doParallel (>= 1.0.10),
-    dplyr (>= 0.5.0),
-    foreach (>= 1.4.3),
-    magrittr (>= 1.5),
-    PMA (>= 1.0.9),
-    statmod (>= 1.4.30)
-RoxygenNote: 6.1.0
+  abind (>= 1.4-3),
+  bbmle (>= 1.0.17),
+  doParallel (>= 1.0.10),
+  dplyr (>= 0.5.0),
+  foreach (>= 1.4.3),
+  limma (>= 3.38.2),
+  magrittr (>= 1.5),
+  PMA (>= 1.0.9),
+  statmod (>= 1.4.30)
 Suggests:
-    knitr,
-    rmarkdown,
-    tidyverse (>= 1.1.1)
+  ggplot2 (>= 3.1.0),
+  knitr (>= 1.20),
+  metapredict (>= 0.9.0),
+  rmarkdown (>= 1.10),
+  tidyr (>= 0.8.2)
 VignetteBuilder: knitr

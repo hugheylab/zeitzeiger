@@ -2,10 +2,9 @@
 % Please edit documentation in R/zeitzeiger_fit.R
 \name{zeitzeigerFit}
 \alias{zeitzeigerFit}
-\title{Estimate time-dependent mean.}
+\title{Fit a periodic spline for each feature}
 \usage{
-zeitzeigerFit(x, time, fitMeanArgs = list(rparm = NA, nknots = 3),
-  dopar = FALSE)
+zeitzeigerFit(x, time, nKnots = 3)
 }
 \arguments{
 \item{x}{Matrix of measurements, with observations in rows and features in columns.
@@ -14,20 +13,17 @@ Missing values are allowed.}
 \item{time}{Vector of values of the periodic variable for the observations, where 0
 corresponds to the lowest possible value and 1 corresponds to the highest possible value.}
 
-\item{fitMeanArgs}{List of arguments to pass to \code{\link[bigsplines]{bigspline}}.}
-
-\item{dopar}{Logical indicating whether to process features in parallel.
-Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.}
+\item{nKnots}{Number of internal knots to use for the periodic smoothing spline.}
 }
 \value{
-\item{xFitMean}{List of results from \code{bigspline}. Length is number of columns in \code{x}.}
-\item{xFitResid}{Matrix of residuals, same dimensions as \code{x}.}
+\item{xFitMean}{Matrix of coefficients, where rows correspond to features and
+columns correspond to variables in the fit.}
+\item{xFitResid}{Vector of root mean square of residuals, same length as \code{x}.}
 }
 \description{
-\code{zeitzeigerFit} estimates the mean of each feature as a function of the
-periodic variable, using a periodic smoothing spline.
+\code{zeitzeigerFit} fits a periodic smoothing spline to the measurements for each
+feature as a function of the periodic variable.
 }
 \seealso{
-\code{\link[bigsplines]{bigspline}}, \code{\link{zeitzeigerSpc}}, \code{\link{zeitzeigerPredict}},
-\code{\link{zeitzeigerProp}}
+\code{\link{zeitzeigerSpc}}, \code{\link{zeitzeigerPredict}}
 }

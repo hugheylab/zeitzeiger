@@ -1,6 +1,8 @@
 # zeitzeiger
 `zeitzeiger` is a package for regularized supervised learning on high-dimensional data from an oscillatory system. `zeitzeiger` can quantify rhythmic behavior, make accurate predictions, identify major patterns and important features, and detect when the oscillator is perturbed.
 
+Update (Nov 2018): ZeitZeiger now uses [limma](https://doi.org/doi:10.18129/B9.bioc.limma) internally, which makes training (previously the slowest step by far) about 250x faster. Additional optimizations have made calculation of the sparse principal components about 6x faster, and prediction about 20% faster.
+
 For details about the method and to see how we used it to analyze circadian gene expression in mice, check out [Hughey et al. (2016)](https://doi.org/10.1093/nar/gkw030) and the [accompanying results](https://doi.org/10.5061/dryad.hn8gp).
 
 To see how we used `zeitzeiger` to analyze the phasing of circadian clocks in humans and other mammals, check out [Hughey and Butte (2016)](https://doi.org/10.1177/0748730416668049) and the [accompanying results](https://doi.org/10.5061/dryad.g928q).
@@ -32,4 +34,9 @@ docker pull hugheylab/hugheyverse
 ```
 
 ## Getting started
-See `vignette('introduction', package = 'zeitzeiger')` and `vignette('association', package = 'zeitzeiger')`.
+See the documentation and the vignette.
+```R
+library('zeitzeiger')
+vignette('introduction', package = 'zeitzeiger')
+?zeitzeiger
+```

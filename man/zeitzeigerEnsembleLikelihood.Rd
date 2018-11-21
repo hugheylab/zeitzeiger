@@ -2,7 +2,7 @@
 % Please edit documentation in R/zeitzeiger_predict.R
 \name{zeitzeigerEnsembleLikelihood}
 \alias{zeitzeigerEnsembleLikelihood}
-\title{Combine predictions into an ensemble using the log-likelihood.}
+\title{Combine predictions into an ensemble using the log-likelihood}
 \usage{
 zeitzeigerEnsembleLikelihood(timeDepLike, timeRange)
 }

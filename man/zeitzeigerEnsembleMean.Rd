@@ -2,7 +2,7 @@
 % Please edit documentation in R/zeitzeiger_predict.R
 \name{zeitzeigerEnsembleMean}
 \alias{zeitzeigerEnsembleMean}
-\title{Combine predictions into an ensemble using the circular mean.}
+\title{Combine predictions into an ensemble using the circular mean}
 \usage{
 zeitzeigerEnsembleMean(timePredInput, timeMax = 1, na.rm = TRUE)
 }

@@ -2,12 +2,10 @@
 % Please edit documentation in R/zeitzeiger_cv.R
 \name{zeitzeigerPredictCv}
 \alias{zeitzeigerPredictCv}
-\title{Predict corresponding time for observations on cross-validation.}
+\title{Predict corresponding time for observations on cross-validation}
 \usage{
-zeitzeigerPredictCv(x, time, foldid, spcResultList,
-  fitMeanArgs = list(rparm = NA, nknots = 3), constVar = TRUE,
-  fitVarArgs = list(rparm = NA), nSpc = NA, betaSv = FALSE,
-  timeRange = seq(0, 1, 0.01), dopar = TRUE)
+zeitzeigerPredictCv(x, time, foldid, spcResultList, nKnots = 3,
+  nSpc = NA, timeRange = seq(0, 1 - 0.01, 0.01), dopar = TRUE)
 }
 \arguments{
 \item{x}{Matrix of measurements, observations in rows and features in columns.}
@@ -20,21 +18,12 @@ possible value.}
 
 \item{spcResultList}{Result from \code{zeitzeigerSpcCv}.}
 
-\item{fitMeanArgs}{List of arguments to pass to \code{bigspline} for fitting mean of each SPC.}
-
-\item{constVar}{Logical indicating whether to assume constant variance as a function
-of the periodic variable.}
-
-\item{fitVarArgs}{List of arguments to pass to \code{bigspline} for fitting variance of each SPC.
-Unused if \code{constVar==TRUE}.}
+\item{nKnots}{Number of internal knots to use for the periodic smoothing spline.}
 
 \item{nSpc}{Vector of the number of SPCs to use for prediction. If \code{NA} (default),
 \code{nSpc} will become \code{1:K}, where \code{K} is the number of SPCs in \code{spcResult}.
 Each value in \code{nSpc} will correspond to one prediction for each test observation.
 A value of 2 means that the prediction will be based on the first 2 SPCs.}
-
-\item{betaSv}{Logical indicating whether to use the singular values of the SPCs
-as weights in the likelihood calculation.}
 
 \item{timeRange}{Vector of values of the periodic variable at which to calculate likelihood.
 The time with the highest likelihood is used as the initial value for the
@@ -53,8 +42,10 @@ of \code{mle2} objects.}
 \item{timePred}{Matrix of predicted times for observations by values of \code{nSpc}.}
 }
 \description{
-\code{zeitzeigerPredictCv} calls \code{zeitzeigerPredict} for each fold of cross-validation.
-By default, if a parallel backend is registered, this function processes the folds in parallel.
+\code{zeitzeigerPredictCv} calls \code{zeitzeigerPredict} for each fold of
+cross-validation.
+By default, if a parallel backend is registered, this function processes the
+folds in parallel.
 }
 \seealso{
 \code{\link{zeitzeigerPredict}}, \code{\link{zeitzeigerFitCv}}, \code{\link{zeitzeigerSpcCv}}

@@ -2,10 +2,9 @@
 % Please edit documentation in R/zeitzeiger_cv.R
 \name{zeitzeigerFitCv}
 \alias{zeitzeigerFitCv}
-\title{Estimate time-dependent mean on cross-validation.}
+\title{Fit a periodic spline for each feature on cross-validation}
 \usage{
-zeitzeigerFitCv(x, time, foldid, fitMeanArgs = list(rparm = NA, nknots =
-  3), dopar = TRUE)
+zeitzeigerFitCv(x, time, foldid, nKnots = 3)
 }
 \arguments{
 \item{x}{Matrix of measurements, with observations in rows and features in columns.}
@@ -15,10 +14,7 @@ corresponds to the lowest possible value and 1 corresponds to the highest possib
 
 \item{foldid}{Vector of values indicating which fold each observation is in.}
 
-\item{fitMeanArgs}{List of arguments to pass to \code{bigspline}.}
-
-\item{dopar}{Logical indicating whether to process the folds in parallel.
-Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.}
+\item{nKnots}{Number of internal knots to use for the periodic smoothing spline.}
 }
 \value{
 A list consisting of the result from \code{zeitzeigerFit} for each fold.

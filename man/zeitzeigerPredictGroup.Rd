@@ -2,12 +2,10 @@
 % Please edit documentation in R/zeitzeiger_group.R
 \name{zeitzeigerPredictGroup}
 \alias{zeitzeigerPredictGroup}
-\title{Predict corresponding time for groups of test observations.}
+\title{Predict corresponding time for groups of test observations}
 \usage{
 zeitzeigerPredictGroup(xTrain, timeTrain, xTest, groupTest, spcResult,
-  fitMeanArgs = list(rparm = NA, nknots = 3), constVar = TRUE,
-  fitVarArgs = list(rparm = NA), nSpc = NA, betaSv = FALSE,
-  timeRange = seq(0, 1, 0.01))
+  nKnots = 3, nSpc = NA, timeRange = seq(0, 1 - 0.01, 0.01))
 }
 \arguments{
 \item{xTrain}{Matrix of measurements for training data, observations in rows
@@ -28,21 +26,12 @@ Typically, \code{timeDiff} will equal zero for one observation per group.}
 
 \item{spcResult}{Result from \code{zeitzeigerSpc}.}
 
-\item{fitMeanArgs}{List of arguments to pass to \code{bigspline} for fitting mean of each SPC.}
-
-\item{constVar}{Logical indicating whether to assume constant variance as a function
-of the periodic variable.}
-
-\item{fitVarArgs}{List of arguments to pass to \code{bigspline} for fitting variance of each SPC.
-Unused if \code{constVar==TRUE}.}
+\item{nKnots}{Number of internal knots to use for the periodic smoothing spline.}
 
 \item{nSpc}{Vector of the number of SPCs to use for prediction. If \code{NA} (default),
 \code{nSpc} will become \code{1:K}, where \code{K} is the number of SPCs in \code{spcResult}.
 Each value in \code{nSpc} will correspond to one prediction for each test observation.
 A value of 2 means that the prediction will be based on the first 2 SPCs.}
-
-\item{betaSv}{Logical indicating whether to use the singular values of the SPCs
-as weights in the likelihood calculation.}
 
 \item{timeRange}{Vector of values of the periodic variable at which to calculate likelihood.
 The time with the highest likelihood is used as the initial value for the

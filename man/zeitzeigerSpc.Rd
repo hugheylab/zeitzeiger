@@ -2,7 +2,7 @@
 % Please edit documentation in R/zeitzeiger_fit.R
 \name{zeitzeigerSpc}
 \alias{zeitzeigerSpc}
-\title{Calculate sparse principal components of time-dependent variation.}
+\title{Calculate sparse principal components of time-dependent variation}
 \usage{
 zeitzeigerSpc(xFitMean, xFitResid, nTime = 10, useSpc = TRUE,
   sumabsv = 1, orth = TRUE, ...)
@@ -26,7 +26,7 @@ be orthogonal to each other, passed to \code{SPC}.}
 \item{...}{Other arguments passed to \code{SPC}.}
 }
 \value{
-Result from \code{SPC}, unless \code{useSpc==FALSE}, then result from \code{svd}.
+Result from \code{SPC}, unless \code{useSpc} is \code{FALSE}, then result from \code{svd}.
 }
 \description{
 \code{zeitzeigerSpc} calculates the sparse principal components (SPCs),
