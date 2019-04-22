@@ -19,7 +19,7 @@ feature names.}
 to datasets for training.}
 
 \item{sampleMetadata}{data.frame containing relevant information for each sample
-across all datasets.}
+across all datasets. Must have a column named \code{sample}.}
 
 \item{studyColname}{Name of column in \code{sampleMetdata} that contains
 information about which dataset each sample belongs to.}

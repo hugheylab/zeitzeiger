@@ -145,7 +145,7 @@ zeitzeiger = function(xTrain, timeTrain, xTest, nKnots = 3, nTime = 10,
 #' @param trainStudyNames Character vector of names in `ematList` corresponding
 #' to datasets for training.
 #' @param sampleMetadata data.frame containing relevant information for each sample
-#' across all datasets.
+#' across all datasets. Must have a column named `sample`.
 #' @param studyColname Name of column in `sampleMetdata` that contains
 #' information about which dataset each sample belongs to.
 #' @param batchColname Name of column in `sampleMetdata` that contains
@@ -209,10 +209,15 @@ zeitzeigerBatch = function(ematList, trainStudyNames, sampleMetadata, studyColna
 
     ematMerged = metapredict::mergeStudyData(ematListNow, sampleMetadata, batchColname, covariateName)
 
-    idxTrain = sampleMetadata[colnames(ematMerged), studyColname] %in% trainStudyNames
-    xTrain = t(ematMerged[,idxTrain])
-    xTest = t(ematMerged[,!idxTrain])
-    timeTrain = sampleMetadata[colnames(ematMerged)[idxTrain], timeColname]
+    # idxTrain = sampleMetadata[colnames(ematMerged), studyColname] %in% trainStudyNames
+    # xTrain = t(ematMerged[, idxTrain])
+    # xTest = t(ematMerged[, !idxTrain])
+    # timeTrain = sampleMetadata[colnames(ematMerged)[idxTrain], timeColname]
+
+    sampleMetadataTrain = sampleMetadata[sampleMetadata[[studyColname]] %in% trainStudyNames, , drop = FALSE]
+    xTrain = t(ematMerged[, sampleMetadataTrain$sample])
+    xTest = t(ematMerged[, !(colnames(ematMerged) %in% sampleMetadataTrain$sample)])
+    timeTrain = sampleMetadataTrain[[timeColname]]
 
     fitResult = zeitzeigerFit(xTrain, timeTrain, nKnots)
     spcResult = zeitzeigerSpc(fitResult$xFitMean, fitResult$xFitResid, nTime,
