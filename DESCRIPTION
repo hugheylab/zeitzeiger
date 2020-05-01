@@ -31,3 +31,4 @@ Suggests:
   rmarkdown (>= 1.10),
   tidyr (>= 0.8.2)
 VignetteBuilder: knitr
+BugReports: https://github.com/hugheylab/zeitzeiger/issues
