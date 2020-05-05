@@ -1,4 +1,5 @@
 # zeitzeiger
+
 `zeitzeiger` is a package for regularized supervised learning on high-dimensional data from an oscillatory system. `zeitzeiger` can quantify rhythmic behavior, make accurate predictions, identify major patterns and important features, and detect when the oscillator is perturbed.
 
 Update (Nov 2018): ZeitZeiger now uses [limma](https://doi.org/doi:10.18129/B9.bioc.limma) internally, which makes training (previously the slowest step by far) about 250x faster. Additional optimizations have made calculation of the sparse principal components about 6x faster, and prediction about 20% faster.
@@ -10,6 +11,7 @@ To see how we used `zeitzeiger` to analyze the phasing of circadian clocks in hu
 To see how we used `zeitzeiger` to predict circadian time from gene expression in human blood, check out [Hughey (2017)](https://doi.org/10.1186/s13073-017-0406-4) and the [accompanying results](https://doi.org/10.6084/m9.figshare.3756375.v1).
 
 ## Installation
+
 First add the hugheylab repository to your repos. There are multiple ways to do this.
 
 If you use RStudio, go to Tools -> Global Options... -> Packages -> Add... (under Secondary repositories), then enter the following values.
@@ -20,26 +22,26 @@ If you use RStudio, go to Tools -> Global Options... -> Packages -> Add... (unde
 You only have to do this once.
 
 Alternatively, enter the following command each time you want to install or update the package.
+
 ```R
 options(repos = c(getOption('repos'), 'https://hugheylab.github.io/drat/'))
 ```
 
 Now you can install the package.
+
 ```R
 setRepositories(ind = c(1:5, 9))
 install.packages('zeitzeiger', type = 'source')
 ```
+
 You can update the package using `update.packages()`.
 
-There's also a pre-built [docker image](https://hub.docker.com/r/hugheylab/hugheyverse), which has all dependencies installed.
+There's also a [docker image](https://hub.docker.com/r/hugheylab/hugheyverse), which has all dependencies installed.
+
 ```bash
 docker pull hugheylab/hugheyverse
 ```
 
 ## Usage
-See the documentation and the vignette.
-```R
-library('zeitzeiger')
-vignette('introduction', package = 'zeitzeiger')
-?zeitzeiger
-```
+
+For an introduction to the package, read the [vignette](articles/introduction.html). For detailed help on specific functions, check out the [reference documentation](reference/index.html).
