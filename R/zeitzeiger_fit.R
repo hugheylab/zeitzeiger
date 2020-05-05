@@ -10,21 +10,24 @@ globalVariables(c('fitResult', 'foldidNow', 'group', 'ii', 'jj', 'predResultFit'
 
 #' Fit a periodic spline for each feature
 #'
-#' `zeitzeigerFit` fits a periodic smoothing spline to the measurements for each
-#' feature as a function of the periodic variable.
+#' Fit a periodic smoothing spline to the measurements for each feature as a
+#' function of the periodic variable.
 #'
-#' @param x Matrix of measurements, with observations in rows and features in columns.
-#' Missing values are allowed.
-#' @param time Vector of values of the periodic variable for the observations, where 0
-#' corresponds to the lowest possible value and 1 corresponds to the highest possible value.
-#' @param nKnots Number of internal knots to use for the periodic smoothing spline.
+#' @param x Matrix of measurements, with observations in rows and features in
+#'   columns. Missing values are allowed.
+#' @param time Vector of values of the periodic variable for the observations,
+#'   where 0 corresponds to the lowest possible value and 1 corresponds to the
+#'   highest possible value.
+#' @param nKnots Number of internal knots to use for the periodic smoothing
+#'   spline.
 #'
 #' @return
 #' \item{xFitMean}{Matrix of coefficients, where rows correspond to features and
-#' columns correspond to variables in the fit.}
-#' \item{xFitResid}{Vector of root mean square of residuals, same length as `x`.}
+#'   columns correspond to variables in the fit.}
+#' \item{xFitResid}{Vector of root mean square of residuals, same length as
+#'   `x`.}
 #'
-#' @seealso `\link{zeitzeigerSpc}`, `\link{zeitzeigerPredict}`
+#' @seealso [zeitzeigerSpc()], [zeitzeigerPredict()]
 #'
 #' @export
 zeitzeigerFit = function(x, time, nKnots = 3) {
@@ -73,19 +76,21 @@ getSplineBasis = function(x, knots, period = 1, degree = 3) {
 
 #' Calculate time-dependent mean
 #'
-#' `predictIntensity` calculates the expected value of each.
+#' Calculate the expected value of each feature.
 #'
 #' @param fitCoef Matrix of coefficients from the spline fits, where rows
-#' correspond to features and columns correspond to variables in the model.
-#' @param time Vector of values of the periodic variable for the observations, where 0
-#' corresponds to the lowest possible value and 1 corresponds to the highest possible value.
+#'   correspond to features and columns correspond to variables in the model.
+#' @param time Vector of values of the periodic variable for the observations,
+#'   where 0 corresponds to the lowest possible value and 1 corresponds to the
+#'   highest possible value.
 #' @param period Period for the periodic variable.
-#' @param knots Optional vector of knots. This argument is designed for internal use.
+#' @param knots Optional vector of knots. This argument is designed for internal
+#'   use.
 #'
-#' @return Matrix of predicted measurements, where rows correspond to time-points
-#' and columns correspond to features.
+#' @return Matrix of predicted measurements, where rows correspond to
+#'   time-points and columns correspond to features.
 #'
-#' @seealso `\link{zeitzeigerFit}`
+#' @seealso [zeitzeigerFit()]
 #'
 #' @export
 predictIntensity = function(fitCoef, time, period = 1, knots = NULL) {
@@ -99,24 +104,26 @@ predictIntensity = function(fitCoef, time, period = 1, knots = NULL) {
 
 #' Calculate sparse principal components of time-dependent variation
 #'
-#' `zeitzeigerSpc` calculates the sparse principal components (SPCs),
-#' given the time-dependent means and the residuals from `zeitzeigerFit`.
-#' This function calls `PMA::SPC`.
+#' Calculate the SPCs given the time-dependent means and the residuals from
+#' [zeitzeigerFit()].
 #'
 #' @param xFitMean List of bigsplines, length is number of features.
-#' @param xFitResid Matrix of residuals, dimensions are observations by features.
+#' @param xFitResid Matrix of residuals, dimensions are observations by
+#'   features.
 #' @param nTime Number of time-points by which to discretize the time-dependent
-#' behavior of each feature. Corresponds to the number of rows in the matrix for
-#' which the SPCs will be calculated.
-#' @param useSpc Logical indicating whether to use `SPC` (default) or `svd`.
-#' @param sumabsv L1-constraint on the SPCs, passed to `SPC`.
+#'   behavior of each feature. Corresponds to the number of rows in the matrix
+#'   for which the SPCs will be calculated.
+#' @param useSpc Logical indicating whether to use [PMA::SPC()] (default) or
+#'   [base::svd()].
+#' @param sumabsv L1-constraint on the SPCs, passed to [PMA::SPC()].
 #' @param orth Logical indicating whether to require left singular vectors
-#' be orthogonal to each other, passed to `SPC`.
-#' @param ... Other arguments passed to `SPC`.
+#'   be orthogonal to each other, passed to [PMA::SPC()].
+#' @param ... Other arguments passed to [PMA::SPC()].
 #'
-#' @return Result from `SPC`, unless `useSpc` is `FALSE`, then result from `svd`.
+#' @return Output of [PMA::SPC()], unless `useSpc` is `FALSE`, then output of
+#'   [base::svd()].
 #'
-#' @seealso `\link{zeitzeigerFit}`, `\link{zeitzeigerPredict}`
+#' @seealso [zeitzeigerFit()], [zeitzeigerPredict()]
 #'
 #' @export
 zeitzeigerSpc = function(xFitMean, xFitResid, nTime = 10, useSpc = TRUE,
@@ -180,7 +187,7 @@ zeitzeigerLikelihood = function(xTest, xFitMean, xFitResid, knots,
 
 #' Calculate circular difference
 #'
-#' `getCircDiff` calculates the circular difference.
+#' Calculate circular difference.
 #'
 #' @param x Numeric vector or matrix.
 #' @param y Numeric vector or matrix.

@@ -7,25 +7,25 @@
 zeitzeigerSnr(fitResult, dopar = TRUE)
 }
 \arguments{
-\item{fitResult}{Output of \code{zeitzeigerFit}.}
+\item{fitResult}{Output of \code{\link[=zeitzeigerFit]{zeitzeigerFit()}}.}
 
 \item{dopar}{Logical indicating whether to process features in parallel.
-Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.}
+Use \code{\link[doParallel:registerDoParallel]{doParallel::registerDoParallel()}} to register the parallel backend.}
 }
 \value{
 Vector of signal-to-noise values.
 }
 \description{
 DEPRECATED: We recommend instead using
-\href{https://github.com/hugheylab/limorhyde}{limorhyde}, which has support for
+\href{https://github.com/hugheylab/limorhyde}{\code{limorhyde}}, which has support for
 cosinor and periodic splines, in combination with methods such as
-\href{https://doi.org/doi:10.18129/B9.bioc.limma}{limma}.
+\href{https://doi.org/doi:10.18129/B9.bioc.limma}{\code{limma}}.
 }
 \details{
-\code{zeitzeigerSnr} calculates the signal-to-noise ratio of the spline fit
-for each feature. The SNR is calculated as the peak-to-trough difference,
-divided by the square root of the mean of the squared residuals.
+Calculate the signal-to-noise ratio of the spline fit for each feature. The
+SNR is calculated as the peak-to-trough difference, divided by the square
+root of the mean of the squared residuals.
 }
 \seealso{
-\code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerProp}}
+\code{\link[=zeitzeigerFit]{zeitzeigerFit()}}, \code{\link[=zeitzeigerProp]{zeitzeigerProp()}}
 }

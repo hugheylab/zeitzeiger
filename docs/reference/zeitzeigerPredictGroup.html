@@ -40,9 +40,9 @@
 
 
 <meta property="og:title" content="Predict corresponding time for groups of test observations — zeitzeigerPredictGroup" />
-<meta property="og:description" content="zeitzeigerPredictGroup predicts the value of the periodic variable
-for each group of test observations, where the amount of time between each
-observation in a group is known. This function calls bbmle::mle2." />
+<meta property="og:description" content="Predict the value of the periodic variable for each group of test
+observations, where the amount of time between each observation in a group is
+known." />
 
 
 
@@ -74,7 +74,7 @@ observation in a group is known. This function calls bbmle::mle2." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zeitzeiger</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.2</span>
       </span>
     </div>
 
@@ -85,9 +85,6 @@ observation in a group is known. This function calls bbmle::mle2." />
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
-</li>
-<li>
-  <a href="../articles/zeitzeiger.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -134,13 +131,21 @@ observation in a group is known. This function calls bbmle::mle2." />
     </div>
 
     <div class="ref-description">
-    <p><code>zeitzeigerPredictGroup</code> predicts the value of the periodic variable
-for each group of test observations, where the amount of time between each
-observation in a group is known. This function calls <code><a href='https://rdrr.io/pkg/bbmle/man/mle2.html'>bbmle::mle2</a></code>.</p>
+    <p>Predict the value of the periodic variable for each group of test
+observations, where the amount of time between each observation in a group is
+known.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>zeitzeigerPredictGroup</span>(<span class='no'>xTrain</span>, <span class='no'>timeTrain</span>, <span class='no'>xTest</span>, <span class='no'>groupTest</span>, <span class='no'>spcResult</span>,
-  <span class='kw'>nKnots</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>nSpc</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>timeRange</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span> - <span class='fl'>0.01</span>, <span class='fl'>0.01</span>))</pre>
+    <pre class="usage"><span class='fu'>zeitzeigerPredictGroup</span>(
+  <span class='no'>xTrain</span>,
+  <span class='no'>timeTrain</span>,
+  <span class='no'>xTest</span>,
+  <span class='no'>groupTest</span>,
+  <span class='no'>spcResult</span>,
+  <span class='kw'>nKnots</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>nSpc</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>timeRange</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span> - <span class='fl'>0.01</span>, <span class='fl'>0.01</span>)
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,9 +157,9 @@ and features in columns.</p></td>
     </tr>
     <tr>
       <th>timeTrain</th>
-      <td><p>Vector of values of the periodic variable for training observations,
-where 0 corresponds to the lowest possible value and 1 corresponds to the highest
-possible value.</p></td>
+      <td><p>Vector of values of the periodic variable for training
+observations, where 0 corresponds to the lowest possible value and 1
+corresponds to the highest possible value.</p></td>
     </tr>
     <tr>
       <th>xTest</th>
@@ -163,47 +168,53 @@ and features in columns.</p></td>
     </tr>
     <tr>
       <th>groupTest</th>
-      <td><p>data.frame with one row per observation in <code>xTest</code>, and columns
-for <code>group</code> and <code>timeDiff</code>. Observations in the same group should have the
-same value of <code>group</code>. Within each group, the value of <code>timeDiff</code>
-should correspond to the amount of time between that observation and a reference time.
-Typically, <code>timeDiff</code> will equal zero for one observation per group.</p></td>
+      <td><p>data.frame with one row per observation in <code>xTest</code>, and
+columns for <code>group</code> and <code>timeDiff</code>. Observations in the same group should
+have the same value of <code>group</code>. Within each group, the value of <code>timeDiff</code>
+should correspond to the amount of time between that observation and a
+reference time. Typically, <code>timeDiff</code> will equal zero for one observation
+per group.</p></td>
     </tr>
     <tr>
       <th>spcResult</th>
-      <td><p>Result from <code>zeitzeigerSpc</code>.</p></td>
+      <td><p>Output of <code><a href='zeitzeigerSpc.html'>zeitzeigerSpc()</a></code>.</p></td>
     </tr>
     <tr>
       <th>nKnots</th>
-      <td><p>Number of internal knots to use for the periodic smoothing spline.</p></td>
+      <td><p>Number of internal knots to use for the periodic smoothing
+spline.</p></td>
     </tr>
     <tr>
       <th>nSpc</th>
-      <td><p>Vector of the number of SPCs to use for prediction. If <code>NA</code> (default),
-<code>nSpc</code> will become <code>1:K</code>, where <code>K</code> is the number of SPCs in <code>spcResult</code>.
-Each value in <code>nSpc</code> will correspond to one prediction for each test observation.
-A value of 2 means that the prediction will be based on the first 2 SPCs.</p></td>
+      <td><p>Vector of the number of SPCs to use for prediction. If <code>NA</code>
+(default), <code>nSpc</code> will become <code>1:K</code>, where <code>K</code> is the number of SPCs in
+<code>spcResult</code>. Each value in <code>nSpc</code> will correspond to one prediction for
+each test observation. A value of 2 means that the prediction will be based
+on the first 2 SPCs.</p></td>
     </tr>
     <tr>
       <th>timeRange</th>
-      <td><p>Vector of values of the periodic variable at which to calculate likelihood.
-The time with the highest likelihood is used as the initial value for the
-MLE optimizer.</p></td>
+      <td><p>Vector of values of the periodic variable at which to
+calculate likelihood. The time with the highest likelihood is used as the
+initial value for the MLE optimizer.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list with the following elements, where the groups will be sorted by their names.</p>
-<dt>timeDepLike</dt><dd><p>3-D array of likelihood, with dimensions for each group of test observations,
-each element of <code>nSpc</code>, and each element of <code>timeRange</code>.</p></dd>
-<dt>mleFit</dt><dd><p>List (for each element in <code>nSpc</code>) of lists (for each group of test observations)
-of <code>mle2</code> objects.</p></dd>
-<dt>timePred</dt><dd><p>Matrix of predicted times for each group of test observations by values of <code>nSpc</code>.</p></dd>
+    <p>A list with the following elements, where the groups will be sorted
+by their names.</p>
+<dt>timeDepLike</dt><dd><p>3-D array of likelihood, with dimensions for each group of
+test observations, each element of <code>nSpc</code>, and each element of
+<code>timeRange</code>.</p></dd>
+<dt>mleFit</dt><dd><p>List (for each element in <code>nSpc</code>) of lists (for each group of
+test observations) of <code>mle2</code> objects.</p></dd>
+<dt>timePred</dt><dd><p>Matrix of predicted times for each group of test observations
+by values of <code>nSpc</code>.</p></dd>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='zeitzeigerPredict.html'>zeitzeigerPredict</a></code></p></div>
+    <div class='dont-index'><p><code><a href='zeitzeigerPredict.html'>zeitzeigerPredict()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

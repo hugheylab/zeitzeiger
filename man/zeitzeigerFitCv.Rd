@@ -7,22 +7,25 @@
 zeitzeigerFitCv(x, time, foldid, nKnots = 3)
 }
 \arguments{
-\item{x}{Matrix of measurements, with observations in rows and features in columns.}
+\item{x}{Matrix of measurements, with observations in rows and features in
+columns.}
 
-\item{time}{Vector of values of the periodic variable for the observations, where 0
-corresponds to the lowest possible value and 1 corresponds to the highest possible value.}
+\item{time}{Vector of values of the periodic variable for the observations,
+where 0 corresponds to the lowest possible value and 1 corresponds to the
+highest possible value.}
 
-\item{foldid}{Vector of values indicating which fold each observation is in.}
+\item{foldid}{Vector of values indicating the fold to which each observation
+belongs.}
 
-\item{nKnots}{Number of internal knots to use for the periodic smoothing spline.}
+\item{nKnots}{Number of internal knots to use for the periodic smoothing
+spline.}
 }
 \value{
-A list consisting of the result from \code{zeitzeigerFit} for each fold.
+A list consisting of the result from \code{\link[=zeitzeigerFit]{zeitzeigerFit()}} for each fold.
 }
 \description{
-\code{zeitzeigerFitCv} calls \code{zeitzeigerFit} for each fold of cross-validation.
-By default, if a parallel backend is registered, this function processes the folds in parallel.
+Fit a periodic spline for each feature for each fold of cross-validation.
 }
 \seealso{
-\code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerSpcCv}}, \code{\link{zeitzeigerPredictCv}}
+\code{\link[=zeitzeigerFit]{zeitzeigerFit()}}, \code{\link[=zeitzeigerSpcCv]{zeitzeigerSpcCv()}}, \code{\link[=zeitzeigerPredictCv]{zeitzeigerPredictCv()}}
 }

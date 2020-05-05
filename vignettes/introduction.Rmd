@@ -1,6 +1,5 @@
 ---
 title: "Introduction to ZeitZeiger"
-author: "Jake Hughey"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -71,7 +70,7 @@ timeTest = time[-idxTrain]
 ```
 
 ## Train and test a ZeitZeiger predictor
-ZeitZeiger has three main steps: `zeitzeigerFit`, `zeitzeigerSpc`, and `zeitzeigerPredict`. Each function has several options, please see the help and Hughey et al. (2016) for more details. The preferred way to use them is to call each function separately. This lets you change the parameters for a later step without re-running the earlier steps.
+ZeitZeiger has three main steps: `zeitzeigerFit`, `zeitzeigerSpc`, and `zeitzeigerPredict`. Each function has several options, please see the help and [Hughey et al. (2016)](https://doi.org/10.1093/nar/gkw030) for more details. The preferred way to use them is to call each function separately. This lets you change the parameters for a later step without re-running the earlier steps.
 
 `zeitzeigerFit` uses the training data to fit a periodic smoothing spline to the behavior of each feature as a function of time. `zeitzeigerSpc` then uses the spline fits to calculate sparse principal components (SPCs) for how the features change over time. `zeitzeigerPredict` then uses the training data and the SPCs to predict the corresponding time for each test observation. The two main parameters of ZeitZeiger are `sumabsv`, which controls the amount of regularization, and `nSPC`, which controls how many SPCs are used for prediction.
 ```{r}

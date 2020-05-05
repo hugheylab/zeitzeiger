@@ -20,5 +20,5 @@ and \code{period / 2}. If \code{FALSE}, returned values will be between 0 and \c
 Vector or matrix corresponding to \code{x - y}.
 }
 \description{
-\code{getCircDiff} calculates the circular difference.
+Calculate circular difference.
 }

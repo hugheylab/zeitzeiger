@@ -40,10 +40,7 @@
 
 
 <meta property="og:title" content="Predict corresponding time for observations on cross-validation — zeitzeigerPredictCv" />
-<meta property="og:description" content="zeitzeigerPredictCv calls zeitzeigerPredict for each fold of
-cross-validation.
-By default, if a parallel backend is registered, this function processes the
-folds in parallel." />
+<meta property="og:description" content="Make predictions for each observation for each fold of cross-validation." />
 
 
 
@@ -75,7 +72,7 @@ folds in parallel." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zeitzeiger</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.2</span>
       </span>
     </div>
 
@@ -86,9 +83,6 @@ folds in parallel." />
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
-</li>
-<li>
-  <a href="../articles/zeitzeiger.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -135,73 +129,83 @@ folds in parallel." />
     </div>
 
     <div class="ref-description">
-    <p><code>zeitzeigerPredictCv</code> calls <code>zeitzeigerPredict</code> for each fold of
-cross-validation.
-By default, if a parallel backend is registered, this function processes the
-folds in parallel.</p>
+    <p>Make predictions for each observation for each fold of cross-validation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>zeitzeigerPredictCv</span>(<span class='no'>x</span>, <span class='no'>time</span>, <span class='no'>foldid</span>, <span class='no'>spcResultList</span>, <span class='kw'>nKnots</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>nSpc</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>timeRange</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span> - <span class='fl'>0.01</span>, <span class='fl'>0.01</span>), <span class='kw'>dopar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>zeitzeigerPredictCv</span>(
+  <span class='no'>x</span>,
+  <span class='no'>time</span>,
+  <span class='no'>foldid</span>,
+  <span class='no'>spcResultList</span>,
+  <span class='kw'>nKnots</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>nSpc</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>timeRange</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span> - <span class='fl'>0.01</span>, <span class='fl'>0.01</span>),
+  <span class='kw'>dopar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>Matrix of measurements, observations in rows and features in columns.</p></td>
+      <td><p>Matrix of measurements, observations in rows and features in
+columns.</p></td>
     </tr>
     <tr>
       <th>time</th>
-      <td><p>Vector of values of the periodic variable for observations, where 0
-corresponds to the lowest possible value and 1 corresponds to the highest
+      <td><p>Vector of values of the periodic variable for observations, where
+0 corresponds to the lowest possible value and 1 corresponds to the highest
 possible value.</p></td>
     </tr>
     <tr>
       <th>foldid</th>
-      <td><p>Vector of values indicating which fold each observation is in.</p></td>
+      <td><p>Vector of values indicating the fold to which each observation
+belongs.</p></td>
     </tr>
     <tr>
       <th>spcResultList</th>
-      <td><p>Result from <code>zeitzeigerSpcCv</code>.</p></td>
+      <td><p>Output of <code><a href='zeitzeigerSpcCv.html'>zeitzeigerSpcCv()</a></code>.</p></td>
     </tr>
     <tr>
       <th>nKnots</th>
-      <td><p>Number of internal knots to use for the periodic smoothing spline.</p></td>
+      <td><p>Number of internal knots to use for the periodic smoothing
+spline.</p></td>
     </tr>
     <tr>
       <th>nSpc</th>
-      <td><p>Vector of the number of SPCs to use for prediction. If <code>NA</code> (default),
-<code>nSpc</code> will become <code>1:K</code>, where <code>K</code> is the number of SPCs in <code>spcResult</code>.
-Each value in <code>nSpc</code> will correspond to one prediction for each test observation.
-A value of 2 means that the prediction will be based on the first 2 SPCs.</p></td>
+      <td><p>Vector of the number of SPCs to use for prediction. If <code>NA</code>
+(default), <code>nSpc</code> will become <code>1:K</code>, where <code>K</code> is the number of SPCs in
+<code>spcResult</code>. Each value in <code>nSpc</code> will correspond to one prediction for
+each test observation. A value of 2 means that the prediction will be based
+on the first 2 SPCs.</p></td>
     </tr>
     <tr>
       <th>timeRange</th>
-      <td><p>Vector of values of the periodic variable at which to calculate likelihood.
-The time with the highest likelihood is used as the initial value for the
-MLE optimizer.</p></td>
+      <td><p>Vector of values of the periodic variable at which to
+calculate likelihood. The time with the highest likelihood is used as the
+initial value for the MLE optimizer.</p></td>
     </tr>
     <tr>
       <th>dopar</th>
       <td><p>Logical indicating whether to process the folds in parallel.
-Use <code><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>registerDoParallel</a></code> to register the parallel backend.</p></td>
+Use <code><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>doParallel::registerDoParallel()</a></code> to register the parallel backend.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of the same structure as <code>zeitzeigerPredict</code>, combining the results
-from each fold of cross-validation.</p>
-<dt>timeDepLike</dt><dd><p>3-D array of likelihood, with dimensions for each observation,
-each element of <code>nSpc</code>, and each element of <code>timeRange</code>.</p></dd>
-<dt>mleFit</dt><dd><p>List (for each element in <code>nSpc</code>) of lists (for each observation)
-of <code>mle2</code> objects.</p></dd>
-<dt>timePred</dt><dd><p>Matrix of predicted times for observations by values of <code>nSpc</code>.</p></dd>
+    <p>A list of the same structure as <code><a href='zeitzeigerPredict.html'>zeitzeigerPredict()</a></code>, combining the
+results from each fold of cross-validation.</p>
+<dt>timeDepLike</dt><dd><p>3-D array of likelihood, with dimensions for each
+observation, each element of <code>nSpc</code>, and each element of <code>timeRange</code>.</p></dd>
+<dt>mleFit</dt><dd><p>List (for each element in <code>nSpc</code>) of lists (for each
+observation) of <code>mle2</code> objects.</p></dd>
+<dt>timePred</dt><dd><p>Matrix of predicted times for observations by values of
+<code>nSpc</code>.</p></dd>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='zeitzeigerPredict.html'>zeitzeigerPredict</a></code>, <code><a href='zeitzeigerFitCv.html'>zeitzeigerFitCv</a></code>, <code><a href='zeitzeigerSpcCv.html'>zeitzeigerSpcCv</a></code></p></div>
+    <div class='dont-index'><p><code><a href='zeitzeigerPredict.html'>zeitzeigerPredict()</a></code>, <code><a href='zeitzeigerFitCv.html'>zeitzeigerFitCv()</a></code>, <code><a href='zeitzeigerSpcCv.html'>zeitzeigerSpcCv()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

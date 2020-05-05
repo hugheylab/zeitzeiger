@@ -40,8 +40,8 @@
 
 
 <meta property="og:title" content="Combine predictions into an ensemble using the circular mean — zeitzeigerEnsembleMean" />
-<meta property="og:description" content="zeitzeigerEnsembleMean makes predictions by calculating the circular mean of the predictions
-across members of the ensemble." />
+<meta property="og:description" content="Make predictions by calculating the circular mean of the predictions across
+members of the ensemble." />
 
 
 
@@ -73,7 +73,7 @@ across members of the ensemble." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zeitzeiger</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.2</span>
       </span>
     </div>
 
@@ -84,9 +84,6 @@ across members of the ensemble." />
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
-</li>
-<li>
-  <a href="../articles/zeitzeiger.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -133,8 +130,8 @@ across members of the ensemble." />
     </div>
 
     <div class="ref-description">
-    <p><code>zeitzeigerEnsembleMean</code> makes predictions by calculating the circular mean of the predictions
-across members of the ensemble.</p>
+    <p>Make predictions by calculating the circular mean of the predictions across
+members of the ensemble.</p>
     </div>
 
     <pre class="usage"><span class='fu'>zeitzeigerEnsembleMean</span>(<span class='no'>timePredInput</span>, <span class='kw'>timeMax</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
@@ -144,27 +141,30 @@ across members of the ensemble.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>timePredInput</th>
-      <td><p>Matrix of predicted times in which rows correspond to observations and
-columns correspond to members of the ensemble.</p></td>
+      <td><p>Matrix of predicted times in which rows correspond to
+observations and columns correspond to members of the ensemble.</p></td>
     </tr>
     <tr>
       <th>timeMax</th>
-      <td><p>Maximum value of the periodic variable, i.e., the value that is equivalent to zero.</p></td>
+      <td><p>Maximum value of the periodic variable, i.e., the value that
+is equivalent to zero.</p></td>
     </tr>
     <tr>
       <th>na.rm</th>
-      <td><p>Logical indicating whether <code>NA</code> values should be removed from the calculation.</p></td>
+      <td><p>Logical indicating whether <code>NA</code> values should be removed from
+the calculation.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Matrix with a row for each observation and columns for the predicted time and the normalized
-magnitude of the circular mean. The latter can range from 0 to 1, with 1 indicating perfect agreement
-among members of the ensemble.</p>
+    <p>Matrix with a row for each observation and columns for the predicted
+time and the normalized magnitude of the circular mean. The latter can
+range from 0 to 1, with 1 indicating perfect agreement among members of the
+ensemble.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='zeitzeigerPredict.html'>zeitzeigerPredict</a></code>, <code><a href='zeitzeigerEnsembleLikelihood.html'>zeitzeigerEnsembleLikelihood</a></code></p></div>
+    <div class='dont-index'><p><code><a href='zeitzeigerPredict.html'>zeitzeigerPredict()</a></code>, <code><a href='zeitzeigerEnsembleLikelihood.html'>zeitzeigerEnsembleLikelihood()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

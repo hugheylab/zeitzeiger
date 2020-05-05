@@ -7,22 +7,25 @@
 zeitzeigerEnsembleMean(timePredInput, timeMax = 1, na.rm = TRUE)
 }
 \arguments{
-\item{timePredInput}{Matrix of predicted times in which rows correspond to observations and
-columns correspond to members of the ensemble.}
+\item{timePredInput}{Matrix of predicted times in which rows correspond to
+observations and columns correspond to members of the ensemble.}
 
-\item{timeMax}{Maximum value of the periodic variable, i.e., the value that is equivalent to zero.}
+\item{timeMax}{Maximum value of the periodic variable, i.e., the value that
+is equivalent to zero.}
 
-\item{na.rm}{Logical indicating whether \code{NA} values should be removed from the calculation.}
+\item{na.rm}{Logical indicating whether \code{NA} values should be removed from
+the calculation.}
 }
 \value{
-Matrix with a row for each observation and columns for the predicted time and the normalized
-magnitude of the circular mean. The latter can range from 0 to 1, with 1 indicating perfect agreement
-among members of the ensemble.
+Matrix with a row for each observation and columns for the predicted
+time and the normalized magnitude of the circular mean. The latter can
+range from 0 to 1, with 1 indicating perfect agreement among members of the
+ensemble.
 }
 \description{
-\code{zeitzeigerEnsembleMean} makes predictions by calculating the circular mean of the predictions
-across members of the ensemble.
+Make predictions by calculating the circular mean of the predictions across
+members of the ensemble.
 }
 \seealso{
-\code{\link{zeitzeigerPredict}}, \code{\link{zeitzeigerEnsembleLikelihood}}
+\code{\link[=zeitzeigerPredict]{zeitzeigerPredict()}}, \code{\link[=zeitzeigerEnsembleLikelihood]{zeitzeigerEnsembleLikelihood()}}
 }

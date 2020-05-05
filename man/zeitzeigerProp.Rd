@@ -7,13 +7,13 @@
 zeitzeigerProp(fitResult, dopar = TRUE)
 }
 \arguments{
-\item{fitResult}{Output of \code{zeitzeigerFit}.}
+\item{fitResult}{Output of \code{\link[=zeitzeigerFit]{zeitzeigerFit()}}.}
 
 \item{dopar}{Logical indicating whether to process features in parallel.
-Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.}
+Use \code{\link[doParallel:registerDoParallel]{doParallel::registerDoParallel()}} to register the parallel backend.}
 }
 \value{
-Data frame with a row for each feature.
+\code{data.frame} with a row for each feature.
 }
 \description{
 DEPRECATED: We recommend instead using
@@ -22,11 +22,11 @@ cosinor and periodic splines, in combination with methods such as
 \href{https://doi.org/doi:10.18129/B9.bioc.limma}{limma}.
 }
 \details{
-\code{zeitzeigerProp} calculates the rhythmic properties of each feature's
-spline fit: location and value of peak, location and value of trough,
-amplitude measured peak to trough, and signal-to-noise ratio (amplitude
-divided by the square root of the mean of the squared residuals).
+Calculate the rhythmic properties of each feature's spline fit: location and
+value of peak, location and value of trough, amplitude measured peak to
+trough, and signal-to-noise ratio (amplitude divided by the square root of
+the mean of the squared residuals).
 }
 \seealso{
-\code{\link{zeitzeigerFit}}
+\code{\link[=zeitzeigerFit]{zeitzeigerFit()}}
 }

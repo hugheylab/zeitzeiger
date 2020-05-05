@@ -7,12 +7,12 @@
 zeitzeigerExtrema(fitResult, maximum = TRUE, dopar = TRUE)
 }
 \arguments{
-\item{fitResult}{Output of \code{zeitzeigerFit}.}
+\item{fitResult}{Output of \code{\link[=zeitzeigerFit]{zeitzeigerFit()}}.}
 
 \item{maximum}{Logical indicating whether to find maximum or minimum.}
 
 \item{dopar}{Logical indicating whether to process features in parallel.
-Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.}
+Use \code{\link[doParallel:registerDoParallel]{doParallel::registerDoParallel()}} to register the parallel backend.}
 }
 \value{
 Matrix with a row for each feature and columns for location and value.
@@ -24,10 +24,10 @@ cosinor and periodic splines, in combination with methods such as
 \href{https://doi.org/doi:10.18129/B9.bioc.limma}{limma}.
 }
 \details{
-\code{zeitzeigerExtrema} estimates the extremum (peak or trough) for each feature
-by using \code{\link[stats]{optimize}} and the periodic spline fit. Directly calling
-this function is deprecated. Instead, use \code{\link{zeitzeigerProp}}.
+Estimate the extremum (peak or trough) for each feature by using
+\code{\link[stats:optimize]{stats::optimize()}} and the periodic spline fit. Directly calling
+this function is deprecated. Instead, use \code{\link[=zeitzeigerProp]{zeitzeigerProp()}}.
 }
 \seealso{
-\code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerProp}}
+\code{\link[=zeitzeigerFit]{zeitzeigerFit()}}, \code{\link[=zeitzeigerProp]{zeitzeigerProp()}}
 }

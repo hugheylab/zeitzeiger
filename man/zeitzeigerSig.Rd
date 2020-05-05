@@ -7,18 +7,20 @@
 zeitzeigerSig(x, time, nKnots = 3, nIter = 200, dopar = TRUE)
 }
 \arguments{
-\item{x}{Matrix of measurements, with observations in rows and features in columns.
-Missing values are allowed.}
+\item{x}{Matrix of measurements, with observations in rows and features in
+columns. Missing values are allowed.}
 
-\item{time}{Vector of values of the periodic variable for the observations, where 0
-corresponds to the lowest possible value and 1 corresponds to the highest possible value.}
+\item{time}{Vector of values of the periodic variable for the observations,
+where 0 corresponds to the lowest possible value and 1 corresponds to the
+highest possible value.}
 
-\item{nKnots}{Number of internal knots to use for the periodic smoothing spline.}
+\item{nKnots}{Number of internal knots to use for the periodic smoothing
+spline.}
 
 \item{nIter}{Number of permutations.}
 
-\item{dopar}{Logical indicating whether to process features in parallel.
-Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.}
+\item{dopar}{Logical indicating whether to process features in parallel. Use
+\code{\link[doParallel:registerDoParallel]{doParallel::registerDoParallel()}} to register the parallel backend.}
 }
 \value{
 Vector of p-values.
@@ -30,15 +32,16 @@ cosinor and periodic splines, in combination with methods such as
 \href{https://doi.org/doi:10.18129/B9.bioc.limma}{limma}.
 }
 \details{
-\code{zeitzeigerSig} estimates the statistical significance of the periodic
-smoothing spline fit. At each permutation, the time vector is scrambled and then
-zeitzeigerFit is used to fit a periodic smoothing spline for each feature as a
-function of time. The p-value for each feature is calculated based on the
-of permutations that had a signal-to-noise ratio at least as large as the
-observed signal-to-noise ratio, adjusted by the method of Phipson and Smyth (2010).
-Make sure to first register the parallel backend using \code{registerDoParallel}.
-For genome-scale data, this will be slow.
+Estimate the statistical significance of the periodic smoothing spline fit.
+At each permutation, the time vector is scrambled and then \code{\link[=zeitzeigerFit]{zeitzeigerFit()}}
+is used to fit a periodic smoothing spline for each feature as a function of
+time. The p-value for each feature is calculated based on the of permutations
+that had a signal-to-noise ratio at least as large as the observed
+signal-to-noise ratio, adjusted by the method of
+\href{https://doi.org/10.2202/1544-6115.1585}{Phipson and Smyth (2010)}. Make sure
+to first register the parallel backend using
+\code{\link[doParallel:registerDoParallel]{doParallel::registerDoParallel()}}. For genome-scale data, this will be slow.
 }
 \seealso{
-\code{\link{zeitzeigerFit}}
+\code{\link[=zeitzeigerFit]{zeitzeigerFit()}}
 }

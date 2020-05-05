@@ -4,35 +4,44 @@
 \alias{zeitzeigerSpc}
 \title{Calculate sparse principal components of time-dependent variation}
 \usage{
-zeitzeigerSpc(xFitMean, xFitResid, nTime = 10, useSpc = TRUE,
-  sumabsv = 1, orth = TRUE, ...)
+zeitzeigerSpc(
+  xFitMean,
+  xFitResid,
+  nTime = 10,
+  useSpc = TRUE,
+  sumabsv = 1,
+  orth = TRUE,
+  ...
+)
 }
 \arguments{
 \item{xFitMean}{List of bigsplines, length is number of features.}
 
-\item{xFitResid}{Matrix of residuals, dimensions are observations by features.}
+\item{xFitResid}{Matrix of residuals, dimensions are observations by
+features.}
 
 \item{nTime}{Number of time-points by which to discretize the time-dependent
-behavior of each feature. Corresponds to the number of rows in the matrix for
-which the SPCs will be calculated.}
+behavior of each feature. Corresponds to the number of rows in the matrix
+for which the SPCs will be calculated.}
 
-\item{useSpc}{Logical indicating whether to use \code{SPC} (default) or \code{svd}.}
+\item{useSpc}{Logical indicating whether to use \code{\link[PMA:SPC]{PMA::SPC()}} (default) or
+\code{\link[base:svd]{base::svd()}}.}
 
-\item{sumabsv}{L1-constraint on the SPCs, passed to \code{SPC}.}
+\item{sumabsv}{L1-constraint on the SPCs, passed to \code{\link[PMA:SPC]{PMA::SPC()}}.}
 
 \item{orth}{Logical indicating whether to require left singular vectors
-be orthogonal to each other, passed to \code{SPC}.}
+be orthogonal to each other, passed to \code{\link[PMA:SPC]{PMA::SPC()}}.}
 
-\item{...}{Other arguments passed to \code{SPC}.}
+\item{...}{Other arguments passed to \code{\link[PMA:SPC]{PMA::SPC()}}.}
 }
 \value{
-Result from \code{SPC}, unless \code{useSpc} is \code{FALSE}, then result from \code{svd}.
+Output of \code{\link[PMA:SPC]{PMA::SPC()}}, unless \code{useSpc} is \code{FALSE}, then output of
+\code{\link[base:svd]{base::svd()}}.
 }
 \description{
-\code{zeitzeigerSpc} calculates the sparse principal components (SPCs),
-given the time-dependent means and the residuals from \code{zeitzeigerFit}.
-This function calls \code{PMA::SPC}.
+Calculate the SPCs given the time-dependent means and the residuals from
+\code{\link[=zeitzeigerFit]{zeitzeigerFit()}}.
 }
 \seealso{
-\code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerPredict}}
+\code{\link[=zeitzeigerFit]{zeitzeigerFit()}}, \code{\link[=zeitzeigerPredict]{zeitzeigerPredict()}}
 }

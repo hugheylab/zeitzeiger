@@ -4,52 +4,66 @@
 \alias{zeitzeigerPredictGroup}
 \title{Predict corresponding time for groups of test observations}
 \usage{
-zeitzeigerPredictGroup(xTrain, timeTrain, xTest, groupTest, spcResult,
-  nKnots = 3, nSpc = NA, timeRange = seq(0, 1 - 0.01, 0.01))
+zeitzeigerPredictGroup(
+  xTrain,
+  timeTrain,
+  xTest,
+  groupTest,
+  spcResult,
+  nKnots = 3,
+  nSpc = NA,
+  timeRange = seq(0, 1 - 0.01, 0.01)
+)
 }
 \arguments{
 \item{xTrain}{Matrix of measurements for training data, observations in rows
 and features in columns.}
 
-\item{timeTrain}{Vector of values of the periodic variable for training observations,
-where 0 corresponds to the lowest possible value and 1 corresponds to the highest
-possible value.}
+\item{timeTrain}{Vector of values of the periodic variable for training
+observations, where 0 corresponds to the lowest possible value and 1
+corresponds to the highest possible value.}
 
 \item{xTest}{Matrix of measurements for test data, observations in rows
 and features in columns.}
 
-\item{groupTest}{data.frame with one row per observation in \code{xTest}, and columns
-for \code{group} and \code{timeDiff}. Observations in the same group should have the
-same value of \code{group}. Within each group, the value of \code{timeDiff}
-should correspond to the amount of time between that observation and a reference time.
-Typically, \code{timeDiff} will equal zero for one observation per group.}
+\item{groupTest}{data.frame with one row per observation in \code{xTest}, and
+columns for \code{group} and \code{timeDiff}. Observations in the same group should
+have the same value of \code{group}. Within each group, the value of \code{timeDiff}
+should correspond to the amount of time between that observation and a
+reference time. Typically, \code{timeDiff} will equal zero for one observation
+per group.}
 
-\item{spcResult}{Result from \code{zeitzeigerSpc}.}
+\item{spcResult}{Output of \code{\link[=zeitzeigerSpc]{zeitzeigerSpc()}}.}
 
-\item{nKnots}{Number of internal knots to use for the periodic smoothing spline.}
+\item{nKnots}{Number of internal knots to use for the periodic smoothing
+spline.}
 
-\item{nSpc}{Vector of the number of SPCs to use for prediction. If \code{NA} (default),
-\code{nSpc} will become \code{1:K}, where \code{K} is the number of SPCs in \code{spcResult}.
-Each value in \code{nSpc} will correspond to one prediction for each test observation.
-A value of 2 means that the prediction will be based on the first 2 SPCs.}
+\item{nSpc}{Vector of the number of SPCs to use for prediction. If \code{NA}
+(default), \code{nSpc} will become \code{1:K}, where \code{K} is the number of SPCs in
+\code{spcResult}. Each value in \code{nSpc} will correspond to one prediction for
+each test observation. A value of 2 means that the prediction will be based
+on the first 2 SPCs.}
 
-\item{timeRange}{Vector of values of the periodic variable at which to calculate likelihood.
-The time with the highest likelihood is used as the initial value for the
-MLE optimizer.}
+\item{timeRange}{Vector of values of the periodic variable at which to
+calculate likelihood. The time with the highest likelihood is used as the
+initial value for the MLE optimizer.}
 }
 \value{
-A list with the following elements, where the groups will be sorted by their names.
-\item{timeDepLike}{3-D array of likelihood, with dimensions for each group of test observations,
-each element of \code{nSpc}, and each element of \code{timeRange}.}
-\item{mleFit}{List (for each element in \code{nSpc}) of lists (for each group of test observations)
-of \code{mle2} objects.}
-\item{timePred}{Matrix of predicted times for each group of test observations by values of \code{nSpc}.}
+A list with the following elements, where the groups will be sorted
+by their names.
+\item{timeDepLike}{3-D array of likelihood, with dimensions for each group of
+test observations, each element of \code{nSpc}, and each element of
+\code{timeRange}.}
+\item{mleFit}{List (for each element in \code{nSpc}) of lists (for each group of
+test observations) of \code{mle2} objects.}
+\item{timePred}{Matrix of predicted times for each group of test observations
+by values of \code{nSpc}.}
 }
 \description{
-\code{zeitzeigerPredictGroup} predicts the value of the periodic variable
-for each group of test observations, where the amount of time between each
-observation in a group is known. This function calls \code{bbmle::mle2}.
+Predict the value of the periodic variable for each group of test
+observations, where the amount of time between each observation in a group is
+known.
 }
 \seealso{
-\code{\link{zeitzeigerPredict}}
+\code{\link[=zeitzeigerPredict]{zeitzeigerPredict()}}
 }

@@ -75,7 +75,7 @@ limma." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zeitzeiger</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.2</span>
       </span>
     </div>
 
@@ -86,9 +86,6 @@ limma." />
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
-</li>
-<li>
-  <a href="../articles/zeitzeiger.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -148,17 +145,19 @@ cosinor and periodic splines, in combination with methods such as
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>Matrix of measurements, with observations in rows and features in columns.
-Missing values are allowed.</p></td>
+      <td><p>Matrix of measurements, with observations in rows and features in
+columns. Missing values are allowed.</p></td>
     </tr>
     <tr>
       <th>time</th>
-      <td><p>Vector of values of the periodic variable for the observations, where 0
-corresponds to the lowest possible value and 1 corresponds to the highest possible value.</p></td>
+      <td><p>Vector of values of the periodic variable for the observations,
+where 0 corresponds to the lowest possible value and 1 corresponds to the
+highest possible value.</p></td>
     </tr>
     <tr>
       <th>nKnots</th>
-      <td><p>Number of internal knots to use for the periodic smoothing spline.</p></td>
+      <td><p>Number of internal knots to use for the periodic smoothing
+spline.</p></td>
     </tr>
     <tr>
       <th>nIter</th>
@@ -166,8 +165,8 @@ corresponds to the lowest possible value and 1 corresponds to the highest possib
     </tr>
     <tr>
       <th>dopar</th>
-      <td><p>Logical indicating whether to process features in parallel.
-Use <code><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>registerDoParallel</a></code> to register the parallel backend.</p></td>
+      <td><p>Logical indicating whether to process features in parallel. Use
+<code><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>doParallel::registerDoParallel()</a></code> to register the parallel backend.</p></td>
     </tr>
     </table>
 
@@ -176,17 +175,18 @@ Use <code><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>r
     <p>Vector of p-values.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>zeitzeigerSig</code> estimates the statistical significance of the periodic
-smoothing spline fit. At each permutation, the time vector is scrambled and then
-zeitzeigerFit is used to fit a periodic smoothing spline for each feature as a
-function of time. The p-value for each feature is calculated based on the
-of permutations that had a signal-to-noise ratio at least as large as the
-observed signal-to-noise ratio, adjusted by the method of Phipson and Smyth (2010).
-Make sure to first register the parallel backend using <code>registerDoParallel</code>.
-For genome-scale data, this will be slow.</p>
+    <p>Estimate the statistical significance of the periodic smoothing spline fit.
+At each permutation, the time vector is scrambled and then <code><a href='zeitzeigerFit.html'>zeitzeigerFit()</a></code>
+is used to fit a periodic smoothing spline for each feature as a function of
+time. The p-value for each feature is calculated based on the of permutations
+that had a signal-to-noise ratio at least as large as the observed
+signal-to-noise ratio, adjusted by the method of
+<a href='https://doi.org/10.2202/1544-6115.1585'>Phipson and Smyth (2010)</a>. Make sure
+to first register the parallel backend using
+<code><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>doParallel::registerDoParallel()</a></code>. For genome-scale data, this will be slow.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='zeitzeigerFit.html'>zeitzeigerFit</a></code></p></div>
+    <div class='dont-index'><p><code><a href='zeitzeigerFit.html'>zeitzeigerFit()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

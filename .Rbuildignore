@@ -2,3 +2,5 @@
 ^\.Rproj\.user$
 ^readme\.md$
 ^testing\.R$
+^_pkgdown\.yml$
+^docs$

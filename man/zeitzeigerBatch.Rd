@@ -4,10 +4,24 @@
 \alias{zeitzeigerBatch}
 \title{Train and test a ZeitZeiger predictor, accounting for batch effects}
 \usage{
-zeitzeigerBatch(ematList, trainStudyNames, sampleMetadata, studyColname,
-  batchColname, timeColname, nKnots = 3, nTime = 10, useSpc = TRUE,
-  sumabsv = 2, orth = TRUE, nSpc = 2, timeRange = seq(0, 1 - 0.01,
-  0.01), covariateName = NA, featuresExclude = NULL, dopar = TRUE)
+zeitzeigerBatch(
+  ematList,
+  trainStudyNames,
+  sampleMetadata,
+  studyColname,
+  batchColname,
+  timeColname,
+  nKnots = 3,
+  nTime = 10,
+  useSpc = TRUE,
+  sumabsv = 2,
+  orth = TRUE,
+  nSpc = 2,
+  timeRange = seq(0, 1 - 0.01, 0.01),
+  covariateName = NA,
+  featuresExclude = NULL,
+  dopar = TRUE
+)
 }
 \arguments{
 \item{ematList}{Named list of matrices of measurements, one for each dataset,
@@ -18,66 +32,72 @@ feature names.}
 \item{trainStudyNames}{Character vector of names in \code{ematList} corresponding
 to datasets for training.}
 
-\item{sampleMetadata}{data.frame containing relevant information for each sample
-across all datasets. Must have a column named \code{sample}.}
+\item{sampleMetadata}{data.frame containing relevant information for each
+sample across all datasets. Must have a column named \code{sample}.}
 
 \item{studyColname}{Name of column in \code{sampleMetdata} that contains
 information about which dataset each sample belongs to.}
 
 \item{batchColname}{Name of column in \code{sampleMetdata} that contains
-information about which dataset each sample belongs to. This should correspond
-to the names of \code{ematList}, and will often be the same as
+information about which dataset each sample belongs to. This should
+correspond to the names of \code{ematList}, and will often be the same as
 \code{studyColname}, but doesn't have to be.}
 
-\item{timeColname}{Name of column in \code{sampleMetdata} that contains
-the values of the periodic variable.}
+\item{timeColname}{Name of column in \code{sampleMetdata} that contains the values
+of the periodic variable.}
 
-\item{nKnots}{Number of internal knots to use for the periodic smoothing spline.}
+\item{nKnots}{Number of internal knots to use for the periodic smoothing
+spline.}
 
 \item{nTime}{Number of time-points by which to discretize the time-dependent
-behavior of each feature. Corresponds to the number of rows in the matrix for
-which the SPCs will be calculated.}
+behavior of each feature. Corresponds to the number of rows in the matrix
+for which the SPCs will be calculated.}
 
-\item{useSpc}{Logical indicating whether to use \code{SPC} (default) or \code{svd}.}
+\item{useSpc}{Logical indicating whether to use \code{\link[PMA:SPC]{PMA::SPC()}} (default) or
+\code{\link[base:svd]{base::svd()}}.}
 
-\item{sumabsv}{L1-constraint on the SPCs, passed to \code{SPC}.}
+\item{sumabsv}{L1-constraint on the SPCs, passed to \code{\link[PMA:SPC]{PMA::SPC()}}.}
 
 \item{orth}{Logical indicating whether to require left singular vectors
-be orthogonal to each other, passed to \code{SPC}.}
+be orthogonal to each other, passed to \code{\link[PMA:SPC]{PMA::SPC()}}.}
 
-\item{nSpc}{Vector of the number of SPCs to use for prediction. If \code{NA} (default),
-\code{nSpc} will become \code{1:K}, where \code{K} is the number of SPCs in \code{spcResult}.
-Each value in \code{nSpc} will correspond to one prediction for each test observation.
-A value of 2 means that the prediction will be based on the first 2 SPCs.}
+\item{nSpc}{Vector of the number of SPCs to use for prediction. If \code{NA}
+(default), \code{nSpc} will become \code{1:K}, where \code{K} is the number of SPCs in
+\code{spcResult}. Each value in \code{nSpc} will correspond to one prediction for
+each test observation. A value of 2 means that the prediction will be based
+on the first 2 SPCs.}
 
-\item{timeRange}{Vector of values of the periodic variable at which to calculate likelihood.
-The time with the highest likelihood is used as the initial value for the
-MLE optimizer.}
+\item{timeRange}{Vector of values of the periodic variable at which to
+calculate likelihood. The time with the highest likelihood is used as the
+initial value for the MLE optimizer.}
 
 \item{covariateName}{Name of column(s) in \code{sampleMetadata} containing
-information about other covariates for \code{ComBat}, besides \code{batchColname}.
-If \code{NA} (default), then there are no other covariates.}
+information about other covariates for \code{\link[sva:ComBat]{sva::ComBat()}}, besides
+\code{batchColname}. If \code{NA} (default), then there are no other covariates.}
 
-\item{featuresExclude}{Named list of character vectors corresponding to features
-to exclude from being used for prediction for the respective test datasets.}
+\item{featuresExclude}{Named list of character vectors corresponding to
+features to exclude from being used for prediction for the respective test
+datasets.}
 
-\item{dopar}{Logical indicating whether to process the folds in parallel.
-Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.}
+\item{dopar}{Logical indicating whether to process the folds in parallel. Use
+\code{\link[doParallel:registerDoParallel]{doParallel::registerDoParallel()}} to register the parallel backend.}
 }
 \value{
-\item{spcResultList}{List of results from \code{zeitzeigerSpc}, one for each test dataset.}
-\item{timeDepLike}{3-D array of likelihood, with dimensions for each test observation
-(across all datasets), each element of \code{nSpc}, and each element of \code{timeRange}.}
-\item{mleFit}{List (for each element in \code{nSpc}) of lists (for each test observation)
-of \code{mle2} objects.}
-\item{timePred}{Matrix of predicted times for test observations by values of \code{nSpc}.}
+\item{spcResultList}{List of output from \code{\link[=zeitzeigerSpc]{zeitzeigerSpc()}}, one for each test
+dataset.}
+\item{timeDepLike}{3-D array of likelihood, with dimensions for each test
+observation (across all datasets), each element of \code{nSpc}, and each element
+of \code{timeRange}.}
+\item{mleFit}{List (for each element in \code{nSpc}) of lists (for each test
+observation) of \code{mle2} objects.}
+\item{timePred}{Matrix of predicted times for test observations by values of
+\code{nSpc}.}
 }
 \description{
-\code{zeitzeigerBatch} trains and tests a predictor on multiple datasets
-independently, using \code{\link[sva]{ComBat}} to correct for batch effects prior
-to running \code{zeitzeiger}. This function requires the \code{\link[metapredict]{metapredict}}
-package.
+Train and test a predictor on multiple datasets independently, using
+\code{\link[sva:ComBat]{sva::ComBat()}} to correct for batch effects prior to running \code{\link[=zeitzeiger]{zeitzeiger()}}.
+This function requires the \code{metapredict} package.
 }
 \seealso{
-\code{\link{zeitzeiger}}, \code{\link[metapredict]{metapredict}}, \code{\link[sva]{ComBat}}
+\code{\link[=zeitzeiger]{zeitzeiger()}}, \code{\link[metapredict:metapredict]{metapredict::metapredict()}}, \code{\link[sva:ComBat]{sva::ComBat()}}
 }

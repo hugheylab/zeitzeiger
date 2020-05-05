@@ -7,23 +7,26 @@
 zeitzeigerFit(x, time, nKnots = 3)
 }
 \arguments{
-\item{x}{Matrix of measurements, with observations in rows and features in columns.
-Missing values are allowed.}
+\item{x}{Matrix of measurements, with observations in rows and features in
+columns. Missing values are allowed.}
 
-\item{time}{Vector of values of the periodic variable for the observations, where 0
-corresponds to the lowest possible value and 1 corresponds to the highest possible value.}
+\item{time}{Vector of values of the periodic variable for the observations,
+where 0 corresponds to the lowest possible value and 1 corresponds to the
+highest possible value.}
 
-\item{nKnots}{Number of internal knots to use for the periodic smoothing spline.}
+\item{nKnots}{Number of internal knots to use for the periodic smoothing
+spline.}
 }
 \value{
 \item{xFitMean}{Matrix of coefficients, where rows correspond to features and
 columns correspond to variables in the fit.}
-\item{xFitResid}{Vector of root mean square of residuals, same length as \code{x}.}
+\item{xFitResid}{Vector of root mean square of residuals, same length as
+\code{x}.}
 }
 \description{
-\code{zeitzeigerFit} fits a periodic smoothing spline to the measurements for each
-feature as a function of the periodic variable.
+Fit a periodic smoothing spline to the measurements for each feature as a
+function of the periodic variable.
 }
 \seealso{
-\code{\link{zeitzeigerSpc}}, \code{\link{zeitzeigerPredict}}
+\code{\link[=zeitzeigerSpc]{zeitzeigerSpc()}}, \code{\link[=zeitzeigerPredict]{zeitzeigerPredict()}}
 }

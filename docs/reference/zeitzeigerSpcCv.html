@@ -40,8 +40,7 @@
 
 
 <meta property="og:title" content="Calculate sparse principal components of time-dependent variation on cross-validation — zeitzeigerSpcCv" />
-<meta property="og:description" content="zeitzeigerSpcCv calls zeitzeigerSpc for each fold of cross-validation.
-By default, if a parallel backend is registered, this function processes the folds in parallel." />
+<meta property="og:description" content="Calculate SPCs for each fold of cross-validation." />
 
 
 
@@ -73,7 +72,7 @@ By default, if a parallel backend is registered, this function processes the fol
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zeitzeiger</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.2</span>
       </span>
     </div>
 
@@ -84,9 +83,6 @@ By default, if a parallel backend is registered, this function processes the fol
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
-</li>
-<li>
-  <a href="../articles/zeitzeiger.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -133,25 +129,30 @@ By default, if a parallel backend is registered, this function processes the fol
     </div>
 
     <div class="ref-description">
-    <p><code>zeitzeigerSpcCv</code> calls <code>zeitzeigerSpc</code> for each fold of cross-validation.
-By default, if a parallel backend is registered, this function processes the folds in parallel.</p>
+    <p>Calculate SPCs for each fold of cross-validation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>zeitzeigerSpcCv</span>(<span class='no'>fitResultList</span>, <span class='kw'>nTime</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>useSpc</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>sumabsv</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>orth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dopar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>zeitzeigerSpcCv</span>(
+  <span class='no'>fitResultList</span>,
+  <span class='kw'>nTime</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>useSpc</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>sumabsv</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>orth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>dopar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>fitResultList</th>
-      <td><p>Result from <code>zeitzeigerFitCv</code>.</p></td>
+      <td><p>Output of <code><a href='zeitzeigerFitCv.html'>zeitzeigerFitCv()</a></code>.</p></td>
     </tr>
     <tr>
       <th>nTime</th>
       <td><p>Number of time-points by which to discretize the time-dependent
-behavior of each feature. Corresponds to the number of rows in the matrix for
-which the SPCs will be calculated.</p></td>
+behavior of each feature. Corresponds to the number of rows in the matrix
+for which the SPCs will be calculated.</p></td>
     </tr>
     <tr>
       <th>useSpc</th>
@@ -168,17 +169,17 @@ be orthogonal to each other, passed to <code>SPC</code>.</p></td>
     </tr>
     <tr>
       <th>dopar</th>
-      <td><p>Logical indicating whether to process the folds in parallel.
-Use <code><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>registerDoParallel</a></code> to register the parallel backend.</p></td>
+      <td><p>Logical indicating whether to process the folds in parallel. Use
+<code><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>doParallel::registerDoParallel()</a></code> to register the parallel backend.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list consisting of the result from <code>zeitzeigerSpc</code> for each fold.</p>
+    <p>A list consisting of the result from <code><a href='zeitzeigerSpc.html'>zeitzeigerSpc()</a></code> for each fold.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='zeitzeigerSpc.html'>zeitzeigerSpc</a></code>, <code><a href='zeitzeigerFitCv.html'>zeitzeigerFitCv</a></code>, <code><a href='zeitzeigerPredictCv.html'>zeitzeigerPredictCv</a></code></p></div>
+    <div class='dont-index'><p><code><a href='zeitzeigerSpc.html'>zeitzeigerSpc()</a></code>, <code><a href='zeitzeigerFitCv.html'>zeitzeigerFitCv()</a></code>, <code><a href='zeitzeigerPredictCv.html'>zeitzeigerPredictCv()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

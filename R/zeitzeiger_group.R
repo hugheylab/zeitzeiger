@@ -50,40 +50,46 @@ zeitzeigerPredictGivenDensityGroup = function(xTest, groupTest, xFitMean,
 
 #' Predict corresponding time for groups of test observations
 #'
-#' `zeitzeigerPredictGroup` predicts the value of the periodic variable
-#' for each group of test observations, where the amount of time between each
-#' observation in a group is known. This function calls `bbmle::mle2`.
+#' Predict the value of the periodic variable for each group of test
+#' observations, where the amount of time between each observation in a group is
+#' known.
 #'
 #' @param xTrain Matrix of measurements for training data, observations in rows
-#' and features in columns.
-#' @param timeTrain Vector of values of the periodic variable for training observations,
-#' where 0 corresponds to the lowest possible value and 1 corresponds to the highest
-#' possible value.
+#'   and features in columns.
+#' @param timeTrain Vector of values of the periodic variable for training
+#'   observations, where 0 corresponds to the lowest possible value and 1
+#'   corresponds to the highest possible value.
 #' @param xTest Matrix of measurements for test data, observations in rows
-#' and features in columns.
-#' @param groupTest data.frame with one row per observation in `xTest`, and columns
-#' for `group` and `timeDiff`. Observations in the same group should have the
-#' same value of `group`. Within each group, the value of `timeDiff`
-#' should correspond to the amount of time between that observation and a reference time.
-#' Typically, `timeDiff` will equal zero for one observation per group.
-#' @param spcResult Result from `zeitzeigerSpc`.
-#' @param nKnots Number of internal knots to use for the periodic smoothing spline.
-#' @param nSpc Vector of the number of SPCs to use for prediction. If `NA` (default),
-#' `nSpc` will become `1:K`, where `K` is the number of SPCs in `spcResult`.
-#' Each value in `nSpc` will correspond to one prediction for each test observation.
-#' A value of 2 means that the prediction will be based on the first 2 SPCs.
-#' @param timeRange Vector of values of the periodic variable at which to calculate likelihood.
-#' The time with the highest likelihood is used as the initial value for the
-#' MLE optimizer.
+#'   and features in columns.
+#' @param groupTest data.frame with one row per observation in `xTest`, and
+#'   columns for `group` and `timeDiff`. Observations in the same group should
+#'   have the same value of `group`. Within each group, the value of `timeDiff`
+#'   should correspond to the amount of time between that observation and a
+#'   reference time. Typically, `timeDiff` will equal zero for one observation
+#'   per group.
+#' @param spcResult Output of [zeitzeigerSpc()].
+#' @param nKnots Number of internal knots to use for the periodic smoothing
+#'   spline.
+#' @param nSpc Vector of the number of SPCs to use for prediction. If `NA`
+#'   (default), `nSpc` will become `1:K`, where `K` is the number of SPCs in
+#'   `spcResult`. Each value in `nSpc` will correspond to one prediction for
+#'   each test observation. A value of 2 means that the prediction will be based
+#'   on the first 2 SPCs.
+#' @param timeRange Vector of values of the periodic variable at which to
+#'   calculate likelihood. The time with the highest likelihood is used as the
+#'   initial value for the MLE optimizer.
 #'
-#' @return A list with the following elements, where the groups will be sorted by their names.
-#' \item{timeDepLike}{3-D array of likelihood, with dimensions for each group of test observations,
-#' each element of `nSpc`, and each element of `timeRange`.}
-#' \item{mleFit}{List (for each element in `nSpc`) of lists (for each group of test observations)
-#' of `mle2` objects.}
-#' \item{timePred}{Matrix of predicted times for each group of test observations by values of `nSpc`.}
+#' @return A list with the following elements, where the groups will be sorted
+#'   by their names.
+#' \item{timeDepLike}{3-D array of likelihood, with dimensions for each group of
+#'   test observations, each element of `nSpc`, and each element of
+#'   `timeRange`.}
+#' \item{mleFit}{List (for each element in `nSpc`) of lists (for each group of
+#'   test observations) of `mle2` objects.}
+#' \item{timePred}{Matrix of predicted times for each group of test observations
+#'   by values of `nSpc`.}
 #'
-#' @seealso `\link{zeitzeigerPredict}`
+#' @seealso [zeitzeigerPredict()]
 #'
 #' @export
 zeitzeigerPredictGroup = function(xTrain, timeTrain, xTest, groupTest, spcResult,

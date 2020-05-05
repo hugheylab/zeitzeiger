@@ -4,52 +4,63 @@
 \alias{zeitzeiger}
 \title{Train and test a ZeitZeiger predictor}
 \usage{
-zeitzeiger(xTrain, timeTrain, xTest, nKnots = 3, nTime = 10,
-  useSpc = TRUE, sumabsv = 2, orth = TRUE, nSpc = 2,
-  timeRange = seq(0, 1 - 0.01, 0.01))
+zeitzeiger(
+  xTrain,
+  timeTrain,
+  xTest,
+  nKnots = 3,
+  nTime = 10,
+  useSpc = TRUE,
+  sumabsv = 2,
+  orth = TRUE,
+  nSpc = 2,
+  timeRange = seq(0, 1 - 0.01, 0.01)
+)
 }
 \arguments{
 \item{xTrain}{Matrix of measurements for training data, observations in rows
 and features in columns.}
 
-\item{timeTrain}{Vector of values of the periodic variable for training observations,
-where 0 corresponds to the lowest possible value and 1 corresponds to the highest
-possible value.}
+\item{timeTrain}{Vector of values of the periodic variable for training
+observations, where 0 corresponds to the lowest possible value and 1
+corresponds to the highest possible value.}
 
 \item{xTest}{Matrix of measurements for test data, observations in rows
 and features in columns.}
 
-\item{nKnots}{Number of internal knots to use for the periodic smoothing spline.}
+\item{nKnots}{Number of internal knots to use for the periodic smoothing
+spline.}
 
 \item{nTime}{Number of time-points by which to discretize the time-dependent
-behavior of each feature. Corresponds to the number of rows in the matrix for
-which the SPCs will be calculated.}
+behavior of each feature. Corresponds to the number of rows in the matri
+for which the SPCs will be calculated.}
 
-\item{useSpc}{Logical indicating whether to use \code{SPC} (default) or \code{svd}.}
+\item{useSpc}{Logical indicating whether to use \code{\link[PMA:SPC]{PMA::SPC()}} (default) or
+\code{\link[base:svd]{base::svd()}}.}
 
-\item{sumabsv}{L1-constraint on the SPCs, passed to \code{SPC}.}
+\item{sumabsv}{L1-constraint on the SPCs, passed to \code{\link[PMA:SPC]{PMA::SPC()}}.}
 
 \item{orth}{Logical indicating whether to require left singular vectors
-be orthogonal to each other, passed to \code{SPC}.}
+be orthogonal to each other, passed to \code{\link[PMA:SPC]{PMA::SPC()}}.}
 
-\item{nSpc}{Vector of the number of SPCs to use for prediction. If \code{NA} (default),
-\code{nSpc} will become \code{1:K}, where \code{K} is the number of SPCs in \code{spcResult}.
-Each value in \code{nSpc} will correspond to one prediction for each test observation.
-A value of 2 means that the prediction will be based on the first 2 SPCs.}
+\item{nSpc}{Vector of the number of SPCs to use for prediction. If \code{NA}
+(default), \code{nSpc} will become \code{1:K}, where \code{K} is the number of SPCs in
+\code{spcResult}. Each value in \code{nSpc} will correspond to one prediction for
+each test observation. A value of 2 means that the prediction will be based
+on the first 2 SPCs.}
 
-\item{timeRange}{Vector of values of the periodic variable at which to calculate likelihood.
-The time with the highest likelihood is used as the initial value for the
-MLE optimizer.}
+\item{timeRange}{Vector of values of the periodic variable at which to
+calculate likelihood. The time with the highest likelihood is used as the
+initial value for the MLE optimizer.}
 }
 \value{
-\item{fitResult}{Result from \code{zeitzeigerFit}}
-\item{spcResult}{Result from \code{zeitzeigerSpc}}
-\item{predResult}{Result from \code{zeitzeigerPredict}}
+\item{fitResult}{Output of \code{\link[=zeitzeigerFit]{zeitzeigerFit()}}}
+\item{spcResult}{Output of \code{\link[=zeitzeigerSpc]{zeitzeigerSpc()}}}
+\item{predResult}{Output of \code{\link[=zeitzeigerPredict]{zeitzeigerPredict()}}}
 }
 \description{
-\code{zeitzeiger} sequentially calls \code{zeitzeigerFit}, \code{zeitzeigerSpc},
-and \code{zeitzeigerPredict}.
+Train and test a ZeitZeiger predictor, calling the necessary functions.
 }
 \seealso{
-\code{\link{zeitzeigerFit}}, \code{\link{zeitzeigerSpc}}, \code{\link{zeitzeigerPredict}}
+\code{\link[=zeitzeigerFit]{zeitzeigerFit()}}, \code{\link[=zeitzeigerSpc]{zeitzeigerSpc()}}, \code{\link[=zeitzeigerPredict]{zeitzeigerPredict()}}
 }

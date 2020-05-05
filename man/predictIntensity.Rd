@@ -10,20 +10,22 @@ predictIntensity(fitCoef, time, period = 1, knots = NULL)
 \item{fitCoef}{Matrix of coefficients from the spline fits, where rows
 correspond to features and columns correspond to variables in the model.}
 
-\item{time}{Vector of values of the periodic variable for the observations, where 0
-corresponds to the lowest possible value and 1 corresponds to the highest possible value.}
+\item{time}{Vector of values of the periodic variable for the observations,
+where 0 corresponds to the lowest possible value and 1 corresponds to the
+highest possible value.}
 
 \item{period}{Period for the periodic variable.}
 
-\item{knots}{Optional vector of knots. This argument is designed for internal use.}
+\item{knots}{Optional vector of knots. This argument is designed for internal
+use.}
 }
 \value{
-Matrix of predicted measurements, where rows correspond to time-points
-and columns correspond to features.
+Matrix of predicted measurements, where rows correspond to
+time-points and columns correspond to features.
 }
 \description{
-\code{predictIntensity} calculates the expected value of each.
+Calculate the expected value of each feature.
 }
 \seealso{
-\code{\link{zeitzeigerFit}}
+\code{\link[=zeitzeigerFit]{zeitzeigerFit()}}
 }

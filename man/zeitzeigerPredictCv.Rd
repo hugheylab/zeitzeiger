@@ -4,49 +4,59 @@
 \alias{zeitzeigerPredictCv}
 \title{Predict corresponding time for observations on cross-validation}
 \usage{
-zeitzeigerPredictCv(x, time, foldid, spcResultList, nKnots = 3,
-  nSpc = NA, timeRange = seq(0, 1 - 0.01, 0.01), dopar = TRUE)
+zeitzeigerPredictCv(
+  x,
+  time,
+  foldid,
+  spcResultList,
+  nKnots = 3,
+  nSpc = NA,
+  timeRange = seq(0, 1 - 0.01, 0.01),
+  dopar = TRUE
+)
 }
 \arguments{
-\item{x}{Matrix of measurements, observations in rows and features in columns.}
+\item{x}{Matrix of measurements, observations in rows and features in
+columns.}
 
-\item{time}{Vector of values of the periodic variable for observations, where 0
-corresponds to the lowest possible value and 1 corresponds to the highest
+\item{time}{Vector of values of the periodic variable for observations, where
+0 corresponds to the lowest possible value and 1 corresponds to the highest
 possible value.}
 
-\item{foldid}{Vector of values indicating which fold each observation is in.}
+\item{foldid}{Vector of values indicating the fold to which each observation
+belongs.}
 
-\item{spcResultList}{Result from \code{zeitzeigerSpcCv}.}
+\item{spcResultList}{Output of \code{\link[=zeitzeigerSpcCv]{zeitzeigerSpcCv()}}.}
 
-\item{nKnots}{Number of internal knots to use for the periodic smoothing spline.}
+\item{nKnots}{Number of internal knots to use for the periodic smoothing
+spline.}
 
-\item{nSpc}{Vector of the number of SPCs to use for prediction. If \code{NA} (default),
-\code{nSpc} will become \code{1:K}, where \code{K} is the number of SPCs in \code{spcResult}.
-Each value in \code{nSpc} will correspond to one prediction for each test observation.
-A value of 2 means that the prediction will be based on the first 2 SPCs.}
+\item{nSpc}{Vector of the number of SPCs to use for prediction. If \code{NA}
+(default), \code{nSpc} will become \code{1:K}, where \code{K} is the number of SPCs in
+\code{spcResult}. Each value in \code{nSpc} will correspond to one prediction for
+each test observation. A value of 2 means that the prediction will be based
+on the first 2 SPCs.}
 
-\item{timeRange}{Vector of values of the periodic variable at which to calculate likelihood.
-The time with the highest likelihood is used as the initial value for the
-MLE optimizer.}
+\item{timeRange}{Vector of values of the periodic variable at which to
+calculate likelihood. The time with the highest likelihood is used as the
+initial value for the MLE optimizer.}
 
 \item{dopar}{Logical indicating whether to process the folds in parallel.
-Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.}
+Use \code{\link[doParallel:registerDoParallel]{doParallel::registerDoParallel()}} to register the parallel backend.}
 }
 \value{
-A list of the same structure as \code{zeitzeigerPredict}, combining the results
-from each fold of cross-validation.
-\item{timeDepLike}{3-D array of likelihood, with dimensions for each observation,
-each element of \code{nSpc}, and each element of \code{timeRange}.}
-\item{mleFit}{List (for each element in \code{nSpc}) of lists (for each observation)
-of \code{mle2} objects.}
-\item{timePred}{Matrix of predicted times for observations by values of \code{nSpc}.}
+A list of the same structure as \code{\link[=zeitzeigerPredict]{zeitzeigerPredict()}}, combining the
+results from each fold of cross-validation.
+\item{timeDepLike}{3-D array of likelihood, with dimensions for each
+observation, each element of \code{nSpc}, and each element of \code{timeRange}.}
+\item{mleFit}{List (for each element in \code{nSpc}) of lists (for each
+observation) of \code{mle2} objects.}
+\item{timePred}{Matrix of predicted times for observations by values of
+\code{nSpc}.}
 }
 \description{
-\code{zeitzeigerPredictCv} calls \code{zeitzeigerPredict} for each fold of
-cross-validation.
-By default, if a parallel backend is registered, this function processes the
-folds in parallel.
+Make predictions for each observation for each fold of cross-validation.
 }
 \seealso{
-\code{\link{zeitzeigerPredict}}, \code{\link{zeitzeigerFitCv}}, \code{\link{zeitzeigerSpcCv}}
+\code{\link[=zeitzeigerPredict]{zeitzeigerPredict()}}, \code{\link[=zeitzeigerFitCv]{zeitzeigerFitCv()}}, \code{\link[=zeitzeigerSpcCv]{zeitzeigerSpcCv()}}
 }

@@ -21,34 +21,37 @@ zeitzeigerPredictGivenDensity = function(xTest, xFitMean, xFitResid, knots,
 
 #' Predict corresponding time for test observations
 #'
-#' `zeitzeigerPredict` predicts the value of the periodic variable
-#' for test observations, given training data and SPCs. This function
-#' calls `\link[bbmle]{mle2}`.
+#' Predict the value of the periodic variable for test observations given
+#' training data and SPCs.
 #'
 #' @param xTrain Matrix of measurements for training data, observations in rows
-#' and features in columns.
-#' @param timeTrain Vector of values of the periodic variable for training observations,
-#' where 0 corresponds to the lowest possible value and 1 corresponds to the highest
-#' possible value.
-#' @param xTest Matrix of measurements for test data, observations in rows
-#' and features in columns.
-#' @param spcResult Result from `zeitzeigerSpc`.
-#' @param nKnots Number of internal knots to use for the periodic smoothing spline.
-#' @param nSpc Vector of the number of SPCs to use for prediction. If `NA` (default),
-#' `nSpc` will become `1:K`, where `K` is the number of SPCs in `spcResult`.
-#' Each value in `nSpc` will correspond to one prediction for each test observation.
-#' A value of 2 means that the prediction will be based on the first 2 SPCs.
-#' @param timeRange Vector of values of the periodic variable at which to calculate likelihood.
-#' The time with the highest likelihood is used as the initial value for the MLE optimizer.
+#'   and features in columns.
+#' @param timeTrain Vector of values of the periodic variable for training
+#'   observations, where 0 corresponds to the lowest possible value and 1
+#'   corresponds to the highest possible value.
+#' @param xTest Matrix of measurements for test data, observations in rows and
+#'   features in columns.
+#' @param spcResult Output of [zeitzeigerSpc()].
+#' @param nKnots Number of internal knots to use for the periodic smoothing
+#'   spline.
+#' @param nSpc Vector of the number of SPCs to use for prediction. If `NA`
+#'   (default), `nSpc` will become `1:K`, where `K` is the number of SPCs in
+#'   `spcResult`. Each value in `nSpc` will correspond to one prediction for
+#'   each test observation. A value of 2 means that the prediction will be based
+#'   on the first 2 SPCs.
+#' @param timeRange Vector of values of the periodic variable at which to
+#'   calculate likelihood. The time with the highest likelihood is used as the
+#'   initial value for the MLE optimizer.
 #'
 #' @return
-#' \item{timeDepLike}{3-D array of likelihood, with dimensions for each test observation,
-#' each element of `nSpc`, and each element of `timeRange`.}
-#' \item{mleFit}{List (for each element in `nSpc`) of lists (for each test observation)
-#' of `mle2` objects.}
-#' \item{timePred}{Matrix of predicted times for test observations by values of `nSpc`.}
+#' \item{timeDepLike}{3-D array of likelihood, with dimensions for each test
+#'   observation, each element of `nSpc`, and each element of `timeRange`.}
+#' \item{mleFit}{List (for each element in `nSpc`) of lists (for each test
+#'   observation) of `mle2` objects.}
+#' \item{timePred}{Matrix of predicted times for test observations by values of
+#'   `nSpc`.}
 #'
-#' @seealso `\link{zeitzeigerFit}`, `\link{zeitzeigerSpc}`
+#' @seealso [zeitzeigerFit()], [zeitzeigerSpc()]
 #'
 #' @export
 zeitzeigerPredict = function(xTrain, timeTrain, xTest, spcResult, nKnots = 3,
@@ -84,38 +87,40 @@ zeitzeigerPredict = function(xTrain, timeTrain, xTest, spcResult, nKnots = 3,
 
 #' Train and test a ZeitZeiger predictor
 #'
-#' `zeitzeiger` sequentially calls `zeitzeigerFit`, `zeitzeigerSpc`,
-#' and `zeitzeigerPredict`.
+#' Train and test a ZeitZeiger predictor, calling the necessary functions.
 #'
 #' @param xTrain Matrix of measurements for training data, observations in rows
-#' and features in columns.
-#' @param timeTrain Vector of values of the periodic variable for training observations,
-#' where 0 corresponds to the lowest possible value and 1 corresponds to the highest
-#' possible value.
+#'   and features in columns.
+#' @param timeTrain Vector of values of the periodic variable for training
+#'   observations, where 0 corresponds to the lowest possible value and 1
+#'   corresponds to the highest possible value.
 #' @param xTest Matrix of measurements for test data, observations in rows
 #' and features in columns.
-#' @param nKnots Number of internal knots to use for the periodic smoothing spline.
+#' @param nKnots Number of internal knots to use for the periodic smoothing
+#'   spline.
 #' @param nTime Number of time-points by which to discretize the time-dependent
-#' behavior of each feature. Corresponds to the number of rows in the matrix for
-#' which the SPCs will be calculated.
-#' @param useSpc Logical indicating whether to use `SPC` (default) or `svd`.
-#' @param sumabsv L1-constraint on the SPCs, passed to `SPC`.
+#'   behavior of each feature. Corresponds to the number of rows in the matri
+#'   for which the SPCs will be calculated.
+#' @param useSpc Logical indicating whether to use [PMA::SPC()] (default) or
+#'   [base::svd()].
+#' @param sumabsv L1-constraint on the SPCs, passed to [PMA::SPC()].
 #' @param orth Logical indicating whether to require left singular vectors
-#' be orthogonal to each other, passed to `SPC`.
-#' @param nSpc Vector of the number of SPCs to use for prediction. If `NA` (default),
-#' `nSpc` will become `1:K`, where `K` is the number of SPCs in `spcResult`.
-#' Each value in `nSpc` will correspond to one prediction for each test observation.
-#' A value of 2 means that the prediction will be based on the first 2 SPCs.
-#' @param timeRange Vector of values of the periodic variable at which to calculate likelihood.
-#' The time with the highest likelihood is used as the initial value for the
-#' MLE optimizer.
+#'   be orthogonal to each other, passed to [PMA::SPC()].
+#' @param nSpc Vector of the number of SPCs to use for prediction. If `NA`
+#'   (default), `nSpc` will become `1:K`, where `K` is the number of SPCs in
+#'   `spcResult`. Each value in `nSpc` will correspond to one prediction for
+#'   each test observation. A value of 2 means that the prediction will be based
+#'   on the first 2 SPCs.
+#' @param timeRange Vector of values of the periodic variable at which to
+#'   calculate likelihood. The time with the highest likelihood is used as the
+#'   initial value for the MLE optimizer.
 #'
 #' @return
-#' \item{fitResult}{Result from `zeitzeigerFit`}
-#' \item{spcResult}{Result from `zeitzeigerSpc`}
-#' \item{predResult}{Result from `zeitzeigerPredict`}
+#' \item{fitResult}{Output of [zeitzeigerFit()]}
+#' \item{spcResult}{Output of [zeitzeigerSpc()]}
+#' \item{predResult}{Output of [zeitzeigerPredict()]}
 #'
-#' @seealso `\link{zeitzeigerFit}`, `\link{zeitzeigerSpc}`, `\link{zeitzeigerPredict}`
+#' @seealso [zeitzeigerFit()], [zeitzeigerSpc()], [zeitzeigerPredict()]
 #'
 #' @export
 zeitzeiger = function(xTrain, timeTrain, xTest, nKnots = 3, nTime = 10,
@@ -133,59 +138,65 @@ zeitzeiger = function(xTrain, timeTrain, xTest, nKnots = 3, nTime = 10,
 
 #' Train and test a ZeitZeiger predictor, accounting for batch effects
 #'
-#' `zeitzeigerBatch` trains and tests a predictor on multiple datasets
-#' independently, using `\link[sva]{ComBat}` to correct for batch effects prior
-#' to running `zeitzeiger`. This function requires the `\link[metapredict]{metapredict}`
-#' package.
+#' Train and test a predictor on multiple datasets independently, using
+#' [sva::ComBat()] to correct for batch effects prior to running [zeitzeiger()].
+#' This function requires the `metapredict` package.
 #'
 #' @param ematList Named list of matrices of measurements, one for each dataset,
-#' some of which will be for training, others for testing. Each matrix should
-#' have rownames corresponding to sample names and colnames corresponding to
-#' feature names.
+#'   some of which will be for training, others for testing. Each matrix should
+#'   have rownames corresponding to sample names and colnames corresponding to
+#'   feature names.
 #' @param trainStudyNames Character vector of names in `ematList` corresponding
-#' to datasets for training.
-#' @param sampleMetadata data.frame containing relevant information for each sample
-#' across all datasets. Must have a column named `sample`.
+#'   to datasets for training.
+#' @param sampleMetadata data.frame containing relevant information for each
+#'   sample across all datasets. Must have a column named `sample`.
 #' @param studyColname Name of column in `sampleMetdata` that contains
-#' information about which dataset each sample belongs to.
+#'   information about which dataset each sample belongs to.
 #' @param batchColname Name of column in `sampleMetdata` that contains
-#' information about which dataset each sample belongs to. This should correspond
-#' to the names of `ematList`, and will often be the same as
-#' `studyColname`, but doesn't have to be.
-#' @param timeColname Name of column in `sampleMetdata` that contains
-#' the values of the periodic variable.
-#' @param nKnots Number of internal knots to use for the periodic smoothing spline.
+#'   information about which dataset each sample belongs to. This should
+#'   correspond to the names of `ematList`, and will often be the same as
+#'   `studyColname`, but doesn't have to be.
+#' @param timeColname Name of column in `sampleMetdata` that contains the values
+#'   of the periodic variable.
+#' @param nKnots Number of internal knots to use for the periodic smoothing
+#'   spline.
 #' @param nTime Number of time-points by which to discretize the time-dependent
-#' behavior of each feature. Corresponds to the number of rows in the matrix for
-#' which the SPCs will be calculated.
-#' @param useSpc Logical indicating whether to use `SPC` (default) or `svd`.
-#' @param sumabsv L1-constraint on the SPCs, passed to `SPC`.
+#'   behavior of each feature. Corresponds to the number of rows in the matrix
+#'   for which the SPCs will be calculated.
+#' @param useSpc Logical indicating whether to use [PMA::SPC()] (default) or
+#'   [base::svd()].
+#' @param sumabsv L1-constraint on the SPCs, passed to [PMA::SPC()].
 #' @param orth Logical indicating whether to require left singular vectors
-#' be orthogonal to each other, passed to `SPC`.
-#' @param nSpc Vector of the number of SPCs to use for prediction. If `NA` (default),
-#' `nSpc` will become `1:K`, where `K` is the number of SPCs in `spcResult`.
-#' Each value in `nSpc` will correspond to one prediction for each test observation.
-#' A value of 2 means that the prediction will be based on the first 2 SPCs.
-#' @param timeRange Vector of values of the periodic variable at which to calculate likelihood.
-#' The time with the highest likelihood is used as the initial value for the
-#' MLE optimizer.
+#'   be orthogonal to each other, passed to [PMA::SPC()].
+#' @param nSpc Vector of the number of SPCs to use for prediction. If `NA`
+#'   (default), `nSpc` will become `1:K`, where `K` is the number of SPCs in
+#'   `spcResult`. Each value in `nSpc` will correspond to one prediction for
+#'   each test observation. A value of 2 means that the prediction will be based
+#'   on the first 2 SPCs.
+#' @param timeRange Vector of values of the periodic variable at which to
+#'   calculate likelihood. The time with the highest likelihood is used as the
+#'   initial value for the MLE optimizer.
 #' @param covariateName Name of column(s) in `sampleMetadata` containing
-#' information about other covariates for `ComBat`, besides `batchColname`.
-#' If `NA` (default), then there are no other covariates.
-#' @param featuresExclude Named list of character vectors corresponding to features
-#' to exclude from being used for prediction for the respective test datasets.
-#' @param dopar Logical indicating whether to process the folds in parallel.
-#' Use `\link[doParallel]{registerDoParallel}` to register the parallel backend.
+#'   information about other covariates for [sva::ComBat()], besides
+#'   `batchColname`. If `NA` (default), then there are no other covariates.
+#' @param featuresExclude Named list of character vectors corresponding to
+#'   features to exclude from being used for prediction for the respective test
+#'   datasets.
+#' @param dopar Logical indicating whether to process the folds in parallel. Use
+#'   [doParallel::registerDoParallel()] to register the parallel backend.
 
 #' @return
-#' \item{spcResultList}{List of results from `zeitzeigerSpc`, one for each test dataset.}
-#' \item{timeDepLike}{3-D array of likelihood, with dimensions for each test observation
-#' (across all datasets), each element of `nSpc`, and each element of `timeRange`.}
-#' \item{mleFit}{List (for each element in `nSpc`) of lists (for each test observation)
-#' of `mle2` objects.}
-#' \item{timePred}{Matrix of predicted times for test observations by values of `nSpc`.}
+#' \item{spcResultList}{List of output from [zeitzeigerSpc()], one for each test
+#'   dataset.}
+#' \item{timeDepLike}{3-D array of likelihood, with dimensions for each test
+#'   observation (across all datasets), each element of `nSpc`, and each element
+#'   of `timeRange`.}
+#' \item{mleFit}{List (for each element in `nSpc`) of lists (for each test
+#'   observation) of `mle2` objects.}
+#' \item{timePred}{Matrix of predicted times for test observations by values of
+#'   `nSpc`.}
 #'
-#' @seealso `\link{zeitzeiger}`, `\link[metapredict]{metapredict}`, `\link[sva]{ComBat}`
+#' @seealso [zeitzeiger()], [metapredict::metapredict()], [sva::ComBat()]
 #'
 #' @export
 zeitzeigerBatch = function(ematList, trainStudyNames, sampleMetadata, studyColname,
@@ -252,20 +263,23 @@ zeitzeigerBatch = function(ematList, trainStudyNames, sampleMetadata, studyColna
 
 #' Combine predictions into an ensemble using the log-likelihood
 #'
-#' `zeitzeigerEnsembleLikelihood` makes predictions by finding the maximum of the sum of the
-#' log-likelihoods.
+#' Make predictions by finding the maximum of the sum of the log-likelihoods.
 #'
-#' @param timeDepLike List or 3-D array of time-dependent likelihood from `zeitzeigerPredict`.
-#' If a list, then each element (for each member of the ensemble) should be a matrix in which rows
-#' correspond to observations and columns correspond to time-points. If a 3-D array, the three
-#' dimensions should correspond to observations, time-points, and members of the ensemble.
-#' @param timeRange Vector of time-points at which the likelihood was calculated.
+#' @param timeDepLike List or 3-D array of time-dependent likelihood from
+#'   [zeitzeigerPredict()]. If a list, then each element (for each member of the
+#'   ensemble) should be a matrix in which rows correspond to observations and
+#'   columns correspond to time-points. If a 3-D array, the three dimensions
+#'   should correspond to observations, time-points, and members of the
+#'   ensemble.
+#' @param timeRange Vector of time-points at which the likelihood was
+#'   calculated.
 #'
 #' @return
 #' \item{timeDepLike}{Matrix of likelihood for observations by time-points.}
-#' \item{timePred}{Vector of predicted times. Each predicted time will be an element of timeRange.}
+#' \item{timePred}{Vector of predicted times. Each predicted time will be an
+#'   element of timeRange.}
 #'
-#' @seealso `\link{zeitzeigerPredict}`, `\link{zeitzeigerEnsembleMean}`
+#' @seealso [zeitzeigerPredict()], [zeitzeigerEnsembleMean()]
 #'
 #' @export
 zeitzeigerEnsembleLikelihood = function(timeDepLike, timeRange) {
@@ -285,19 +299,22 @@ zeitzeigerEnsembleLikelihood = function(timeDepLike, timeRange) {
 
 #' Combine predictions into an ensemble using the circular mean
 #'
-#' `zeitzeigerEnsembleMean` makes predictions by calculating the circular mean of the predictions
-#' across members of the ensemble.
+#' Make predictions by calculating the circular mean of the predictions across
+#'   members of the ensemble.
 #'
-#' @param timePredInput Matrix of predicted times in which rows correspond to observations and
-#' columns correspond to members of the ensemble.
-#' @param timeMax Maximum value of the periodic variable, i.e., the value that is equivalent to zero.
-#' @param na.rm Logical indicating whether `NA` values should be removed from the calculation.
+#' @param timePredInput Matrix of predicted times in which rows correspond to
+#'   observations and columns correspond to members of the ensemble.
+#' @param timeMax Maximum value of the periodic variable, i.e., the value that
+#'   is equivalent to zero.
+#' @param na.rm Logical indicating whether `NA` values should be removed from
+#'   the calculation.
 #'
-#' @return Matrix with a row for each observation and columns for the predicted time and the normalized
-#' magnitude of the circular mean. The latter can range from 0 to 1, with 1 indicating perfect agreement
-#' among members of the ensemble.
+#' @return Matrix with a row for each observation and columns for the predicted
+#'   time and the normalized magnitude of the circular mean. The latter can
+#'   range from 0 to 1, with 1 indicating perfect agreement among members of the
+#'   ensemble.
 #'
-#' @seealso `\link{zeitzeigerPredict}`, `\link{zeitzeigerEnsembleLikelihood}`
+#' @seealso [zeitzeigerPredict()], [zeitzeigerEnsembleLikelihood()]
 #'
 #' @export
 zeitzeigerEnsembleMean = function(timePredInput, timeMax = 1, na.rm = TRUE) {

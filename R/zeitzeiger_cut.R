@@ -1,22 +1,22 @@
 #' Estimate peaks and troughs
 #'
 #' DEPRECATED: We recommend instead using
-#' [`limorhyde`](https://github.com/hugheylab/limorhyde), which has support for
+#' [limorhyde](https://github.com/hugheylab/limorhyde), which has support for
 #' cosinor and periodic splines, in combination with methods such as
-#' [`limma`](https://doi.org/doi:10.18129/B9.bioc.limma).
+#' [limma](https://doi.org/doi:10.18129/B9.bioc.limma).
 #'
-#' `zeitzeigerExtrema` estimates the extremum (peak or trough) for each feature
-#' by using `\link[stats]{optimize}` and the periodic spline fit. Directly calling
-#' this function is deprecated. Instead, use `\link{zeitzeigerProp}`.
+#' Estimate the extremum (peak or trough) for each feature by using
+#' [stats::optimize()] and the periodic spline fit. Directly calling
+#' this function is deprecated. Instead, use [zeitzeigerProp()].
 #'
-#' @param fitResult Output of `zeitzeigerFit`.
+#' @param fitResult Output of [zeitzeigerFit()].
 #' @param maximum Logical indicating whether to find maximum or minimum.
 #' @param dopar Logical indicating whether to process features in parallel.
-#' Use `\link[doParallel]{registerDoParallel}` to register the parallel backend.
+#'   Use [doParallel::registerDoParallel()] to register the parallel backend.
 #'
 #' @return Matrix with a row for each feature and columns for location and value.
 #'
-#' @seealso `\link{zeitzeigerFit}`, `\link{zeitzeigerProp}`
+#' @seealso [zeitzeigerFit()], [zeitzeigerProp()]
 #'
 #' @export
 zeitzeigerExtrema = function(fitResult, maximum = TRUE, dopar = TRUE) {
@@ -35,17 +35,17 @@ zeitzeigerExtrema = function(fitResult, maximum = TRUE, dopar = TRUE) {
 #' cosinor and periodic splines, in combination with methods such as
 #' [`limma`](https://doi.org/doi:10.18129/B9.bioc.limma).
 #'
-#' `zeitzeigerSnr` calculates the signal-to-noise ratio of the spline fit
-#' for each feature. The SNR is calculated as the peak-to-trough difference,
-#' divided by the square root of the mean of the squared residuals.
+#' Calculate the signal-to-noise ratio of the spline fit for each feature. The
+#' SNR is calculated as the peak-to-trough difference, divided by the square
+#' root of the mean of the squared residuals.
 #'
-#' @param fitResult Output of `zeitzeigerFit`.
+#' @param fitResult Output of [zeitzeigerFit()].
 #' @param dopar Logical indicating whether to process features in parallel.
-#' Use `\link[doParallel]{registerDoParallel}` to register the parallel backend.
+#'   Use [doParallel::registerDoParallel()] to register the parallel backend.
 #'
 #' @return Vector of signal-to-noise values.
 #'
-#' @seealso `\link{zeitzeigerFit}`, `\link{zeitzeigerProp}`
+#' @seealso [zeitzeigerFit()], [zeitzeigerProp()]
 #'
 #' @export
 zeitzeigerSnr = function(fitResult, dopar = TRUE) {
@@ -57,22 +57,22 @@ zeitzeigerSnr = function(fitResult, dopar = TRUE) {
 #' Calculate the rhythmic properties of each feature
 #'
 #' DEPRECATED: We recommend instead using
-#' [`limorhyde`](https://github.com/hugheylab/limorhyde), which has support for
+#' [limorhyde](https://github.com/hugheylab/limorhyde), which has support for
 #' cosinor and periodic splines, in combination with methods such as
-#' [`limma`](https://doi.org/doi:10.18129/B9.bioc.limma).
+#' [limma](https://doi.org/doi:10.18129/B9.bioc.limma).
 #'
-#' `zeitzeigerProp` calculates the rhythmic properties of each feature's
-#' spline fit: location and value of peak, location and value of trough,
-#' amplitude measured peak to trough, and signal-to-noise ratio (amplitude
-#' divided by the square root of the mean of the squared residuals).
+#' Calculate the rhythmic properties of each feature's spline fit: location and
+#' value of peak, location and value of trough, amplitude measured peak to
+#' trough, and signal-to-noise ratio (amplitude divided by the square root of
+#' the mean of the squared residuals).
 #'
-#' @param fitResult Output of `zeitzeigerFit`.
+#' @param fitResult Output of [zeitzeigerFit()].
 #' @param dopar Logical indicating whether to process features in parallel.
-#' Use `\link[doParallel]{registerDoParallel}` to register the parallel backend.
+#'   Use [doParallel::registerDoParallel()] to register the parallel backend.
 #'
-#' @return Data frame with a row for each feature.
+#' @return `data.frame` with a row for each feature.
 #'
-#' @seealso `\link{zeitzeigerFit}`
+#' @seealso [zeitzeigerFit()]
 #'
 #' @export
 zeitzeigerProp = function(fitResult, dopar = TRUE) {
@@ -89,31 +89,34 @@ zeitzeigerProp = function(fitResult, dopar = TRUE) {
 #' Estimate significance of periodicity by permutation testing
 #'
 #' DEPRECATED: We recommend instead using
-#' [`limorhyde`](https://github.com/hugheylab/limorhyde), which has support for
+#' [limorhyde](https://github.com/hugheylab/limorhyde), which has support for
 #' cosinor and periodic splines, in combination with methods such as
-#' [`limma`](https://doi.org/doi:10.18129/B9.bioc.limma).
+#' [limma](https://doi.org/doi:10.18129/B9.bioc.limma).
 #'
-#' `zeitzeigerSig` estimates the statistical significance of the periodic
-#' smoothing spline fit. At each permutation, the time vector is scrambled and then
-#' zeitzeigerFit is used to fit a periodic smoothing spline for each feature as a
-#' function of time. The p-value for each feature is calculated based on the
-#' of permutations that had a signal-to-noise ratio at least as large as the
-#' observed signal-to-noise ratio, adjusted by the method of Phipson and Smyth (2010).
-#' Make sure to first register the parallel backend using `registerDoParallel`.
-#' For genome-scale data, this will be slow.
+#' Estimate the statistical significance of the periodic smoothing spline fit.
+#' At each permutation, the time vector is scrambled and then [zeitzeigerFit()]
+#' is used to fit a periodic smoothing spline for each feature as a function of
+#' time. The p-value for each feature is calculated based on the of permutations
+#' that had a signal-to-noise ratio at least as large as the observed
+#' signal-to-noise ratio, adjusted by the method of
+#' [Phipson and Smyth (2010)](https://doi.org/10.2202/1544-6115.1585). Make sure
+#' to first register the parallel backend using
+#' [doParallel::registerDoParallel()]. For genome-scale data, this will be slow.
 #'
-#' @param x Matrix of measurements, with observations in rows and features in columns.
-#' Missing values are allowed.
-#' @param time Vector of values of the periodic variable for the observations, where 0
-#' corresponds to the lowest possible value and 1 corresponds to the highest possible value.
-#' @param nKnots Number of internal knots to use for the periodic smoothing spline.
+#' @param x Matrix of measurements, with observations in rows and features in
+#'   columns. Missing values are allowed.
+#' @param time Vector of values of the periodic variable for the observations,
+#'   where 0 corresponds to the lowest possible value and 1 corresponds to the
+#'   highest possible value.
+#' @param nKnots Number of internal knots to use for the periodic smoothing
+#'   spline.
 #' @param nIter Number of permutations.
-#' @param dopar Logical indicating whether to process features in parallel.
-#' Use `\link[doParallel]{registerDoParallel}` to register the parallel backend.
+#' @param dopar Logical indicating whether to process features in parallel. Use
+#'   [doParallel::registerDoParallel()] to register the parallel backend.
 #'
 #' @return Vector of p-values.
 #'
-#' @seealso `\link{zeitzeigerFit}`
+#' @seealso [zeitzeigerFit()]
 #'
 #' @export
 zeitzeigerSig = function(x, time, nKnots = 3, nIter = 200, dopar = TRUE) {

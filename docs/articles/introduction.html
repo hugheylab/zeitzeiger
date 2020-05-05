@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zeitzeiger</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.2</span>
       </span>
     </div>
 
@@ -42,9 +42,6 @@
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
-</li>
-<li>
-  <a href="../articles/zeitzeiger.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -86,9 +83,8 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to ZeitZeiger</h1>
-                        <h4 class="author">Jake Hughey</h4>
             
-            <h4 class="date">2020-05-01</h4>
+            <h4 class="date">2020-05-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/hugheylab/zeitzeiger/blob/master/vignettes/introduction.Rmd"><code>vignettes/introduction.Rmd</code></a></small>
       <div class="hidden name"><code>introduction.Rmd</code></div>
@@ -153,7 +149,7 @@
 <div id="train-and-test-a-zeitzeiger-predictor" class="section level2">
 <h2 class="hasAnchor">
 <a href="#train-and-test-a-zeitzeiger-predictor" class="anchor"></a>Train and test a ZeitZeiger predictor</h2>
-<p>ZeitZeiger has three main steps: <code>zeitzeigerFit</code>, <code>zeitzeigerSpc</code>, and <code>zeitzeigerPredict</code>. Each function has several options, please see the help and Hughey et al. (2016) for more details. The preferred way to use them is to call each function separately. This lets you change the parameters for a later step without re-running the earlier steps.</p>
+<p>ZeitZeiger has three main steps: <code>zeitzeigerFit</code>, <code>zeitzeigerSpc</code>, and <code>zeitzeigerPredict</code>. Each function has several options, please see the help and <a href="https://doi.org/10.1093/nar/gkw030">Hughey et al. (2016)</a> for more details. The preferred way to use them is to call each function separately. This lets you change the parameters for a later step without re-running the earlier steps.</p>
 <p><code>zeitzeigerFit</code> uses the training data to fit a periodic smoothing spline to the behavior of each feature as a function of time. <code>zeitzeigerSpc</code> then uses the spline fits to calculate sparse principal components (SPCs) for how the features change over time. <code>zeitzeigerPredict</code> then uses the training data and the SPCs to predict the corresponding time for each test observation. The two main parameters of ZeitZeiger are <code>sumabsv</code>, which controls the amount of regularization, and <code>nSPC</code>, which controls how many SPCs are used for prediction.</p>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">fitResult</span> <span class="kw">=</span> <span class="fu"><a href="../reference/zeitzeigerFit.html">zeitzeigerFit</a></span>(<span class="no">xTrain</span>, <span class="no">timeTrain</span>)
 <span class="no">spcResult</span> <span class="kw">=</span> <span class="fu"><a href="../reference/zeitzeigerSpc.html">zeitzeigerSpc</a></span>(<span class="no">fitResult</span>$<span class="no">xFitMean</span>, <span class="no">fitResult</span>$<span class="no">xFitResid</span>, <span class="kw">sumabsv</span> <span class="kw">=</span> <span class="fl">1</span>)

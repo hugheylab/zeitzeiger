@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">zeitzeiger</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.2</span>
       </span>
     </div>
 
@@ -82,9 +82,6 @@
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
-</li>
-<li>
-  <a href="articles/zeitzeiger.html">Get started</a>
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
@@ -146,22 +143,18 @@
 </li>
 </ul>
 <p>You only have to do this once.</p>
-<p>Alternatively, you can enter the following command each time you want to install or update the package.</p>
+<p>Alternatively, enter the following command each time you want to install or update the package.</p>
 <div class="sourceCode" id="cb1"><html><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="kw">repos</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/options.html">getOption</a></span>(<span class="st">'repos'</span>), <span class="st">'https://hugheylab.github.io/drat/'</span>))</pre></html></div>
 <p>Now you can install the package.</p>
 <div class="sourceCode" id="cb2"><html><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/setRepositories.html">setRepositories</a></span>(<span class="kw">ind</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>:<span class="fl">5</span>, <span class="fl">9</span>))
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">'zeitzeiger'</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">'source'</span>)</pre></html></div>
 <p>You can update the package using <code><a href="https://rdrr.io/r/utils/update.packages.html">update.packages()</a></code>.</p>
-</div>
-<div id="docker" class="section level2">
-<h2 class="hasAnchor">
-<a href="#docker" class="anchor"></a>Docker</h2>
-<p>You can also use a pre-built <a href="https://hub.docker.com/r/hugheylab/hugheyverse">docker image</a>, which has all dependencies installed.</p>
+<p>There’s also a pre-built <a href="https://hub.docker.com/r/hugheylab/hugheyverse">docker image</a>, which has all dependencies installed.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="ex">docker</span> pull hugheylab/hugheyverse</a></code></pre></div>
 </div>
-<div id="getting-started" class="section level2">
+<div id="usage" class="section level2">
 <h2 class="hasAnchor">
-<a href="#getting-started" class="anchor"></a>Getting started</h2>
+<a href="#usage" class="anchor"></a>Usage</h2>
 <p>See the documentation and the vignette.</p>
 <div class="sourceCode" id="cb4"><html><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">'zeitzeiger'</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">'introduction'</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">'zeitzeiger'</span>)

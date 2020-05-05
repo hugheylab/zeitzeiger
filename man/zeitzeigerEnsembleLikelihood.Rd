@@ -7,21 +7,24 @@
 zeitzeigerEnsembleLikelihood(timeDepLike, timeRange)
 }
 \arguments{
-\item{timeDepLike}{List or 3-D array of time-dependent likelihood from \code{zeitzeigerPredict}.
-If a list, then each element (for each member of the ensemble) should be a matrix in which rows
-correspond to observations and columns correspond to time-points. If a 3-D array, the three
-dimensions should correspond to observations, time-points, and members of the ensemble.}
+\item{timeDepLike}{List or 3-D array of time-dependent likelihood from
+\code{\link[=zeitzeigerPredict]{zeitzeigerPredict()}}. If a list, then each element (for each member of the
+ensemble) should be a matrix in which rows correspond to observations and
+columns correspond to time-points. If a 3-D array, the three dimensions
+should correspond to observations, time-points, and members of the
+ensemble.}
 
-\item{timeRange}{Vector of time-points at which the likelihood was calculated.}
+\item{timeRange}{Vector of time-points at which the likelihood was
+calculated.}
 }
 \value{
 \item{timeDepLike}{Matrix of likelihood for observations by time-points.}
-\item{timePred}{Vector of predicted times. Each predicted time will be an element of timeRange.}
+\item{timePred}{Vector of predicted times. Each predicted time will be an
+element of timeRange.}
 }
 \description{
-\code{zeitzeigerEnsembleLikelihood} makes predictions by finding the maximum of the sum of the
-log-likelihoods.
+Make predictions by finding the maximum of the sum of the log-likelihoods.
 }
 \seealso{
-\code{\link{zeitzeigerPredict}}, \code{\link{zeitzeigerEnsembleMean}}
+\code{\link[=zeitzeigerPredict]{zeitzeigerPredict()}}, \code{\link[=zeitzeigerEnsembleMean]{zeitzeigerEnsembleMean()}}
 }

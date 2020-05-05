@@ -1,17 +1,20 @@
 #' Fit a periodic spline for each feature on cross-validation
 #'
-#' `zeitzeigerFitCv` calls `zeitzeigerFit` for each fold of cross-validation.
-#' By default, if a parallel backend is registered, this function processes the folds in parallel.
+#' Fit a periodic spline for each feature for each fold of cross-validation.
 #'
-#' @param x Matrix of measurements, with observations in rows and features in columns.
-#' @param time Vector of values of the periodic variable for the observations, where 0
-#' corresponds to the lowest possible value and 1 corresponds to the highest possible value.
-#' @param foldid Vector of values indicating which fold each observation is in.
-#' @param nKnots Number of internal knots to use for the periodic smoothing spline.
+#' @param x Matrix of measurements, with observations in rows and features in
+#'   columns.
+#' @param time Vector of values of the periodic variable for the observations,
+#'   where 0 corresponds to the lowest possible value and 1 corresponds to the
+#'   highest possible value.
+#' @param foldid Vector of values indicating the fold to which each observation
+#'   belongs.
+#' @param nKnots Number of internal knots to use for the periodic smoothing
+#'   spline.
 #'
-#' @return A list consisting of the result from `zeitzeigerFit` for each fold.
+#' @return A list consisting of the result from [zeitzeigerFit()] for each fold.
 #'
-#' @seealso `\link{zeitzeigerFit}`, `\link{zeitzeigerSpcCv}`, `\link{zeitzeigerPredictCv}`
+#' @seealso [zeitzeigerFit()], [zeitzeigerSpcCv()], [zeitzeigerPredictCv()]
 #'
 #' @export
 zeitzeigerFitCv = function(x, time, foldid, nKnots = 3) {
@@ -23,23 +26,22 @@ zeitzeigerFitCv = function(x, time, foldid, nKnots = 3) {
 
 #' Calculate sparse principal components of time-dependent variation on cross-validation
 #'
-#' `zeitzeigerSpcCv` calls `zeitzeigerSpc` for each fold of cross-validation.
-#' By default, if a parallel backend is registered, this function processes the folds in parallel.
+#' Calculate SPCs for each fold of cross-validation.
 #'
-#' @param fitResultList Result from `zeitzeigerFitCv`.
+#' @param fitResultList Output of [zeitzeigerFitCv()].
 #' @param nTime Number of time-points by which to discretize the time-dependent
-#' behavior of each feature. Corresponds to the number of rows in the matrix for
-#' which the SPCs will be calculated.
+#'   behavior of each feature. Corresponds to the number of rows in the matrix
+#'   for which the SPCs will be calculated.
 #' @param useSpc Logical indicating whether to use `SPC` (default) or `svd`.
 #' @param sumabsv L1-constraint on the SPCs, passed to `SPC`.
 #' @param orth Logical indicating whether to require left singular vectors
-#' be orthogonal to each other, passed to `SPC`.
-#' @param dopar Logical indicating whether to process the folds in parallel.
-#' Use `\link[doParallel]{registerDoParallel}` to register the parallel backend.
+#'   be orthogonal to each other, passed to `SPC`.
+#' @param dopar Logical indicating whether to process the folds in parallel. Use
+#'   [doParallel::registerDoParallel()] to register the parallel backend.
 #'
-#' @return A list consisting of the result from `zeitzeigerSpc` for each fold.
+#' @return A list consisting of the result from [zeitzeigerSpc()] for each fold.
 #'
-#' @seealso `\link{zeitzeigerSpc}`, `\link{zeitzeigerFitCv}`, `\link{zeitzeigerPredictCv}`
+#' @seealso [zeitzeigerSpc()], [zeitzeigerFitCv()], [zeitzeigerPredictCv()]
 #'
 #' @export
 zeitzeigerSpcCv = function(fitResultList, nTime = 10, useSpc = TRUE,
@@ -52,37 +54,39 @@ zeitzeigerSpcCv = function(fitResultList, nTime = 10, useSpc = TRUE,
 
 #' Predict corresponding time for observations on cross-validation
 #'
-#' `zeitzeigerPredictCv` calls `zeitzeigerPredict` for each fold of
-#' cross-validation.
-#' By default, if a parallel backend is registered, this function processes the
-#' folds in parallel.
+#' Make predictions for each observation for each fold of cross-validation.
 #'
-#' @param x Matrix of measurements, observations in rows and features in columns.
-#' @param time Vector of values of the periodic variable for observations, where 0
-#' corresponds to the lowest possible value and 1 corresponds to the highest
-#' possible value.
-#' @param foldid Vector of values indicating which fold each observation is in.
-#' @param spcResultList Result from `zeitzeigerSpcCv`.
-#' @param nKnots Number of internal knots to use for the periodic smoothing spline.
-#' @param nSpc Vector of the number of SPCs to use for prediction. If `NA` (default),
-#' `nSpc` will become `1:K`, where `K` is the number of SPCs in `spcResult`.
-#' Each value in `nSpc` will correspond to one prediction for each test observation.
-#' A value of 2 means that the prediction will be based on the first 2 SPCs.
-#' @param timeRange Vector of values of the periodic variable at which to calculate likelihood.
-#' The time with the highest likelihood is used as the initial value for the
-#' MLE optimizer.
+#' @param x Matrix of measurements, observations in rows and features in
+#'   columns.
+#' @param time Vector of values of the periodic variable for observations, where
+#'   0 corresponds to the lowest possible value and 1 corresponds to the highest
+#'   possible value.
+#' @param foldid Vector of values indicating the fold to which each observation
+#'   belongs.
+#' @param spcResultList Output of [zeitzeigerSpcCv()].
+#' @param nKnots Number of internal knots to use for the periodic smoothing
+#'   spline.
+#' @param nSpc Vector of the number of SPCs to use for prediction. If `NA`
+#'   (default), `nSpc` will become `1:K`, where `K` is the number of SPCs in
+#'   `spcResult`. Each value in `nSpc` will correspond to one prediction for
+#'   each test observation. A value of 2 means that the prediction will be based
+#'   on the first 2 SPCs.
+#' @param timeRange Vector of values of the periodic variable at which to
+#'   calculate likelihood. The time with the highest likelihood is used as the
+#'   initial value for the MLE optimizer.
 #' @param dopar Logical indicating whether to process the folds in parallel.
-#' Use `\link[doParallel]{registerDoParallel}` to register the parallel backend.
+#' Use [doParallel::registerDoParallel()] to register the parallel backend.
 #'
-#' @return A list of the same structure as `zeitzeigerPredict`, combining the results
-#' from each fold of cross-validation.
-#' \item{timeDepLike}{3-D array of likelihood, with dimensions for each observation,
-#' each element of `nSpc`, and each element of `timeRange`.}
-#' \item{mleFit}{List (for each element in `nSpc`) of lists (for each observation)
-#' of `mle2` objects.}
-#' \item{timePred}{Matrix of predicted times for observations by values of `nSpc`.}
+#' @return A list of the same structure as [zeitzeigerPredict()], combining the
+#'   results from each fold of cross-validation.
+#' \item{timeDepLike}{3-D array of likelihood, with dimensions for each
+#'   observation, each element of `nSpc`, and each element of `timeRange`.}
+#' \item{mleFit}{List (for each element in `nSpc`) of lists (for each
+#'   observation) of `mle2` objects.}
+#' \item{timePred}{Matrix of predicted times for observations by values of
+#'   `nSpc`.}
 #'
-#' @seealso `\link{zeitzeigerPredict}`, `\link{zeitzeigerFitCv}`, `\link{zeitzeigerSpcCv}`
+#' @seealso [zeitzeigerPredict()], [zeitzeigerFitCv()], [zeitzeigerSpcCv()]
 #'
 #' @export
 zeitzeigerPredictCv = function(x, time, foldid, spcResultList, nKnots = 3,
@@ -114,36 +118,39 @@ zeitzeigerPredictCv = function(x, time, foldid, spcResultList, nKnots = 3,
 
 #' Predict corresponding time for groups of observations on cross-validation
 #'
-#' `zeitzeigerPredictGroupCv` calls `zeitzeigerPredictGroup` for each fold of
-#' cross-validation. Thus, each fold is equivalent to a group. By default, if a parallel
-#' backend is registered, this function processes the folds in parallel.
+#' Predict corresponding time for each group of observations in
+#' cross-validation. Thus, each fold is equivalent to a group.
 #'
 #' @param x Matrix of measurements, observations in rows and features in columns.
-#' @param time Vector of values of the periodic variable for observations, where 0
-#' corresponds to the lowest possible value and 1 corresponds to the highest
-#' possible value.
-#' @param foldid Vector of values indicating which fold each observation is in.
-#' @param spcResultList Result from `zeitzeigerSpcCv`.
-#' @param nKnots Number of internal knots to use for the periodic smoothing spline.
-#' @param nSpc Vector of the number of SPCs to use for prediction. If `NA` (default),
-#' `nSpc` will become `1:K`, where `K` is the number of SPCs in `spcResult`.
-#' Each value in `nSpc` will correspond to one prediction for each test observation.
-#' A value of 2 means that the prediction will be based on the first 2 SPCs.
-#' @param timeRange Vector of values of the periodic variable at which to calculate likelihood.
-#' The time with the highest likelihood is used as the initial value for the
-#' MLE optimizer.
-#' @param dopar Logical indicating whether to process the folds in parallel.
-#' Use `\link[doParallel]{registerDoParallel}` to register the parallel backend.
+#' @param time Vector of values of the periodic variable for observations, where
+#'   0 corresponds to the lowest possible value and 1 corresponds to the highest
+#'   possible value.
+#' @param foldid Vector of values indicating the fold to which each observation
+#'   belongs.
+#' @param spcResultList Result from [zeitzeigerSpcCv()].
+#' @param nKnots Number of internal knots to use for the periodic smoothing
+#'   spline.
+#' @param nSpc Vector of the number of SPCs to use for prediction. If `NA`
+#'   (default), `nSpc` will become `1:K`, where `K` is the number of SPCs in
+#'   `spcResult`. Each value in `nSpc` will correspond to one prediction for
+#'   each test observation. A value of 2 means that the prediction will be based
+#'   on the first 2 SPCs.
+#' @param timeRange Vector of values of the periodic variable at which to
+#'   calculate likelihood. The time with the highest likelihood is used as the
+#'   initial value for the MLE optimizer.
+#' @param dopar Logical indicating whether to process the folds in parallel. Use
+#'   [doParallel::registerDoParallel()] to register the parallel backend.
 #'
-#' @return A list of the same structure as `zeitzeigerPredictGroup`, combining the
-#' results from each fold of cross-validation. Folds (i.e, groups) will be sorted by foldid.
+#' @return A list of the same structure as `zeitzeigerPredictGroup`, combining
+#'   the results from each fold of cross-validation. Folds (i.e, groups) will be
+#'   sorted by foldid.
 #' \item{timeDepLike}{3-D array of likelihood, with dimensions for each fold,
-#' each element of `nSpc`, and each element of `timeRange`.}
-#' \item{mleFit}{List (for each element in `nSpc`) of lists (for each fold)
-#' of `mle2` objects.}
+#'   each element of `nSpc`, and each element of `timeRange`.}
+#' \item{mleFit}{List (for each element in `nSpc`) of lists (for each fold) of
+#'   `mle2` objects.}
 #' \item{timePred}{Matrix of predicted times for folds by values of `nSpc`.}
 #'
-#' @seealso `\link{zeitzeigerFitCv}`, `\link{zeitzeigerSpcCv}`, `\link{zeitzeigerPredictGroup}`
+#' @seealso [zeitzeigerFitCv()], [zeitzeigerSpcCv()], [zeitzeigerPredictGroup()]
 #'
 #' @export
 zeitzeigerPredictGroupCv = function(x, time, foldid, spcResultList, nKnots = 3,

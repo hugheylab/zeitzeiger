@@ -40,8 +40,8 @@
 
 
 <meta property="og:title" content="Fit a periodic spline for each feature — zeitzeigerFit" />
-<meta property="og:description" content="zeitzeigerFit fits a periodic smoothing spline to the measurements for each
-feature as a function of the periodic variable." />
+<meta property="og:description" content="Fit a periodic smoothing spline to the measurements for each feature as a
+function of the periodic variable." />
 
 
 
@@ -73,7 +73,7 @@ feature as a function of the periodic variable." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zeitzeiger</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.2</span>
       </span>
     </div>
 
@@ -84,9 +84,6 @@ feature as a function of the periodic variable." />
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
-</li>
-<li>
-  <a href="../articles/zeitzeiger.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -133,8 +130,8 @@ feature as a function of the periodic variable." />
     </div>
 
     <div class="ref-description">
-    <p><code>zeitzeigerFit</code> fits a periodic smoothing spline to the measurements for each
-feature as a function of the periodic variable.</p>
+    <p>Fit a periodic smoothing spline to the measurements for each feature as a
+function of the periodic variable.</p>
     </div>
 
     <pre class="usage"><span class='fu'>zeitzeigerFit</span>(<span class='no'>x</span>, <span class='no'>time</span>, <span class='kw'>nKnots</span> <span class='kw'>=</span> <span class='fl'>3</span>)</pre>
@@ -144,17 +141,19 @@ feature as a function of the periodic variable.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>Matrix of measurements, with observations in rows and features in columns.
-Missing values are allowed.</p></td>
+      <td><p>Matrix of measurements, with observations in rows and features in
+columns. Missing values are allowed.</p></td>
     </tr>
     <tr>
       <th>time</th>
-      <td><p>Vector of values of the periodic variable for the observations, where 0
-corresponds to the lowest possible value and 1 corresponds to the highest possible value.</p></td>
+      <td><p>Vector of values of the periodic variable for the observations,
+where 0 corresponds to the lowest possible value and 1 corresponds to the
+highest possible value.</p></td>
     </tr>
     <tr>
       <th>nKnots</th>
-      <td><p>Number of internal knots to use for the periodic smoothing spline.</p></td>
+      <td><p>Number of internal knots to use for the periodic smoothing
+spline.</p></td>
     </tr>
     </table>
 
@@ -164,11 +163,12 @@ corresponds to the lowest possible value and 1 corresponds to the highest possib
 
 <dt>xFitMean</dt><dd><p>Matrix of coefficients, where rows correspond to features and
 columns correspond to variables in the fit.</p></dd>
-<dt>xFitResid</dt><dd><p>Vector of root mean square of residuals, same length as <code>x</code>.</p></dd>
+<dt>xFitResid</dt><dd><p>Vector of root mean square of residuals, same length as
+<code>x</code>.</p></dd>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='zeitzeigerSpc.html'>zeitzeigerSpc</a></code>, <code><a href='zeitzeigerPredict.html'>zeitzeigerPredict</a></code></p></div>
+    <div class='dont-index'><p><code><a href='zeitzeigerSpc.html'>zeitzeigerSpc()</a></code>, <code><a href='zeitzeigerPredict.html'>zeitzeigerPredict()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

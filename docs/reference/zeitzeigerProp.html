@@ -75,7 +75,7 @@ limma." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zeitzeiger</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.2</span>
       </span>
     </div>
 
@@ -86,9 +86,6 @@ limma." />
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
-</li>
-<li>
-  <a href="../articles/zeitzeiger.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -148,27 +145,27 @@ cosinor and periodic splines, in combination with methods such as
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>fitResult</th>
-      <td><p>Output of <code>zeitzeigerFit</code>.</p></td>
+      <td><p>Output of <code><a href='zeitzeigerFit.html'>zeitzeigerFit()</a></code>.</p></td>
     </tr>
     <tr>
       <th>dopar</th>
       <td><p>Logical indicating whether to process features in parallel.
-Use <code><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>registerDoParallel</a></code> to register the parallel backend.</p></td>
+Use <code><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>doParallel::registerDoParallel()</a></code> to register the parallel backend.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Data frame with a row for each feature.</p>
+    <p><code>data.frame</code> with a row for each feature.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>zeitzeigerProp</code> calculates the rhythmic properties of each feature's
-spline fit: location and value of peak, location and value of trough,
-amplitude measured peak to trough, and signal-to-noise ratio (amplitude
-divided by the square root of the mean of the squared residuals).</p>
+    <p>Calculate the rhythmic properties of each feature's spline fit: location and
+value of peak, location and value of trough, amplitude measured peak to
+trough, and signal-to-noise ratio (amplitude divided by the square root of
+the mean of the squared residuals).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='zeitzeigerFit.html'>zeitzeigerFit</a></code></p></div>
+    <div class='dont-index'><p><code><a href='zeitzeigerFit.html'>zeitzeigerFit()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

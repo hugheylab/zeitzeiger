@@ -40,9 +40,8 @@
 
 
 <meta property="og:title" content="Calculate sparse principal components of time-dependent variation — zeitzeigerSpc" />
-<meta property="og:description" content="zeitzeigerSpc calculates the sparse principal components (SPCs),
-given the time-dependent means and the residuals from zeitzeigerFit.
-This function calls PMA::SPC." />
+<meta property="og:description" content="Calculate the SPCs given the time-dependent means and the residuals from
+zeitzeigerFit()." />
 
 
 
@@ -74,7 +73,7 @@ This function calls PMA::SPC." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zeitzeiger</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.2</span>
       </span>
     </div>
 
@@ -85,9 +84,6 @@ This function calls PMA::SPC." />
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
-</li>
-<li>
-  <a href="../articles/zeitzeiger.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -134,13 +130,19 @@ This function calls PMA::SPC." />
     </div>
 
     <div class="ref-description">
-    <p><code>zeitzeigerSpc</code> calculates the sparse principal components (SPCs),
-given the time-dependent means and the residuals from <code>zeitzeigerFit</code>.
-This function calls <code><a href='https://rdrr.io/pkg/PMA/man/SPC.html'>PMA::SPC</a></code>.</p>
+    <p>Calculate the SPCs given the time-dependent means and the residuals from
+<code><a href='zeitzeigerFit.html'>zeitzeigerFit()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>zeitzeigerSpc</span>(<span class='no'>xFitMean</span>, <span class='no'>xFitResid</span>, <span class='kw'>nTime</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>useSpc</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>sumabsv</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>orth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>zeitzeigerSpc</span>(
+  <span class='no'>xFitMean</span>,
+  <span class='no'>xFitResid</span>,
+  <span class='kw'>nTime</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>useSpc</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>sumabsv</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>orth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -151,39 +153,42 @@ This function calls <code><a href='https://rdrr.io/pkg/PMA/man/SPC.html'>PMA::SP
     </tr>
     <tr>
       <th>xFitResid</th>
-      <td><p>Matrix of residuals, dimensions are observations by features.</p></td>
+      <td><p>Matrix of residuals, dimensions are observations by
+features.</p></td>
     </tr>
     <tr>
       <th>nTime</th>
       <td><p>Number of time-points by which to discretize the time-dependent
-behavior of each feature. Corresponds to the number of rows in the matrix for
-which the SPCs will be calculated.</p></td>
+behavior of each feature. Corresponds to the number of rows in the matrix
+for which the SPCs will be calculated.</p></td>
     </tr>
     <tr>
       <th>useSpc</th>
-      <td><p>Logical indicating whether to use <code>SPC</code> (default) or <code>svd</code>.</p></td>
+      <td><p>Logical indicating whether to use <code><a href='https://rdrr.io/pkg/PMA/man/SPC.html'>PMA::SPC()</a></code> (default) or
+<code><a href='https://rdrr.io/r/base/svd.html'>base::svd()</a></code>.</p></td>
     </tr>
     <tr>
       <th>sumabsv</th>
-      <td><p>L1-constraint on the SPCs, passed to <code>SPC</code>.</p></td>
+      <td><p>L1-constraint on the SPCs, passed to <code><a href='https://rdrr.io/pkg/PMA/man/SPC.html'>PMA::SPC()</a></code>.</p></td>
     </tr>
     <tr>
       <th>orth</th>
       <td><p>Logical indicating whether to require left singular vectors
-be orthogonal to each other, passed to <code>SPC</code>.</p></td>
+be orthogonal to each other, passed to <code><a href='https://rdrr.io/pkg/PMA/man/SPC.html'>PMA::SPC()</a></code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Other arguments passed to <code>SPC</code>.</p></td>
+      <td><p>Other arguments passed to <code><a href='https://rdrr.io/pkg/PMA/man/SPC.html'>PMA::SPC()</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Result from <code>SPC</code>, unless <code>useSpc</code> is <code>FALSE</code>, then result from <code>svd</code>.</p>
+    <p>Output of <code><a href='https://rdrr.io/pkg/PMA/man/SPC.html'>PMA::SPC()</a></code>, unless <code>useSpc</code> is <code>FALSE</code>, then output of
+<code><a href='https://rdrr.io/r/base/svd.html'>base::svd()</a></code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='zeitzeigerFit.html'>zeitzeigerFit</a></code>, <code><a href='zeitzeigerPredict.html'>zeitzeigerPredict</a></code></p></div>
+    <div class='dont-index'><p><code><a href='zeitzeigerFit.html'>zeitzeigerFit()</a></code>, <code><a href='zeitzeigerPredict.html'>zeitzeigerPredict()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

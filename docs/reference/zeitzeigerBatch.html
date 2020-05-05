@@ -40,10 +40,9 @@
 
 
 <meta property="og:title" content="Train and test a ZeitZeiger predictor, accounting for batch effects — zeitzeigerBatch" />
-<meta property="og:description" content="zeitzeigerBatch trains and tests a predictor on multiple datasets
-independently, using ComBat to correct for batch effects prior
-to running zeitzeiger. This function requires the metapredict
-package." />
+<meta property="og:description" content="Train and test a predictor on multiple datasets independently, using
+sva::ComBat() to correct for batch effects prior to running zeitzeiger().
+This function requires the metapredict package." />
 
 
 
@@ -75,7 +74,7 @@ package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zeitzeiger</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.2</span>
       </span>
     </div>
 
@@ -86,9 +85,6 @@ package." />
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
-</li>
-<li>
-  <a href="../articles/zeitzeiger.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -135,16 +131,29 @@ package." />
     </div>
 
     <div class="ref-description">
-    <p><code>zeitzeigerBatch</code> trains and tests a predictor on multiple datasets
-independently, using <code><a href='https://rdrr.io/pkg/sva/man/ComBat.html'>ComBat</a></code> to correct for batch effects prior
-to running <code>zeitzeiger</code>. This function requires the <code><a href='https://rdrr.io/pkg/metapredict/man/metapredict.html'>metapredict</a></code>
-package.</p>
+    <p>Train and test a predictor on multiple datasets independently, using
+<code><a href='https://rdrr.io/pkg/sva/man/ComBat.html'>sva::ComBat()</a></code> to correct for batch effects prior to running <code><a href='zeitzeiger.html'>zeitzeiger()</a></code>.
+This function requires the <code>metapredict</code> package.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>zeitzeigerBatch</span>(<span class='no'>ematList</span>, <span class='no'>trainStudyNames</span>, <span class='no'>sampleMetadata</span>, <span class='no'>studyColname</span>,
-  <span class='no'>batchColname</span>, <span class='no'>timeColname</span>, <span class='kw'>nKnots</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>nTime</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>useSpc</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>sumabsv</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>orth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>nSpc</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>timeRange</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span> - <span class='fl'>0.01</span>,
-  <span class='fl'>0.01</span>), <span class='kw'>covariateName</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>featuresExclude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dopar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>zeitzeigerBatch</span>(
+  <span class='no'>ematList</span>,
+  <span class='no'>trainStudyNames</span>,
+  <span class='no'>sampleMetadata</span>,
+  <span class='no'>studyColname</span>,
+  <span class='no'>batchColname</span>,
+  <span class='no'>timeColname</span>,
+  <span class='kw'>nKnots</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>nTime</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>useSpc</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>sumabsv</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>orth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>nSpc</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>timeRange</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span> - <span class='fl'>0.01</span>, <span class='fl'>0.01</span>),
+  <span class='kw'>covariateName</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>featuresExclude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>dopar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,8 +172,8 @@ to datasets for training.</p></td>
     </tr>
     <tr>
       <th>sampleMetadata</th>
-      <td><p>data.frame containing relevant information for each sample
-across all datasets. Must have a column named <code>sample</code>.</p></td>
+      <td><p>data.frame containing relevant information for each
+sample across all datasets. Must have a column named <code>sample</code>.</p></td>
     </tr>
     <tr>
       <th>studyColname</th>
@@ -174,66 +183,70 @@ information about which dataset each sample belongs to.</p></td>
     <tr>
       <th>batchColname</th>
       <td><p>Name of column in <code>sampleMetdata</code> that contains
-information about which dataset each sample belongs to. This should correspond
-to the names of <code>ematList</code>, and will often be the same as
+information about which dataset each sample belongs to. This should
+correspond to the names of <code>ematList</code>, and will often be the same as
 <code>studyColname</code>, but doesn't have to be.</p></td>
     </tr>
     <tr>
       <th>timeColname</th>
-      <td><p>Name of column in <code>sampleMetdata</code> that contains
-the values of the periodic variable.</p></td>
+      <td><p>Name of column in <code>sampleMetdata</code> that contains the values
+of the periodic variable.</p></td>
     </tr>
     <tr>
       <th>nKnots</th>
-      <td><p>Number of internal knots to use for the periodic smoothing spline.</p></td>
+      <td><p>Number of internal knots to use for the periodic smoothing
+spline.</p></td>
     </tr>
     <tr>
       <th>nTime</th>
       <td><p>Number of time-points by which to discretize the time-dependent
-behavior of each feature. Corresponds to the number of rows in the matrix for
-which the SPCs will be calculated.</p></td>
+behavior of each feature. Corresponds to the number of rows in the matrix
+for which the SPCs will be calculated.</p></td>
     </tr>
     <tr>
       <th>useSpc</th>
-      <td><p>Logical indicating whether to use <code>SPC</code> (default) or <code>svd</code>.</p></td>
+      <td><p>Logical indicating whether to use <code><a href='https://rdrr.io/pkg/PMA/man/SPC.html'>PMA::SPC()</a></code> (default) or
+<code><a href='https://rdrr.io/r/base/svd.html'>base::svd()</a></code>.</p></td>
     </tr>
     <tr>
       <th>sumabsv</th>
-      <td><p>L1-constraint on the SPCs, passed to <code>SPC</code>.</p></td>
+      <td><p>L1-constraint on the SPCs, passed to <code><a href='https://rdrr.io/pkg/PMA/man/SPC.html'>PMA::SPC()</a></code>.</p></td>
     </tr>
     <tr>
       <th>orth</th>
       <td><p>Logical indicating whether to require left singular vectors
-be orthogonal to each other, passed to <code>SPC</code>.</p></td>
+be orthogonal to each other, passed to <code><a href='https://rdrr.io/pkg/PMA/man/SPC.html'>PMA::SPC()</a></code>.</p></td>
     </tr>
     <tr>
       <th>nSpc</th>
-      <td><p>Vector of the number of SPCs to use for prediction. If <code>NA</code> (default),
-<code>nSpc</code> will become <code>1:K</code>, where <code>K</code> is the number of SPCs in <code>spcResult</code>.
-Each value in <code>nSpc</code> will correspond to one prediction for each test observation.
-A value of 2 means that the prediction will be based on the first 2 SPCs.</p></td>
+      <td><p>Vector of the number of SPCs to use for prediction. If <code>NA</code>
+(default), <code>nSpc</code> will become <code>1:K</code>, where <code>K</code> is the number of SPCs in
+<code>spcResult</code>. Each value in <code>nSpc</code> will correspond to one prediction for
+each test observation. A value of 2 means that the prediction will be based
+on the first 2 SPCs.</p></td>
     </tr>
     <tr>
       <th>timeRange</th>
-      <td><p>Vector of values of the periodic variable at which to calculate likelihood.
-The time with the highest likelihood is used as the initial value for the
-MLE optimizer.</p></td>
+      <td><p>Vector of values of the periodic variable at which to
+calculate likelihood. The time with the highest likelihood is used as the
+initial value for the MLE optimizer.</p></td>
     </tr>
     <tr>
       <th>covariateName</th>
       <td><p>Name of column(s) in <code>sampleMetadata</code> containing
-information about other covariates for <code>ComBat</code>, besides <code>batchColname</code>.
-If <code>NA</code> (default), then there are no other covariates.</p></td>
+information about other covariates for <code><a href='https://rdrr.io/pkg/sva/man/ComBat.html'>sva::ComBat()</a></code>, besides
+<code>batchColname</code>. If <code>NA</code> (default), then there are no other covariates.</p></td>
     </tr>
     <tr>
       <th>featuresExclude</th>
-      <td><p>Named list of character vectors corresponding to features
-to exclude from being used for prediction for the respective test datasets.</p></td>
+      <td><p>Named list of character vectors corresponding to
+features to exclude from being used for prediction for the respective test
+datasets.</p></td>
     </tr>
     <tr>
       <th>dopar</th>
-      <td><p>Logical indicating whether to process the folds in parallel.
-Use <code><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>registerDoParallel</a></code> to register the parallel backend.</p></td>
+      <td><p>Logical indicating whether to process the folds in parallel. Use
+<code><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>doParallel::registerDoParallel()</a></code> to register the parallel backend.</p></td>
     </tr>
     </table>
 
@@ -241,16 +254,19 @@ Use <code><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>r
 
     
 
-<dt>spcResultList</dt><dd><p>List of results from <code>zeitzeigerSpc</code>, one for each test dataset.</p></dd>
-<dt>timeDepLike</dt><dd><p>3-D array of likelihood, with dimensions for each test observation
-(across all datasets), each element of <code>nSpc</code>, and each element of <code>timeRange</code>.</p></dd>
-<dt>mleFit</dt><dd><p>List (for each element in <code>nSpc</code>) of lists (for each test observation)
-of <code>mle2</code> objects.</p></dd>
-<dt>timePred</dt><dd><p>Matrix of predicted times for test observations by values of <code>nSpc</code>.</p></dd>
+<dt>spcResultList</dt><dd><p>List of output from <code><a href='zeitzeigerSpc.html'>zeitzeigerSpc()</a></code>, one for each test
+dataset.</p></dd>
+<dt>timeDepLike</dt><dd><p>3-D array of likelihood, with dimensions for each test
+observation (across all datasets), each element of <code>nSpc</code>, and each element
+of <code>timeRange</code>.</p></dd>
+<dt>mleFit</dt><dd><p>List (for each element in <code>nSpc</code>) of lists (for each test
+observation) of <code>mle2</code> objects.</p></dd>
+<dt>timePred</dt><dd><p>Matrix of predicted times for test observations by values of
+<code>nSpc</code>.</p></dd>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='zeitzeiger.html'>zeitzeiger</a></code>, <code><a href='https://rdrr.io/pkg/metapredict/man/metapredict.html'>metapredict</a></code>, <code><a href='https://rdrr.io/pkg/sva/man/ComBat.html'>ComBat</a></code></p></div>
+    <div class='dont-index'><p><code><a href='zeitzeiger.html'>zeitzeiger()</a></code>, <code><a href='https://rdrr.io/pkg/metapredict/man/metapredict.html'>metapredict::metapredict()</a></code>, <code><a href='https://rdrr.io/pkg/sva/man/ComBat.html'>sva::ComBat()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

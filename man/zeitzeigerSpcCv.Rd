@@ -4,15 +4,21 @@
 \alias{zeitzeigerSpcCv}
 \title{Calculate sparse principal components of time-dependent variation on cross-validation}
 \usage{
-zeitzeigerSpcCv(fitResultList, nTime = 10, useSpc = TRUE,
-  sumabsv = 1, orth = TRUE, dopar = TRUE)
+zeitzeigerSpcCv(
+  fitResultList,
+  nTime = 10,
+  useSpc = TRUE,
+  sumabsv = 1,
+  orth = TRUE,
+  dopar = TRUE
+)
 }
 \arguments{
-\item{fitResultList}{Result from \code{zeitzeigerFitCv}.}
+\item{fitResultList}{Output of \code{\link[=zeitzeigerFitCv]{zeitzeigerFitCv()}}.}
 
 \item{nTime}{Number of time-points by which to discretize the time-dependent
-behavior of each feature. Corresponds to the number of rows in the matrix for
-which the SPCs will be calculated.}
+behavior of each feature. Corresponds to the number of rows in the matrix
+for which the SPCs will be calculated.}
 
 \item{useSpc}{Logical indicating whether to use \code{SPC} (default) or \code{svd}.}
 
@@ -21,16 +27,15 @@ which the SPCs will be calculated.}
 \item{orth}{Logical indicating whether to require left singular vectors
 be orthogonal to each other, passed to \code{SPC}.}
 
-\item{dopar}{Logical indicating whether to process the folds in parallel.
-Use \code{\link[doParallel]{registerDoParallel}} to register the parallel backend.}
+\item{dopar}{Logical indicating whether to process the folds in parallel. Use
+\code{\link[doParallel:registerDoParallel]{doParallel::registerDoParallel()}} to register the parallel backend.}
 }
 \value{
-A list consisting of the result from \code{zeitzeigerSpc} for each fold.
+A list consisting of the result from \code{\link[=zeitzeigerSpc]{zeitzeigerSpc()}} for each fold.
 }
 \description{
-\code{zeitzeigerSpcCv} calls \code{zeitzeigerSpc} for each fold of cross-validation.
-By default, if a parallel backend is registered, this function processes the folds in parallel.
+Calculate SPCs for each fold of cross-validation.
 }
 \seealso{
-\code{\link{zeitzeigerSpc}}, \code{\link{zeitzeigerFitCv}}, \code{\link{zeitzeigerPredictCv}}
+\code{\link[=zeitzeigerSpc]{zeitzeigerSpc()}}, \code{\link[=zeitzeigerFitCv]{zeitzeigerFitCv()}}, \code{\link[=zeitzeigerPredictCv]{zeitzeigerPredictCv()}}
 }
