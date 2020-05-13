@@ -1,5 +1,7 @@
 # zeitzeiger
 
+[![CircleCI](https://circleci.com/gh/hugheylab/zeitzeiger.svg?style=shield)](https://circleci.com/gh/hugheylab/zeitzeiger)
+
 `zeitzeiger` is a package for regularized supervised learning on high-dimensional data from an oscillatory system. `zeitzeiger` can quantify rhythmic behavior, make accurate predictions, identify major patterns and important features, and detect when the oscillator is perturbed.
 
 Update (Nov 2018): ZeitZeiger now uses [limma](https://doi.org/doi:10.18129/B9.bioc.limma) internally, which makes training (previously the slowest step by far) about 250x faster. Additional optimizations have made calculation of the sparse principal components about 6x faster, and prediction about 20% faster.
