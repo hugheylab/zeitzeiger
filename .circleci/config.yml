@@ -22,9 +22,9 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            Rscript -e 'devtools::install_dev_deps(dependencies = TRUE,
-                                                   repos = BiocManager::repositories(),
-                                                   upgrade = TRUE)'
+            Rscript \
+            -e 'repos = BiocManager::repositories("https://hugheylab.github.io/drat/")' \
+            -e 'devtools::install_dev_deps(dependencies = TRUE, repos = repos, upgrade = TRUE)'
 
       - run:
           name: Build package
