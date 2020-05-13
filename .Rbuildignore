@@ -4,3 +4,4 @@
 ^testing\.R$
 ^_pkgdown\.yml$
 ^docs$
+^\.circleci$

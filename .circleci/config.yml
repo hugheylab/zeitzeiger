@@ -1,0 +1,63 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: rocker/tidyverse:3.6.2
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          name: Set environmental variables
+          command: |
+            Rscript --vanilla \
+              -e 'dsc = read.dcf("DESCRIPTION")' \
+              -e 'cat(sprintf("export PKG_NAME=%s\n", dsc[,"Package"]))' \
+              -e 'cat(sprintf("export PKG_VERSION=%s\n", dsc[,"Version"]))' \
+              -e 'cat(sprintf("export PKG_TARBALL=%s_%s.tar.gz\n", dsc[,"Package"], dsc[,"Version"]))' \
+              >> ${BASH_ENV};
+
+      - run:
+          name: Install dependencies
+          command: |
+            Rscript -e 'devtools::install_dev_deps(dependencies = TRUE,
+                                                   repos = BiocManager::repositories(),
+                                                   upgrade = TRUE)'
+
+      - run:
+          name: Build package
+          command: R CMD build .
+
+      - run:
+          name: Check package
+          command: R CMD check ${PKG_TARBALL} --no-manual
+
+      ## Currently no tests
+      - run:
+          name: Check failures
+          command: |
+            Rscript -e "message(devtools::check_failures(path = '${PKG_NAME}.Rcheck'))"
+      - run:
+          name: Deploy to drat
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ] && false; then
+              git clone https://github.com/hugheylab/drat;
+              cd drat;
+              git config --global user.email "jakejhughey@gmail.com";
+              git config --global user.name "Jake Hughey";
+              Rscript -e "install.packages('drat');";
+              Rscript -e "drat::insertPackage('../${PKG_TARBALL}', '.');";
+              git add src/contrib/;
+              git commit -m "Updated ${PKG_NAME} to version ${PKG_VERSION} via CircleCI";
+              git push -q https://jakejh:${GITHUB_TOKEN}@github.com/hugheylab/drat.git;
+            else
+              echo "Not deploying source to drat."
+            fi
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build:
+          context: drat-deployment

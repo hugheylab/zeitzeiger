@@ -1,4 +1,5 @@
 Package: zeitzeiger
+Type: Package
 Title: Regularized supervised learning for high-dimensional data from an
   oscillatory system
 Version: 2.0.2
@@ -13,7 +14,6 @@ RoxygenNote: 7.1.0
 Roxygen: list(markdown = TRUE)
 Depends:
   R (>= 3.2)
-biocViews:
 Imports:
   abind (>= 1.4-3),
   bbmle (>= 1.0.17),
@@ -31,4 +31,3 @@ Suggests:
   rmarkdown (>= 1.10),
   tidyr (>= 0.8.2)
 VignetteBuilder: knitr
-BugReports: https://github.com/hugheylab/zeitzeiger/issues
