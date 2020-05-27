@@ -40,6 +40,10 @@ jobs:
             -e "covr::package_coverage()"
 
       - run:
+          name: Calculate code coverage
+          command: r -e 'covr::codecov()'
+
+      - run:
           name: Deploy to drat
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
