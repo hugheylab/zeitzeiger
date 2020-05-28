@@ -18,12 +18,14 @@ jobs:
               -e 'cat(sprintf("export PKG_VERSION=%s\n", dsc[,"Version"]))' \
               -e 'cat(sprintf("export PKG_TARBALL=%s_%s.tar.gz\n", dsc[,"Package"], dsc[,"Version"]))' \
               >> ${BASH_ENV};
+
       - run:
           name: Install dependencies
           command: |
             Rscript \
             -e 'repos = BiocManager::repositories("https://hugheylab.github.io/drat/")' \
             -e 'devtools::install_dev_deps(dependencies = TRUE, repos = repos, upgrade = TRUE)' 
+
       - run:
           name: Build package
           command: R CMD build . --md5
@@ -48,60 +50,60 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               echo "In master branch."
-              git clone https://github.com/jschoenbachler/drat;
+              git clone https://github.com/hugheylab/drat;
               cd drat;
               FILE=src/contrib/${PKG_TARBALL};
-              echo "File: $FILE"
+              echo "File: $FILE."
               DEPLOYTARBALL=true;
               if test -f "$FILE" ; then
-                echo "File Exists."
+                echo "Package tarball of current version exists on drat repo."
                 mkdir ../tmpDir1;
                 tar xvzf "../${PKG_TARBALL}" -C ../tmpDir1/;
                 sed -i '/DESCRIPTION$/d' ../tmpDir1/${PKG_NAME}/MD5;
                 
                 sed -i '/Packaged:/d' ../tmpDir1/${PKG_NAME}/DESCRIPTION;
                 cd ../tmpDir1/;
-                SHADESC1=`sha256sum ${PKG_NAME}/DESCRIPTION`;
+                SHADESC1=$(sha256sum ${PKG_NAME}/DESCRIPTION);
                 cd ../drat;
                 
                 mkdir ../tmpDir2;
                 tar xvzf "../drat/src/contrib/${PKG_TARBALL}" -C ../tmpDir2/;
                 
-                echo "Checking for previous MD5 hash file..."
+                echo "Checking for previous MD5 hash file."
                 MD5FILE="../tmpDir2/${PKG_NAME}/MD5";
                 if test -f "$MD5FILE" ; then
-                  echo "Found previous MD5 file..."
+                  echo "Found previous MD5 file."
 
                   sed -i '/DESCRIPTION$/d' ../tmpDir2/${PKG_NAME}/MD5;
                   sed -i '/Packaged:/d' ../tmpDir2/${PKG_NAME}/DESCRIPTION;
                   cd ../tmpDir2/;
-                  SHADESC2=`sha256sum ${PKG_NAME}/DESCRIPTION`;
+                  SHADESC2=$(sha256sum ${PKG_NAME}/DESCRIPTION);
                   cd ../drat;
 
                   echo "SHADESC1: $SHADESC1"
                   echo "SHADESC2: $SHADESC2"
 
                   cd ../tmpDir1;
-                  SHATARBALLTMP=`sha256sum ${PKG_NAME}/MD5`;
+                  SHATARBALLTMP=$(sha256sum ${PKG_NAME}/MD5);
                   echo "SHATAR1: $SHATARBALLTMP"
                   cd ../tmpDir2;
-                  SHATARBALLGT=`sha256sum ${PKG_NAME}/MD5`;
+                  SHATARBALLGT=$(sha256sum ${PKG_NAME}/MD5);
                   echo "SHATAR2: $SHATARBALLGT"
                   cd ../drat;
                   if [ "$SHATARBALLGT" == "$SHATARBALLTMP" ] && [ "$SHADESC1" == "$SHADESC2" ] ; then
                     echo "SHAs match, don't deploy."
                     DEPLOYTARBALL=false;
                   else
-                    echo "SHAs don't match, deploying"
+                    echo "SHAs don't match, deploying."
                   fi
                 else
-                  echo "No MD5 file found, deploying..."
+                  echo "No MD5 file found, deploying."
                 fi
               else
-                echo "File Doesn't Exist."
+                echo "No tarball of current version exists on drat repo."
               fi
-              if [ "$DEPLOYTARBALL" = true ]; then
-                echo "Deploying..."
+              if [ "$DEPLOYTARBALL" = true ] && false; then
+                echo "Deploying."
                 git clone https://github.com/hugheylab/drat;
                 cd drat;
                 git config --global user.email "jakejhughey@gmail.com";
