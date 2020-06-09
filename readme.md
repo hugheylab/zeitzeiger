@@ -46,4 +46,4 @@ docker pull hugheylab/hugheyverse
 
 ## Usage
 
-For an introduction to the package, read the [vignette](articles/introduction.html). For detailed help on specific functions, check out the [reference documentation](reference/index.html).
+For an introduction to the package, read the [vignette](https://zeitzeiger.hugheylab.org/articles/introduction.html). For detailed help on specific functions, check out the [reference documentation](https://zeitzeiger.hugheylab.org/reference/index.html).
