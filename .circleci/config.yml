@@ -63,6 +63,11 @@ jobs:
                 mkdir ../tmpDir1
                 tar xvzf "../${PKG_TARBALL}" -C ../tmpDir1/
                 sed -i '/DESCRIPTION$/d' ../tmpDir1/${PKG_NAME}/MD5
+                sed -i '/build\/.*$/d' ../tmpDir1/${PKG_NAME}/MD5
+                sed -i '/inst\/doc\/.*$/d' ../tmpDir1/${PKG_NAME}/MD5
+                MD5FILECUR=$(cat ../tmpDir1/${PKG_NAME}/MD5)
+
+                echo "Current MD5: $MD5FILECUR"
 
                 sed -i '/Packaged:/d' ../tmpDir1/${PKG_NAME}/DESCRIPTION
                 cd ../tmpDir1/
@@ -80,6 +85,12 @@ jobs:
                   echo "Found previous MD5 file."
 
                   sed -i '/DESCRIPTION$/d' ../tmpDir2/${PKG_NAME}/MD5
+                  sed -i '/build\/.*$/d' ../tmpDir2/${PKG_NAME}/MD5
+                  sed -i '/inst\/doc\/.*$/d' ../tmpDir2/${PKG_NAME}/MD5
+                  MD5FILEPREV=$(cat ../tmpDir2/${PKG_NAME}/MD5)
+
+                  echo "Previous MD5: $MD5FILEPREV"
+                  
                   sed -i '/Packaged:/d' ../tmpDir2/${PKG_NAME}/DESCRIPTION
                   cd ../tmpDir2/
                   SHADESC2=$(sha256sum ${PKG_NAME}/DESCRIPTION)
@@ -111,7 +122,7 @@ jobs:
                 echo "No tarball of current version exists on drat repo, deploying."
               fi
 
-              if [ "$DEPLOYTARBALL" = true ]
+              if [ "$DEPLOYTARBALL" = true ] && false
               then
                 echo "Deploying."
                 cd ../drat
