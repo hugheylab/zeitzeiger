@@ -43,7 +43,7 @@ jobs:
 
       - run:
           name: Calculate code coverage
-          command: r -e 'covr::codecov()'
+          command: r -e 'tryCatch(covr::codecov(), error = function(e) warning(e))'
 
       - run:
           name: Deploy to drat
@@ -90,7 +90,7 @@ jobs:
                   MD5FILEPREV=$(cat ../tmpDir2/${PKG_NAME}/MD5)
 
                   echo "Previous MD5: $MD5FILEPREV"
-                  
+
                   sed -i '/Packaged:/d' ../tmpDir2/${PKG_NAME}/DESCRIPTION
                   cd ../tmpDir2/
                   SHADESC2=$(sha256sum ${PKG_NAME}/DESCRIPTION)
