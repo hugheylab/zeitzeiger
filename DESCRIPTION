@@ -25,6 +25,7 @@ Imports:
   PMA (>= 1.0.9),
   statmod (>= 1.4.30)
 Suggests:
+  covr,
   ggplot2 (>= 3.1.0),
   knitr (>= 1.20),
   metapredict (>= 0.9.0),
