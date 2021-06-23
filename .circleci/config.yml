@@ -24,8 +24,8 @@ jobs:
           command: |
             Rscript \
               -e 'repos = BiocManager::repositories("https://hugheylab.github.io/drat/")' \
-              -e 'BiocManager::install("annotate")' \
-              -e 'devtools::install_dev_deps(dependencies = TRUE, repos = repos, upgrade = TRUE)'
+              -e 'devtools::install_dev_deps(dependencies = TRUE, repos = repos, upgrade = TRUE)' \
+              -e 'install.packages("covr")'
 
       - run:
           name: Build package
