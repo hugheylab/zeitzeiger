@@ -7,10 +7,10 @@ fxGroup = function(x, timeDiff, time, xFitMean, xFitResid, knots, logArg = FALSE
   logLike = matrix(data = NA, nrow = length(time), ncol = ncol(x))
 
   for (jj in 1:ncol(x)) {
-    xPredMean = predictIntensity(xFitMean[jj, , drop = FALSE], timeRep,
-                                 knots = knots)[, 1]
-    logLikeTmp = stats::dnorm(xRep[, jj], mean = xPredMean, sd = xFitResid[jj],
-                              log = TRUE)
+    xPredMean = predictIntensity(
+      xFitMean[jj, , drop = FALSE], timeRep, knots = knots)[, 1]
+    logLikeTmp = stats::dnorm(
+      xRep[, jj], mean = xPredMean, sd = xFitResid[jj], log = TRUE)
     logLike[, jj] = rowSums(matrix(logLikeTmp, nrow = length(time)))}
 
   if (logArg) {
@@ -19,8 +19,8 @@ fxGroup = function(x, timeDiff, time, xFitMean, xFitResid, knots, logArg = FALSE
     return(exp(logLike))}}
 
 
-zeitzeigerPredictGivenDensityGroup = function(xTest, groupTest, xFitMean,
-                                              xFitResid, knots, timeRange) {
+zeitzeigerPredictGivenDensityGroup = function(
+  xTest, groupTest, xFitMean, xFitResid, knots, timeRange) {
   groups = groupTest$group
   groupsUnique = sort(unique(groups))
   negLogLike = matrix(NA, nrow = length(groupsUnique), ncol = length(timeRange))
@@ -92,9 +92,10 @@ zeitzeigerPredictGivenDensityGroup = function(xTest, groupTest, xFitMean,
 #' @seealso [zeitzeigerPredict()]
 #'
 #' @export
-zeitzeigerPredictGroup = function(xTrain, timeTrain, xTest, groupTest, spcResult,
-                                  nKnots = 3, nSpc = NA,
-                                  timeRange = seq(0, 1 - 0.01, 0.01)) {
+zeitzeigerPredictGroup = function(
+  xTrain, timeTrain, xTest, groupTest, spcResult, nKnots = 3, nSpc = NA,
+  timeRange = seq(0, 1 - 0.01, 0.01)) {
+
   zTrain = xTrain %*% spcResult$v
   zTest = xTest %*% spcResult$v
 

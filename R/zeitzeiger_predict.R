@@ -1,7 +1,9 @@
-zeitzeigerPredictGivenDensity = function(xTest, xFitMean, xFitResid, knots,
-                                         timeRange) {
-  negLoglike = -zeitzeigerLikelihood(xTest, xFitMean, xFitResid, knots,
-                                     timeRange, logArg = TRUE)
+zeitzeigerPredictGivenDensity = function(
+  xTest, xFitMean, xFitResid, knots, timeRange) {
+
+  negLoglike = -zeitzeigerLikelihood(
+    xTest, xFitMean, xFitResid, knots, timeRange, logArg = TRUE)
+
   mleFit = list()
   for (ii in 1:nrow(xTest)) {
     xTestNow = xTest[ii, , drop = FALSE]
@@ -54,8 +56,10 @@ zeitzeigerPredictGivenDensity = function(xTest, xFitMean, xFitResid, knots,
 #' @seealso [zeitzeigerFit()], [zeitzeigerSpc()]
 #'
 #' @export
-zeitzeigerPredict = function(xTrain, timeTrain, xTest, spcResult, nKnots = 3,
-                             nSpc = NA, timeRange = seq(0, 1 - 0.01, 0.01)) {
+zeitzeigerPredict = function(
+  xTrain, timeTrain, xTest, spcResult, nKnots = 3, nSpc = NA,
+  timeRange = seq(0, 1 - 0.01, 0.01)) {
+
   zTrain = xTrain %*% spcResult$v
   zTest = xTest %*% spcResult$v
 
@@ -75,10 +79,9 @@ zeitzeigerPredict = function(xTrain, timeTrain, xTest, spcResult, nKnots = 3,
   timeDepLike = array(NA, dim = c(nrow(xTest), length(nSpc), length(timeRange)))
   mleFit = list() # list (for each nSpc) of lists (for each observation)
   for (ii in 1:length(nSpc)) {
-    predResult = zeitzeigerPredictGivenDensity(zTest[, 1:nSpc[ii], drop = FALSE],
-                                               zFitMean[1:nSpc[ii], , drop = FALSE],
-                                               zFitResid[1:nSpc[ii]], knots,
-                                               timeRange)
+    predResult = zeitzeigerPredictGivenDensity(
+      zTest[, 1:nSpc[ii], drop = FALSE], zFitMean[1:nSpc[ii], , drop = FALSE],
+      zFitResid[1:nSpc[ii]], knots, timeRange)
     timeDepLike[, ii, ] = predResult$timeDepLike
     mleFit[[ii]] = predResult$mleFit
     timePred[, ii] = predResult$timePred}
@@ -123,16 +126,16 @@ zeitzeigerPredict = function(xTrain, timeTrain, xTest, spcResult, nKnots = 3,
 #' @seealso [zeitzeigerFit()], [zeitzeigerSpc()], [zeitzeigerPredict()]
 #'
 #' @export
-zeitzeiger = function(xTrain, timeTrain, xTest, nKnots = 3, nTime = 10,
-                      useSpc = TRUE, sumabsv = 2, orth = TRUE, nSpc = 2,
-                      timeRange = seq(0, 1 - 0.01, 0.01)) {
+zeitzeiger = function(
+  xTrain, timeTrain, xTest, nKnots = 3, nTime = 10, useSpc = TRUE, sumabsv = 2,
+  orth = TRUE, nSpc = 2, timeRange = seq(0, 1 - 0.01, 0.01)) {
   fitResult = zeitzeigerFit(xTrain, timeTrain, nKnots)
-  spcResult = zeitzeigerSpc(fitResult$xFitMean, fitResult$xFitResid, nTime,
-                            useSpc, sumabsv, orth)
-  predResult = zeitzeigerPredict(xTrain, timeTrain, xTest, spcResult, nKnots,
-                                 nSpc, timeRange)
-  result = list(fitResult = fitResult, spcResult = spcResult,
-                predResult = predResult)
+  spcResult = zeitzeigerSpc(
+    fitResult$xFitMean, fitResult$xFitResid, nTime, useSpc, sumabsv, orth)
+  predResult = zeitzeigerPredict(
+    xTrain, timeTrain, xTest, spcResult, nKnots, nSpc, timeRange)
+  result = list(
+    fitResult = fitResult, spcResult = spcResult, predResult = predResult)
   return(result)}
 
 
@@ -199,11 +202,12 @@ zeitzeiger = function(xTrain, timeTrain, xTest, nKnots = 3, nTime = 10,
 #' @seealso [zeitzeiger()], [metapredict::metapredict()], [sva::ComBat()]
 #'
 #' @export
-zeitzeigerBatch = function(ematList, trainStudyNames, sampleMetadata, studyColname,
-                           batchColname, timeColname, nKnots = 3, nTime = 10,
-                           useSpc = TRUE, sumabsv = 2, orth = TRUE, nSpc = 2,
-                           timeRange = seq(0, 1 - 0.01, 0.01),
-                           covariateName = NA, featuresExclude = NULL, dopar = TRUE) {
+zeitzeigerBatch = function(
+  ematList, trainStudyNames, sampleMetadata, studyColname, batchColname,
+  timeColname, nKnots = 3, nTime = 10, useSpc = TRUE, sumabsv = 2, orth = TRUE,
+  nSpc = 2, timeRange = seq(0, 1 - 0.01, 0.01), covariateName = NA,
+  featuresExclude = NULL, dopar = TRUE) {
+
   testStudyName = NULL
   if (!requireNamespace('metapredict', quietly = TRUE)) {
     stop(paste('This function requires the metapredict package.',
@@ -221,21 +225,16 @@ zeitzeigerBatch = function(ematList, trainStudyNames, sampleMetadata, studyColna
 
     ematMerged = metapredict::mergeStudyData(ematListNow, sampleMetadata, batchColname, covariateName)
 
-    # idxTrain = sampleMetadata[colnames(ematMerged), studyColname] %in% trainStudyNames
-    # xTrain = t(ematMerged[, idxTrain])
-    # xTest = t(ematMerged[, !idxTrain])
-    # timeTrain = sampleMetadata[colnames(ematMerged)[idxTrain], timeColname]
-
     sampleMetadataTrain = sampleMetadata[sampleMetadata[[studyColname]] %in% trainStudyNames, , drop = FALSE]
     xTrain = t(ematMerged[, sampleMetadataTrain$sample])
     xTest = t(ematMerged[, !(colnames(ematMerged) %in% sampleMetadataTrain$sample)])
     timeTrain = sampleMetadataTrain[[timeColname]]
 
     fitResult = zeitzeigerFit(xTrain, timeTrain, nKnots)
-    spcResult = zeitzeigerSpc(fitResult$xFitMean, fitResult$xFitResid, nTime,
-                              useSpc, sumabsv, orth)
-    predResult = zeitzeigerPredict(xTrain, timeTrain, xTest, spcResult,
-                                   nKnots, nSpc, timeRange)
+    spcResult = zeitzeigerSpc(
+      fitResult$xFitMean, fitResult$xFitResid, nTime, useSpc, sumabsv, orth)
+    predResult = zeitzeigerPredict(
+      xTrain, timeTrain, xTest, spcResult, nKnots, nSpc, timeRange)
 
     dimnames(predResult$timeDepLike)[[1]] = rownames(xTest)
     for (ii in 1:length(nSpc)) {
