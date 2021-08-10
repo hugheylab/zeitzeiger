@@ -204,6 +204,7 @@ zeitzeigerBatch = function(ematList, trainStudyNames, sampleMetadata, studyColna
                            useSpc = TRUE, sumabsv = 2, orth = TRUE, nSpc = 2,
                            timeRange = seq(0, 1 - 0.01, 0.01),
                            covariateName = NA, featuresExclude = NULL, dopar = TRUE) {
+  testStudyName = NULL
   if (!requireNamespace('metapredict', quietly = TRUE)) {
     stop(paste('This function requires the metapredict package.',
                'Please see https://github.com/hugheylab/metapredict.'),

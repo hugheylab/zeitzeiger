@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">zeitzeiger</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.3</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -105,7 +105,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/hugheylab/zeitzeiger/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -127,10 +127,10 @@
 
 <div id="zeitzeiger" class="section level1">
 
-<p><a href="https://circleci.com/gh/hugheylab/zeitzeiger"><img src="https://circleci.com/gh/hugheylab/zeitzeiger.svg?style=shield" alt="CircleCI"></a></p>
+<p><a href="https://circleci.com/gh/hugheylab/zeitzeiger"><img src="https://circleci.com/gh/hugheylab/zeitzeiger.svg?style=shield" alt="CircleCI"></a> <a href="https://codecov.io/gh/hugheylab/zeitzeiger"><img src="https://codecov.io/gh/hugheylab/zeitzeiger/branch/master/graph/badge.svg" alt="codecov"></a></p>
 <p><code>zeitzeiger</code> is a package for regularized supervised learning on high-dimensional data from an oscillatory system. <code>zeitzeiger</code> can quantify rhythmic behavior, make accurate predictions, identify major patterns and important features, and detect when the oscillator is perturbed.</p>
 <p>Update (Nov 2018): ZeitZeiger now uses <a href="https://doi.org/doi:10.18129/B9.bioc.limma">limma</a> internally, which makes training (previously the slowest step by far) about 250x faster. Additional optimizations have made calculation of the sparse principal components about 6x faster, and prediction about 20% faster.</p>
-<p>For details about the method and to see how we used it to analyze circadian gene expression in mice, check out <a href="https://doi.org/10.1093/nar/gkw030">Hughey et al. (2016)</a> and the <a href="https://doi.org/10.5061/dryad.hn8gp">accompanying results</a>.</p>
+<p>For details about the method and to see how we used it to analyze circadian gene expression in mice, check out <a href="https://doi.org/10.1093/nar/gkw030">Hughey et al. (2016)</a> and the <a href="https://doi.org/10.5061/dryad.hn8gp">accompanying results</a>.</p>
 <p>To see how we used <code>zeitzeiger</code> to analyze the phasing of circadian clocks in humans and other mammals, check out <a href="https://doi.org/10.1177/0748730416668049">Hughey and Butte (2016)</a> and the <a href="https://doi.org/10.5061/dryad.g928q">accompanying results</a>.</p>
 <p>To see how we used <code>zeitzeiger</code> to predict circadian time from gene expression in human blood, check out <a href="https://doi.org/10.1186/s13073-017-0406-4">Hughey (2017)</a> and the <a href="https://doi.org/10.6084/m9.figshare.3756375.v1">accompanying results</a>.</p>
 <div id="installation" class="section level2">
@@ -143,22 +143,24 @@
 </li>
 </ul>
 <p>You only have to do this once. Then you can install or update the package by entering:</p>
-<div class="sourceCode" id="cb1"><html><pre class="r"><span class="kw">if</span> (!<span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">'BiocManager'</span>, <span class="kw">quietly</span> <span class="kw">=</span> <span class="fl">TRUE</span>))
-  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">'BiocManager'</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">'BiocManager'</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">'BiocManager'</span><span class="op">)</span>
 
-<span class="kw pkg">BiocManager</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="st">'zeitzeiger'</span>)</pre></html></div>
+<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">'zeitzeiger'</span><span class="op">)</span></code></pre></div>
 <p>Alternatively, you can install or update the package by entering:</p>
-<div class="sourceCode" id="cb2"><html><pre class="r"><span class="kw">if</span> (!<span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">'BiocManager'</span>, <span class="kw">quietly</span> <span class="kw">=</span> <span class="fl">TRUE</span>))
-  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">'BiocManager'</span>)
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">'BiocManager'</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">'BiocManager'</span><span class="op">)</span>
 
-<span class="kw pkg">BiocManager</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="st">'zeitzeiger'</span>, <span class="kw">site_repository</span> <span class="kw">=</span> <span class="st">'https://hugheylab.github.io/drat/'</span>)</pre></html></div>
+<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">'zeitzeiger'</span>, site_repository <span class="op">=</span> <span class="st">'https://hugheylab.github.io/drat/'</span><span class="op">)</span></code></pre></div>
 <p>There’s also a <a href="https://hub.docker.com/r/hugheylab/hugheyverse">docker image</a>, which has all dependencies installed.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="ex">docker</span> pull hugheylab/hugheyverse</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull hugheylab/hugheyverse</span></code></pre></div>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
-<p>For an introduction to the package, read the <a href="articles/introduction.html">vignette</a>. For detailed help on specific functions, check out the <a href="reference/index.html">reference documentation</a>.</p>
+<p>For an introduction to the package, read the <a href="https://zeitzeiger.hugheylab.org/articles/introduction.html">vignette</a>. For detailed help on specific functions, check out the <a href="https://zeitzeiger.hugheylab.org/reference/index.html">reference documentation</a>.</p>
 </div>
 </div>
 
@@ -180,7 +182,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

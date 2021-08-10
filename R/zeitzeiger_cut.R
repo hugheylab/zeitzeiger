@@ -20,6 +20,7 @@
 #'
 #' @export
 zeitzeigerExtrema = function(fitResult, maximum = TRUE, dopar = TRUE) {
+  ii = NULL
   doOp = ifelse(dopar, `%dopar%`, `%do%`)
   extrema = doOp(foreach(ii = 1:nrow(fitResult$xFitMean), .combine = rbind), {
     f = function(time) predictIntensity(fitResult$xFitMean[ii, , drop = FALSE], time)[, 1]
@@ -120,6 +121,7 @@ zeitzeigerProp = function(fitResult, dopar = TRUE) {
 #'
 #' @export
 zeitzeigerSig = function(x, time, nKnots = 3, nIter = 200, dopar = TRUE) {
+  ii = NULL
   doOp = ifelse(dopar, `%dopar%`, `%do%`)
   timeIdx = do.call(rbind, lapply(1:nIter, function(x) sample.int(length(time))))
   snrRand = doOp(foreach(ii = 1:nIter, .combine = rbind), {

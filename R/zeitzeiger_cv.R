@@ -18,6 +18,7 @@
 #'
 #' @export
 zeitzeigerFitCv = function(x, time, foldid, nKnots = 3) {
+  foldidNow = NULL
   fitResultList = foreach(foldidNow = sort(unique(foldid))) %do% {
     idxTrain = foldid != foldidNow
     zeitzeigerFit(x[idxTrain, ], time[idxTrain], nKnots)}
@@ -46,6 +47,7 @@ zeitzeigerFitCv = function(x, time, foldid, nKnots = 3) {
 #' @export
 zeitzeigerSpcCv = function(fitResultList, nTime = 10, useSpc = TRUE,
                            sumabsv = 1, orth = TRUE, dopar = TRUE) {
+  fitResult = NULL
   doOp = ifelse(dopar, `%dopar%`, `%do%`)
   spcResultList = doOp(foreach(fitResult = fitResultList), {
     zeitzeigerSpc(fitResult$xFitMean, fitResult$xFitResid, nTime, useSpc, sumabsv, orth)})
@@ -92,6 +94,7 @@ zeitzeigerSpcCv = function(fitResultList, nTime = 10, useSpc = TRUE,
 zeitzeigerPredictCv = function(x, time, foldid, spcResultList, nKnots = 3,
                                nSpc = NA, timeRange = seq(0, 1 - 0.01, 0.01),
                                dopar = TRUE) {
+  spcResult = NULL
   foldidUnique = sort(unique(foldid))
   doOp = ifelse(dopar, `%dopar%`, `%do%`)
 
@@ -156,6 +159,7 @@ zeitzeigerPredictCv = function(x, time, foldid, spcResultList, nKnots = 3,
 zeitzeigerPredictGroupCv = function(x, time, foldid, spcResultList, nKnots = 3,
                                     nSpc = NA, timeRange = seq(0, 1 - 0.01, 0.01),
                                     dopar = TRUE) {
+  group = timeMin = foldidNow = spcResult = predResultFit = NULL
   foldidUnique = sort(unique(foldid))
   doOp = ifelse(dopar, `%dopar%`, `%do%`)
 

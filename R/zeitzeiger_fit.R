@@ -4,8 +4,7 @@
 #' @importFrom magrittr %>%
 NULL
 
-globalVariables(c('fitResult', 'foldidNow', 'group', 'ii', 'jj', 'predResultFit', 'spcResult',
-                  'testStudyName', 'timeMin')) # because codetools doesn't understand foreach
+
 
 
 #' Fit a periodic spline for each feature
