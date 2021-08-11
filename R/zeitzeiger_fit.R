@@ -4,9 +4,6 @@
 #' @importFrom magrittr %>%
 NULL
 
-globalVariables(c('fitResult', 'foldidNow', 'group', 'ii', 'jj', 'predResultFit', 'spcResult',
-                  'testStudyName', 'timeMin')) # because codetools doesn't understand foreach
-
 
 #' Fit a periodic spline for each feature
 #'
@@ -171,18 +168,17 @@ fx = function(x, time, xFitMean, xFitResid, knots, logArg = FALSE) {
 # #' @return Matrix with observations in rows and times in columns.
 # #'
 # #' @export
-zeitzeigerLikelihood = function(xTest, xFitMean, xFitResid, knots,
-                                timeRange = seq(0, 1 - 0.01, 0.01),
-                                logArg = FALSE) {
+zeitzeigerLikelihood = function(
+  xTest, xFitMean, xFitResid, knots, timeRange = seq(0, 1 - 0.01, 0.01),
+  logArg = FALSE) {
   loglike = matrix(NA, nrow = nrow(xTest), ncol = length(timeRange))
   for (ii in 1:nrow(xTest)) {
-    xTestNow = xTest[ii, , drop=FALSE]
+    xTestNow = xTest[ii, , drop = FALSE]
     loglikeTmp = fx(xTestNow, timeRange, xFitMean, xFitResid, knots, logArg = TRUE)
     loglike[ii, ] = rowSums(loglikeTmp)}
   if (logArg) {
-    return(loglike)
-  } else {
-    return(exp(loglike))}}
+    return(loglike)}
+  return(exp(loglike))}
 
 
 #' Calculate circular difference

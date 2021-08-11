@@ -74,7 +74,7 @@ This function requires the metapredict package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">zeitzeiger</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.3</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@ This function requires the metapredict package." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -108,7 +108,7 @@ This function requires the metapredict package." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/hugheylab/zeitzeiger/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -136,24 +136,24 @@ This function requires the metapredict package." />
 This function requires the <code>metapredict</code> package.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>zeitzeigerBatch</span>(
-  <span class='no'>ematList</span>,
-  <span class='no'>trainStudyNames</span>,
-  <span class='no'>sampleMetadata</span>,
-  <span class='no'>studyColname</span>,
-  <span class='no'>batchColname</span>,
-  <span class='no'>timeColname</span>,
-  <span class='kw'>nKnots</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>nTime</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>useSpc</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>sumabsv</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>orth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>nSpc</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>timeRange</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span> - <span class='fl'>0.01</span>, <span class='fl'>0.01</span>),
-  <span class='kw'>covariateName</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>featuresExclude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>dopar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>zeitzeigerBatch</span><span class='op'>(</span>
+  <span class='va'>ematList</span>,
+  <span class='va'>trainStudyNames</span>,
+  <span class='va'>sampleMetadata</span>,
+  <span class='va'>studyColname</span>,
+  <span class='va'>batchColname</span>,
+  <span class='va'>timeColname</span>,
+  nKnots <span class='op'>=</span> <span class='fl'>3</span>,
+  nTime <span class='op'>=</span> <span class='fl'>10</span>,
+  useSpc <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  sumabsv <span class='op'>=</span> <span class='fl'>2</span>,
+  orth <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  nSpc <span class='op'>=</span> <span class='fl'>2</span>,
+  timeRange <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span> <span class='op'>-</span> <span class='fl'>0.01</span>, <span class='fl'>0.01</span><span class='op'>)</span>,
+  covariateName <span class='op'>=</span> <span class='cn'>NA</span>,
+  featuresExclude <span class='op'>=</span> <span class='cn'>NULL</span>,
+  dopar <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -283,7 +283,7 @@ observation) of <code>mle2</code> objects.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
