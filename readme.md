@@ -38,12 +38,6 @@ if (!requireNamespace('BiocManager', quietly = TRUE))
 BiocManager::install('zeitzeiger', site_repository = 'https://hugheylab.github.io/drat/')
 ```
 
-There's also a [docker image](https://hub.docker.com/r/hugheylab/hugheyverse), which has all dependencies installed.
-
-```bash
-docker pull hugheylab/hugheyverse
-```
-
 ## Usage
 
 For an introduction to the package, read the [vignette](https://zeitzeiger.hugheylab.org/articles/introduction.html). For detailed help on specific functions, check out the [reference documentation](https://zeitzeiger.hugheylab.org/reference/index.html).
