@@ -84,7 +84,7 @@ jobs:
   drat-deployment:
     needs: [R-CMD-check, test-coverage]
     runs-on: ubuntu-latest
-    if: ${{ endswith(github.ref, '/master') || endswith(github.ref, '/main') }}
+    if: ${{ endswith(github.ref, '/master') || endswith(github.ref, '/main') || endswith(github.ref, '/actions-testing') }}
     env:
       GITHUB_PAT: ${{ secrets.JAKEJH_PAT }}
       PKG_NAME: ${{ github.event.repository.name }}
@@ -203,5 +203,5 @@ jobs:
               -e "drat::insertPackage('../${PKG_TARBALL}', '.')"
             git add src/contrib/
             git commit -m "Updated to ${PKG_NAME} ${PKG_VERSION} via GitHub Actions"
-            git push -q https://jakejh:${GITHUB_PAT}@github.com/hugheylab/drat.git
+            # git push -q https://jakejh:${GITHUB_PAT}@github.com/hugheylab/drat.git
           fi
