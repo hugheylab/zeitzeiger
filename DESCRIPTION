@@ -31,5 +31,5 @@ Suggests:
   rmarkdown (>= 1.10),
   tidyr (>= 0.8.2)
 Remotes:
-  hugheylab/metapredict
+  github::hugheylab/metapredict
 VignetteBuilder: knitr
