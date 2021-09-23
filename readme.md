@@ -1,6 +1,6 @@
 # zeitzeiger
 
-[![CircleCI](https://circleci.com/gh/hugheylab/zeitzeiger.svg?style=shield)](https://circleci.com/gh/hugheylab/zeitzeiger)
+![R-CMD-check](https://github.com/hugheylab/zeitzeiger/actions/workflows/R-CMD-check/badge.svg)
 [![codecov](https://codecov.io/gh/hugheylab/zeitzeiger/branch/master/graph/badge.svg)](https://codecov.io/gh/hugheylab/zeitzeiger)
 
 `zeitzeiger` is a package for regularized supervised learning on high-dimensional data from an oscillatory system. `zeitzeiger` can quantify rhythmic behavior, make accurate predictions, identify major patterns and important features, and detect when the oscillator is perturbed.
