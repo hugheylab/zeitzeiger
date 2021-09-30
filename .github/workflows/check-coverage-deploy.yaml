@@ -24,39 +24,7 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
 
     steps:
-      - uses: actions/checkout@v2
-
-      - uses: r-lib/actions/setup-pandoc@v1
-
-      - uses: r-lib/actions/setup-r@v1
-        with:
-          r-version: ${{ matrix.config.r }}
-          http-user-agent: ${{ matrix.config.http-user-agent }}
-          use-public-rspm: true
-
-      - uses: r-lib/actions/setup-r-dependencies@v1
-        with:
-          extra-packages: rcmdcheck
-
-      - name: Check
-        env:
-          _R_CHECK_CRAN_INCOMING_: false
-        run: |
-          options(crayon.enabled = TRUE)
-          rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
-        shell: Rscript {0}
-
-      - name: Show testthat output
-        if: always()
-        run: find check -name 'testthat.Rout*' -exec cat '{}' \; || true
-        shell: bash
-
-      - name: Upload check results
-        if: failure()
-        uses: actions/upload-artifact@main
-        with:
-          name: ${{ runner.os }}-r${{ matrix.config.r }}-results
-          path: check
+      - uses: hugheylab/actions/R-CMD-check@main
 
 
   test-coverage:
@@ -65,19 +33,7 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v2
-
-      - uses: r-lib/actions/setup-r@v1
-        with:
-          use-public-rspm: true
-
-      - uses: r-lib/actions/setup-r-dependencies@v1
-        with:
-          extra-packages: covr
-
-      - name: Test coverage
-        run: covr::codecov()
-        shell: Rscript {0}
+      - uses: hugheylab/actions/test-coverage@main
 
 
   drat-deployment:
@@ -89,117 +45,6 @@ jobs:
       PKG_NAME: ${{ github.event.repository.name }}
 
     steps:
-      - uses: actions/checkout@v2
-
-      - uses: r-lib/actions/setup-pandoc@v1
-
-      - uses: r-lib/actions/setup-r@v1
+      - uses: hugheylab/actions/drat-deployment@main
         with:
-          r-version: ${{ matrix.config.r }}
-          http-user-agent: ${{ matrix.config.http-user-agent }}
-          use-public-rspm: true
-
-      - uses: r-lib/actions/setup-r-dependencies@v1
-
-      - name: Build Package
-        run: |
-          R CMD build . --md5
-
-      - name: Set environmental variables
-        run: |
-          dsc = read.dcf("DESCRIPTION")
-          system(sprintf("echo \"PKG_VERSION=%s\" >> ${GITHUB_ENV}", dsc[,"Version"]))
-          system(sprintf("echo \"PKG_TARBALL=%s_%s.tar.gz\" >> ${GITHUB_ENV}", dsc[,"Package"], dsc[,"Version"]))
-        shell: Rscript {0}
-
-      - name: Checkout drat repo
-        uses: actions/checkout@v2
-        with:
-          repository: hugheylab/drat
-          path: drat
-          token: ${{ secrets.JAKEJH_PAT }}
-
-      - name: Check to deploy
-        run: |
-          cd drat
-          FILE=src/contrib/${PKG_TARBALL}
-          echo "File: ${FILE}."
-          DEPLOY_TARBALL=true
-          if test -f "${FILE}"
-          then
-            echo "Package tarball of current version exists on drat repo."
-            mkdir ../tmpDirNew
-            tar xvzf "../${PKG_TARBALL}" -C ../tmpDirNew/
-            sed -i '/DESCRIPTION$/d' ../tmpDirNew/${PKG_NAME}/MD5
-            sed -i '/build\/.*$/d' ../tmpDirNew/${PKG_NAME}/MD5
-            sed -i '/inst\/doc\/.*$/d' ../tmpDirNew/${PKG_NAME}/MD5
-            MD5_FILE_NEW=$(cat ../tmpDirNew/${PKG_NAME}/MD5)
-
-            echo "Current MD5: ${MD5_FILE_NEW}"
-
-            sed -i '/Packaged:/d' ../tmpDirNew/${PKG_NAME}/DESCRIPTION
-            cd ../tmpDirNew/
-            SHA_DESC_NEW=$(sha256sum ${PKG_NAME}/DESCRIPTION)
-            cd ../drat
-
-            mkdir ../tmpDirOld
-            tar xvzf "../drat/src/contrib/${PKG_TARBALL}" -C ../tmpDirOld/
-
-            echo "Checking for previous MD5 file."
-            MD5_FILE="../tmpDirOld/${PKG_NAME}/MD5"
-
-            if test -f "${MD5_FILE}"
-            then
-              echo "Found previous MD5 file."
-
-              sed -i '/DESCRIPTION$/d' ../tmpDirOld/${PKG_NAME}/MD5
-              sed -i '/build\/.*$/d' ../tmpDirOld/${PKG_NAME}/MD5
-              sed -i '/inst\/doc\/.*$/d' ../tmpDirOld/${PKG_NAME}/MD5
-              MD5_FILE_OLD=$(cat ../tmpDirOld/${PKG_NAME}/MD5)
-
-              echo "Previous MD5: ${MD5_FILE_OLD}"
-
-              sed -i '/Packaged:/d' ../tmpDirOld/${PKG_NAME}/DESCRIPTION
-              cd ../tmpDirOld/
-              SHA_DESC_OLD=$(sha256sum ${PKG_NAME}/DESCRIPTION)
-              cd ../drat
-
-              echo "SHA_DESC_NEW: ${SHA_DESC_NEW}"
-              echo "SHA_DESC_OLD: ${SHA_DESC_OLD}"
-
-              cd ../tmpDirNew
-              SHA_TARBALL_NEW=$(sha256sum ${PKG_NAME}/MD5)
-              echo "SHATAR1: ${SHA_TARBALL_NEW}"
-              cd ../tmpDirOld
-              SHA_TARBALL_OLD=$(sha256sum ${PKG_NAME}/MD5)
-              echo "SHATAR2: ${SHA_TARBALL_OLD}"
-              cd ../drat
-
-              if [ "${SHA_TARBALL_OLD}" = "${SHA_TARBALL_NEW}" ] && [ "${SHA_DESC_NEW}" = "${SHA_DESC_OLD}" ]
-              then
-                echo "SHAs match, not deploying."
-                DEPLOY_TARBALL=false
-              else
-                echo "SHAs don't match, deploying."
-              fi
-
-            else
-              echo "No MD5 file found, deploying."
-            fi
-          else
-            echo "No tarball of current version exists on drat repo, deploying."
-          fi
-
-          if [ ${DEPLOY_TARBALL} = true ]
-          then
-            echo "Deploying."
-            cd ../drat
-            git config --global user.email "jakejhughey@gmail.com"
-            git config --global user.name "Jake Hughey"
-            Rscript \
-              -e "install.packages('drat')" \
-              -e "drat::insertPackage('../${PKG_TARBALL}', '.')"
-            git add src/contrib/
-            git commit -m "Updated to ${PKG_NAME} ${PKG_VERSION} via GitHub Actions"
-            git push -q https://jakejh:${GITHUB_PAT}@github.com/hugheylab/drat.git
-          fi
+          personal-token: ${{ secrets.JAKEJH_PAT }}
