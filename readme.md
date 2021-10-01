@@ -1,5 +1,6 @@
 # zeitzeiger
 
+[![check-coverage-deploy](https://github.com/hugheylab/zeitzeiger/workflows/check-coverage-deploy/badge.svg)](https://github.com/hugheylab/zeitzeiger/actions)
 [![codecov](https://codecov.io/gh/hugheylab/zeitzeiger/branch/master/graph/badge.svg)](https://codecov.io/gh/hugheylab/zeitzeiger)
 
 `zeitzeiger` is a package for regularized supervised learning on high-dimensional data from an oscillatory system. `zeitzeiger` can quantify rhythmic behavior, make accurate predictions, identify major patterns and important features, and detect when the oscillator is perturbed.
