@@ -1,8 +1,9 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^readme\.md$
+^README\.md$
 ^testing\.R$
 ^_pkgdown\.yml$
 ^docs$
 ^\.circleci$
 ^NEWS.md$
+^\.github$

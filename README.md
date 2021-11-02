@@ -2,6 +2,7 @@
 
 [![check-deploy](https://github.com/hugheylab/zeitzeiger/workflows/check-deploy/badge.svg)](https://github.com/hugheylab/zeitzeiger/actions)
 [![codecov](https://codecov.io/gh/hugheylab/zeitzeiger/branch/master/graph/badge.svg)](https://codecov.io/gh/hugheylab/zeitzeiger)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/80a704ab-1728-4e6a-a17d-a7cce4e6f198/deploy-status)](https://app.netlify.com/sites/dazzling-wilson-37374e/deploys)
 
 `zeitzeiger` is a package for regularized supervised learning on high-dimensional data from an oscillatory system. `zeitzeiger` can quantify rhythmic behavior, make accurate predictions, identify major patterns and important features, and detect when the oscillator is perturbed.
 
@@ -15,28 +16,29 @@ To see how we used `zeitzeiger` to predict circadian time from gene expression i
 
 ## Installation
 
-If you use RStudio, go to Tools -> Global Options... -> Packages -> Add... (under Secondary repositories), then enter:
+1. Install [`BiocManager`](https://cran.r-project.org/package=BiocManager).
 
-- Name: hugheylab
-- Url: https://hugheylab.github.io/drat/
+    ```r
+    if (!requireNamespace('BiocManager', quietly = TRUE))
+      install.packages('BiocManager')
+    ```
 
-You only have to do this once. Then you can install or update the package by entering:
+1. If you use RStudio, go to Tools → Global Options... → Packages → Add... (under Secondary repositories), then enter:
 
-```R
-if (!requireNamespace('BiocManager', quietly = TRUE))
-  install.packages('BiocManager')
+    - Name: hugheylab
+    - Url: https://hugheylab.github.io/drat/
 
-BiocManager::install('zeitzeiger')
-```
+    You only have to do this once. Then you can install or update the package by entering:
 
-Alternatively, you can install or update the package by entering:
+    ```r
+    BiocManager::install('zeitzeiger')
+    ```
 
-```R
-if (!requireNamespace('BiocManager', quietly = TRUE))
-  install.packages('BiocManager')
+    Alternatively, you can install or update the package by entering:
 
-BiocManager::install('zeitzeiger', site_repository = 'https://hugheylab.github.io/drat/')
-```
+    ```r
+    BiocManager::install('zeitzeiger', site_repository = 'https://hugheylab.github.io/drat/')
+    ```
 
 ## Usage
 

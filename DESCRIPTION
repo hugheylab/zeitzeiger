@@ -6,7 +6,7 @@ Version: 2.0.3
 Authors@R: as.person('Jake Hughey <jakejhughey@gmail.com> [aut, cre]')
 Description: ZeitZeiger is a method for predicting the value of a periodic
   variable from a high-dimensional observation.
-URL: https://github.com/hugheylab/zeitzeiger
+URL: https://zeitzeiger.hugheylab.org, https://github.com/hugheylab/zeitzeiger
 License: GPL-2
 Encoding: UTF-8
 LazyData: TRUE
