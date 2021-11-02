@@ -2,7 +2,7 @@
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on: push
 
-name: check-coverage-deploy
+name: check-deploy
 
 jobs:
   R-CMD-check:
@@ -12,7 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macOS-latest,   r: 'release'}
+          - {os: macOS-latest, r: 'release'}
           - {os: windows-latest, r: 'release'}
           - {os: ubuntu-latest,  r: 'release'}
           - {os: ubuntu-latest,  r: 'oldrel-1'}
@@ -23,16 +23,8 @@ jobs:
       - uses: hugheylab/actions/R-CMD-check@main
 
 
-  test-coverage:
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - uses: hugheylab/actions/test-coverage@main
-
-
   drat-deployment:
-    needs: [R-CMD-check, test-coverage]
+    needs: R-CMD-check
     runs-on: ubuntu-latest
     if: ${{ endswith(github.ref, '/master') || endswith(github.ref, '/main') }}
     env:
