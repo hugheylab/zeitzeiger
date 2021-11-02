@@ -96,24 +96,28 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>If you use RStudio, go to Tools -&gt; Global Options… -&gt; Packages -&gt; Add… (under Secondary repositories), then enter:</p>
+<ol>
+<li>
+<p>Install <a href="https://cran.r-project.org/package=BiocManager"><code>BiocManager</code></a>.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">'BiocManager'</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">'BiocManager'</span><span class="op">)</span></code></pre></div>
+</li>
+<li>
+<p>If you use RStudio, go to Tools → Global Options… → Packages → Add… (under Secondary repositories), then enter:</p>
 <ul>
 <li>Name: hugheylab</li>
 <li>Url: <a href="https://hugheylab.github.io/drat/" class="uri">https://hugheylab.github.io/drat/</a>
 </li>
 </ul>
 <p>You only have to do this once. Then you can install or update the package by entering:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">'BiocManager'</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">'BiocManager'</span><span class="op">)</span>
-
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">'zeitzeiger'</span><span class="op">)</span></code></pre></div>
-<p>Alternatively, you can install or update the package by entering:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">'BiocManager'</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">'BiocManager'</span><span class="op">)</span>
-
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">'zeitzeiger'</span>, site_repository <span class="op">=</span> <span class="st">'https://hugheylab.github.io/drat/'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">'zeitzeiger'</span><span class="op">)</span></code></pre></div>
+<p>Alternatively, you can install or update the package by entering:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">'zeitzeiger'</span>, site_repository <span class="op">=</span> <span class="st">'https://hugheylab.github.io/drat/'</span><span class="op">)</span></code></pre></div>
+</li>
+</ol>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
@@ -149,6 +153,7 @@
 <ul class="list-unstyled">
 <li><a href="https://github.com/hugheylab/zeitzeiger/actions"><img src="https://github.com/hugheylab/zeitzeiger/workflows/check-deploy/badge.svg" alt="check-deploy"></a></li>
 <li><a href="https://codecov.io/gh/hugheylab/zeitzeiger"><img src="https://codecov.io/gh/hugheylab/zeitzeiger/branch/master/graph/badge.svg" alt="codecov"></a></li>
+<li><a href="https://app.netlify.com/sites/dazzling-wilson-37374e/deploys"><img src="https://api.netlify.com/api/v1/badges/80a704ab-1728-4e6a-a17d-a7cce4e6f198/deploy-status" alt="Netlify Status"></a></li>
 </ul>
 </div>
 </div>
