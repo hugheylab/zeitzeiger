@@ -3,7 +3,7 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   introduction: introduction.html
-last_built: 2021-11-17T16:30Z
+last_built: 2021-11-27T12:48Z
 urls:
   reference: https://zeitzeiger.hugheylab.org/reference
   article: https://zeitzeiger.hugheylab.org/articles
