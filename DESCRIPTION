@@ -2,7 +2,7 @@ Package: zeitzeiger
 Type: Package
 Title: Regularized supervised learning for high-dimensional data from an
   oscillatory system
-Version: 2.0.3
+Version: 2.0.4
 Authors@R: as.person('Jake Hughey <jakejhughey@gmail.com> [aut, cre]')
 Description: ZeitZeiger is a method for predicting the value of a periodic
   variable from a high-dimensional observation.
@@ -10,7 +10,7 @@ URL: https://zeitzeiger.hugheylab.org, https://github.com/hugheylab/zeitzeiger
 License: GPL-2
 Encoding: UTF-8
 LazyData: TRUE
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
 Depends:
   R (>= 3.2)
@@ -23,14 +23,12 @@ Imports:
   limma (>= 3.38.2),
   magrittr (>= 1.5),
   PMA (>= 1.0.9),
-  statmod (>= 1.4.30)
+  statmod (>= 1.4.30),
+  sva (>= 3.18.0)
 Suggests:
   ggplot2 (>= 3.1.0),
   knitr (>= 1.20),
   metapredict (>= 0.9.0),
   rmarkdown (>= 1.10),
   tidyr (>= 0.8.2)
-Remotes:
-  hugheylab/metapredict
 VignetteBuilder: knitr
-Additional_repositories: https://hugheylab.github.io/drat

@@ -143,7 +143,6 @@ zeitzeiger = function(
 #'
 #' Train and test a predictor on multiple datasets independently, using
 #' [sva::ComBat()] to correct for batch effects prior to running [zeitzeiger()].
-#' This function requires the `metapredict` package.
 #'
 #' @param ematList Named list of matrices of measurements, one for each dataset,
 #'   some of which will be for training, others for testing. Each matrix should
@@ -199,7 +198,7 @@ zeitzeiger = function(
 #' \item{timePred}{Matrix of predicted times for test observations by values of
 #'   `nSpc`.}
 #'
-#' @seealso [zeitzeiger()], [metapredict::metapredict()], [sva::ComBat()]
+#' @seealso [zeitzeiger()], [sva::ComBat()]
 #'
 #' @export
 zeitzeigerBatch = function(
@@ -209,10 +208,6 @@ zeitzeigerBatch = function(
   featuresExclude = NULL, dopar = TRUE) {
 
   testStudyName = NULL
-  if (!requireNamespace('metapredict', quietly = TRUE)) {
-    stop(paste('This function requires the metapredict package.',
-               'Please see https://github.com/hugheylab/metapredict.'),
-         call. = FALSE)}
 
   doOp = ifelse(dopar, `%dopar%`, `%do%`)
   testStudyNames = names(ematList)[!(names(ematList) %in% trainStudyNames)]
@@ -223,7 +218,7 @@ zeitzeigerBatch = function(
       f = function(emat) emat[!(rownames(emat) %in% featuresExclude[[testStudyName]]),]
       ematListNow = lapply(ematListNow, f)}
 
-    ematMerged = metapredict::mergeStudyData(ematListNow, sampleMetadata, batchColname, covariateName)
+    ematMerged = mergeStudyData(ematListNow, sampleMetadata, batchColname, covariateName)
 
     sampleMetadataTrain = sampleMetadata[sampleMetadata[[studyColname]] %in% trainStudyNames, , drop = FALSE]
     xTrain = t(ematMerged[, sampleMetadataTrain$sample])

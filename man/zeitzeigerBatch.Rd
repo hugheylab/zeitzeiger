@@ -96,8 +96,7 @@ observation) of \code{mle2} objects.}
 \description{
 Train and test a predictor on multiple datasets independently, using
 \code{\link[sva:ComBat]{sva::ComBat()}} to correct for batch effects prior to running \code{\link[=zeitzeiger]{zeitzeiger()}}.
-This function requires the \code{metapredict} package.
 }
 \seealso{
-\code{\link[=zeitzeiger]{zeitzeiger()}}, \code{\link[metapredict:metapredict]{metapredict::metapredict()}}, \code{\link[sva:ComBat]{sva::ComBat()}}
+\code{\link[=zeitzeiger]{zeitzeiger()}}, \code{\link[sva:ComBat]{sva::ComBat()}}
 }
