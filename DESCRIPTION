@@ -28,7 +28,6 @@ Imports:
 Suggests:
   ggplot2 (>= 3.1.0),
   knitr (>= 1.20),
-  metapredict (>= 0.9.0),
   rmarkdown (>= 1.10),
   tidyr (>= 0.8.2)
 VignetteBuilder: knitr
