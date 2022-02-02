@@ -5,7 +5,8 @@ Title: Regularized supervised learning for high-dimensional data from an
 Version: 2.0.4
 Authors@R: as.person('Jake Hughey <jakejhughey@gmail.com> [aut, cre]')
 Description: ZeitZeiger is a method for predicting the value of a periodic
-  variable from a high-dimensional observation.
+  variable from a high-dimensional observation. See Hughey et al. (2016)
+  <doi:10.1093/nar/gkw030> and Hughey (2017) <doi:10.1186/s13073-017-0406-4>.
 URL: https://zeitzeiger.hugheylab.org, https://github.com/hugheylab/zeitzeiger
 License: GPL-2
 Encoding: UTF-8
