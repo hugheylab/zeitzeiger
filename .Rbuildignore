@@ -4,6 +4,4 @@
 ^testing\.R$
 ^_pkgdown\.yml$
 ^docs$
-^\.circleci$
-^NEWS.md$
 ^\.github$
