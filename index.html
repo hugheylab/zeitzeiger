@@ -15,13 +15,16 @@
 <script src="pkgdown.js"></script><meta property="og:title" content="Regularized supervised learning for high-dimensional data from an
   oscillatory system">
 <meta property="og:description" content="ZeitZeiger is a method for predicting the value of a periodic
-  variable from a high-dimensional observation.">
+  variable from a high-dimensional observation. See Hughey et al. (2016)
+  &lt;doi:10.1093/nar/gkw030&gt; and Hughey (2017) &lt;doi:10.1186/s13073-017-0406-4&gt;.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -34,18 +37,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">zeitzeiger</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.4</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -67,7 +64,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/hugheylab/zeitzeiger/">
+  <a href="https://github.com/hugheylab/zeitzeiger/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -84,30 +81,30 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="zeitzeiger" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#zeitzeiger" class="anchor"></a>zeitzeiger</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="zeitzeiger">zeitzeiger<a class="anchor" aria-label="anchor" href="#zeitzeiger"></a>
+</h1></div>
 
 <p><code>zeitzeiger</code> is a package for regularized supervised learning on high-dimensional data from an oscillatory system. <code>zeitzeiger</code> can quantify rhythmic behavior, make accurate predictions, identify major patterns and important features, and detect when the oscillator is perturbed.</p>
-<p>Update (Nov 2018): ZeitZeiger now uses <a href="https://doi.org/doi:10.18129/B9.bioc.limma">limma</a> internally, which makes training (previously the slowest step by far) about 250x faster. Additional optimizations have made calculation of the sparse principal components about 6x faster, and prediction about 20% faster.</p>
-<p>For details about the method and to see how we used it to analyze circadian gene expression in mice, check out <a href="https://doi.org/10.1093/nar/gkw030">Hughey et al. (2016)</a> and the <a href="https://doi.org/10.5061/dryad.hn8gp">accompanying results</a>.</p>
-<p>To see how we used <code>zeitzeiger</code> to analyze the phasing of circadian clocks in humans and other mammals, check out <a href="https://doi.org/10.1177/0748730416668049">Hughey and Butte (2016)</a> and the <a href="https://doi.org/10.5061/dryad.g928q">accompanying results</a>.</p>
-<p>To see how we used <code>zeitzeiger</code> to predict circadian time from gene expression in human blood, check out <a href="https://doi.org/10.1186/s13073-017-0406-4">Hughey (2017)</a> and the <a href="https://doi.org/10.6084/m9.figshare.3756375.v1">accompanying results</a>.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<ol>
+<p>Update (Nov 2018): ZeitZeiger now uses <a href="https://doi.org/doi:10.18129/B9.bioc.limma" class="external-link">limma</a> internally, which makes training (previously the slowest step by far) about 250x faster. Additional optimizations have made calculation of the sparse principal components about 6x faster, and prediction about 20% faster.</p>
+<p>For details about the method and to see how we used it to analyze circadian gene expression in mice, check out <a href="https://doi.org/10.1093/nar/gkw030" class="external-link">Hughey et al. (2016)</a> and the <a href="https://doi.org/10.5061/dryad.hn8gp" class="external-link">accompanying results</a>.</p>
+<p>To see how we used <code>zeitzeiger</code> to analyze the phasing of circadian clocks in humans and other mammals, check out <a href="https://doi.org/10.1177/0748730416668049" class="external-link">Hughey and Butte (2016)</a> and the <a href="https://doi.org/10.5061/dryad.g928q" class="external-link">accompanying results</a>.</p>
+<p>To see how we used <code>zeitzeiger</code> to predict circadian time from gene expression in human blood, check out <a href="https://doi.org/10.1186/s13073-017-0406-4" class="external-link">Hughey (2017)</a> and the <a href="https://doi.org/10.6084/m9.figshare.3756375.v1" class="external-link">accompanying results</a>.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<ol style="list-style-type: decimal">
 <li>
-<p>Install <a href="https://cran.r-project.org/package=BiocManager"><code>BiocManager</code></a>.</p>
+<p>Install <a href="https://cran.r-project.org/package=BiocManager" class="external-link"><code>BiocManager</code></a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">'BiocManager'</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">'BiocManager'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">'BiocManager'</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'BiocManager'</span><span class="op">)</span></code></pre></div>
 </li>
 <li>
 <p>If you use RStudio, go to Tools → Global Options… → Packages → Add… (under Secondary repositories), then enter:</p>
 <ul>
 <li>Name: hugheylab</li>
-<li>Url: <a href="https://hugheylab.github.io/drat/" class="uri">https://hugheylab.github.io/drat/</a>
+<li>Url: <a href="https://hugheylab.github.io/drat/" class="external-link uri">https://hugheylab.github.io/drat/</a>
 </li>
 </ul>
 <p>You only have to do this once. Then you can install or update the package by entering:</p>
@@ -119,9 +116,9 @@
 </li>
 </ol>
 </div>
-<div id="usage" class="section level2">
-<h2 class="hasAnchor">
-<a href="#usage" class="anchor"></a>Usage</h2>
+<div class="section level2">
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h2>
 <p>For an introduction to the package, read the <a href="https://zeitzeiger.hugheylab.org/articles/introduction.html">vignette</a>. For detailed help on specific functions, check out the <a href="https://zeitzeiger.hugheylab.org/reference/index.html">reference documentation</a>.</p>
 </div>
 </div>
@@ -129,43 +126,55 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/hugheylab/zeitzeiger/">https://​github.com/​hugheylab/​zeitzeiger/​</a>
-</li>
+<li><a href="https://github.com/hugheylab/zeitzeiger/" class="external-link">Browse source code</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/GPL-2">GPL-2</a></li>
+<li><a href="https://www.r-project.org/Licenses/GPL-2" class="external-link">GPL-2</a></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing zeitzeiger</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Jake Hughey <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/hugheylab/zeitzeiger/actions"><img src="https://github.com/hugheylab/zeitzeiger/workflows/check-deploy/badge.svg" alt="check-deploy"></a></li>
-<li><a href="https://codecov.io/gh/hugheylab/zeitzeiger"><img src="https://codecov.io/gh/hugheylab/zeitzeiger/branch/master/graph/badge.svg" alt="codecov"></a></li>
-<li><a href="https://app.netlify.com/sites/dazzling-wilson-37374e/deploys"><img src="https://api.netlify.com/api/v1/badges/80a704ab-1728-4e6a-a17d-a7cce4e6f198/deploy-status" alt="Netlify Status"></a></li>
+<li><a href="https://github.com/hugheylab/zeitzeiger/actions" class="external-link"><img src="https://github.com/hugheylab/zeitzeiger/workflows/check-deploy/badge.svg" alt="check-deploy"></a></li>
+<li><a href="https://codecov.io/gh/hugheylab/zeitzeiger" class="external-link"><img src="https://codecov.io/gh/hugheylab/zeitzeiger/branch/master/graph/badge.svg" alt="codecov"></a></li>
+<li><a href="https://app.netlify.com/sites/dazzling-wilson-37374e/deploys" class="external-link"><img src="https://api.netlify.com/api/v1/badges/80a704ab-1728-4e6a-a17d-a7cce4e6f198/deploy-status" alt="Netlify Status"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Jake Hughey.</p>
+  <p></p>
+<p>Developed by Jake Hughey.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -173,6 +182,8 @@
 
   
 
+
+  
 
   </body>
 </html>
