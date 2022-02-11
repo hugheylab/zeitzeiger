@@ -2,6 +2,7 @@
 #' @importFrom foreach %dopar%
 #' @importFrom foreach %do%
 #' @importFrom magrittr %>%
+#' @importFrom doParallel registerDoParallel
 NULL
 
 

@@ -100,7 +100,7 @@ zeitzeigerProp = function(fitResult, dopar = TRUE) {
 #' time. The p-value for each feature is calculated based on the of permutations
 #' that had a signal-to-noise ratio at least as large as the observed
 #' signal-to-noise ratio, adjusted by the method of
-#' [Phipson and Smyth (2010)](https://doi.org/10.2202/1544-6115.1585). Make sure
+#' Phipson and Smyth 2010(\doi{https://doi.org/10.2202/1544-6115.1585}). Make sure
 #' to first register the parallel backend using
 #' [doParallel::registerDoParallel()]. For genome-scale data, this will be slow.
 #'
