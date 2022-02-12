@@ -161,16 +161,18 @@ zeitzeigerPredictGroupCv = function(
   x, time, foldid, spcResultList, nKnots = 3, nSpc = NA,
   timeRange = seq(0, 1 - 0.01, 0.01), dopar = TRUE) {
 
-  group = timeMin = foldidNow = spcResult = predResultFit = NULL
+  group = timeDiff = foldidNow = spcResult = predResultFit = NULL
   foldidUnique = sort(unique(foldid))
   doOp = ifelse(dopar, `%dopar%`, `%do%`)
 
-  groupDf = data.frame(time = time, group = foldid, stringsAsFactors = FALSE)
-  groupDf = groupDf %>%
-    dplyr::inner_join(groupDf %>%
-                        dplyr::group_by(group) %>%
-                        dplyr::summarize(timeMin = min(time)), by = 'group') %>%
-    dplyr::mutate(timeDiff = time - timeMin)
+  groupDf = data.table(time = time, group = foldid)
+  groupDf[, timeDiff := time - min(time), by = 'group']
+  # groupDf = data.frame(time = time, group = foldid, stringsAsFactors = FALSE)
+  # groupDf = groupDf %>%
+  #   dplyr::inner_join(groupDf %>%
+  #                       dplyr::group_by(group) %>%
+  #                       dplyr::summarize(timeMin = min(time)), by = 'group') %>%
+  #   dplyr::mutate(timeDiff = time - timeMin)
 
   predResultList = doOp(foreach(foldidNow = foldidUnique, spcResult = spcResultList), {
     idxTrain = foldid != foldidNow
@@ -180,8 +182,8 @@ zeitzeigerPredictGroupCv = function(
     zeitzeigerPredictGroup(xTrain, time[idxTrain], xTest, groupTest,
                            spcResult, nKnots, nSpc, timeRange)})
 
-  timeDepLike = abind::abind(lapply(predResultList, function(a) a$timeDepLike),
-                             along = 1)
+  timeDepLike = abind::abind(
+    lapply(predResultList, function(a) a$timeDepLike), along = 1)
   mleFit = lapply(predResultFit, function(a) a$mleFit)
   timePred = do.call(rbind, lapply(predResultList, function(a) a$timePred))
 

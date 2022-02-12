@@ -19,7 +19,7 @@ mergeStudyData = function(
     ematListScaled = lapply(ematList2, function(emat) (emat - mean(emat)) / stats::sd(emat))
     ematMerged = do.call(cbind, ematListScaled)
     # sm = mergeDataTable(colnames(ematMerged), sampleMetadata)
-    sm = merge(data.frame(sample = colnames(ematMerged), stringsAsFactors = FALSE),
+    sm = merge(data.table(sample = colnames(ematMerged)),
                sampleMetadata, by = 'sample', sort = FALSE)
 
     if (is.na(covariateName) || length(unique(sm[[covariateName]])) < 2) {

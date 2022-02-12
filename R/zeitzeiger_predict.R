@@ -14,8 +14,9 @@ zeitzeigerPredictGivenDensity = function(
     bbmle::parnames(negLoglikeFunc) = names(timeStart)
     warnOrig = getOption('warn')
     options(warn = -1)
-    mleFit[[ii]] = bbmle::mle2(negLoglikeFunc, start = timeStart, vecpar = TRUE,
-                               method = 'L-BFGS-B', lower = 0, upper = 1)
+    mleFit[[ii]] = bbmle::mle2(
+      negLoglikeFunc, start = timeStart, vecpar = TRUE, method = 'L-BFGS-B',
+      lower = 0, upper = 1)
     options(warn = warnOrig)}
   timePred = sapply(mleFit, function(x) x@coef)
   return(list(timeDepLike = exp(-negLoglike), mleFit = mleFit, timePred = timePred))}
@@ -220,7 +221,8 @@ zeitzeigerBatch = function(
 
     ematMerged = mergeStudyData(ematListNow, sampleMetadata, batchColname, covariateName)
 
-    sampleMetadataTrain = sampleMetadata[sampleMetadata[[studyColname]] %in% trainStudyNames, , drop = FALSE]
+    sampleMetadataTrain =
+      sampleMetadata[sampleMetadata[[studyColname]] %in% trainStudyNames, , drop = FALSE]
     xTrain = t(ematMerged[, sampleMetadataTrain$sample])
     xTest = t(ematMerged[, !(colnames(ematMerged) %in% sampleMetadataTrain$sample)])
     timeTrain = sampleMetadataTrain[[timeColname]]

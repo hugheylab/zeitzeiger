@@ -112,15 +112,14 @@ zeitzeigerPredictGroup = function(
       stop('nSpc must be unique integers in 1 to the number of singular vectors.')}}
 
   timePred = matrix(NA, nrow = length(unique(groupTest$group)), length(nSpc))
-  timeDepLike = array(NA, dim = c(length(unique(groupTest$group)), length(nSpc),
-                                  length(timeRange)))
+  timeDepLike = array(
+    NA, dim = c(length(unique(groupTest$group)), length(nSpc), length(timeRange)))
   mleFit = list() # list (for each nSpc) of lists (for each group)
   for (ii in 1:length(nSpc)) {
-    predResult = zeitzeigerPredictGivenDensityGroup(zTest[, 1:nSpc[ii], drop = FALSE],
-                                                    groupTest,
-                                                    zFitMean[1:nSpc[ii], , drop = FALSE],
-                                                    zFitResid[1:nSpc[ii]],
-                                                    knots, timeRange)
+    predResult = zeitzeigerPredictGivenDensityGroup(
+      zTest[, 1:nSpc[ii], drop = FALSE], groupTest,
+      zFitMean[1:nSpc[ii], , drop = FALSE], zFitResid[1:nSpc[ii]], knots,
+      timeRange)
     timeDepLike[, ii, ] = predResult$timeDepLike
     mleFit[[ii]] = predResult$mleFit
     timePred[, ii] = predResult$timePred}

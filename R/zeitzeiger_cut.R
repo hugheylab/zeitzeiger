@@ -81,9 +81,9 @@ zeitzeigerProp = function(fitResult, dopar = TRUE) {
   trough = zeitzeigerExtrema(fitResult, maximum = FALSE, dopar = dopar)
   amp = peak[, 'value'] - trough[, 'value']
   snr = amp / fitResult$xFitResid
-  d = data.frame(snr = snr, amp = amp,
-                 peakLoc = peak[, 'location'], peakVal = peak[, 'value'],
-                 troughLoc = trough[, 'location'], troughVal = trough[, 'value'])
+  d = data.frame(
+    snr = snr, amp = amp, peakLoc = peak[, 'location'], peakVal = peak[, 'value'],
+    troughLoc = trough[, 'location'], troughVal = trough[, 'value'])
   return(d)}
 
 

@@ -2,10 +2,10 @@ Package: zeitzeiger
 Type: Package
 Title: Regularized Supervised Learning for High-Dimensional Data from an
   Oscillatory System
-Version: 2.0.4
+Version: 2.1.0
 Authors@R: person('Jake', 'Hughey', , 'jakejhughey@gmail.com', c('aut', 'cre'))
-Description: Method for predicting the value of a periodic
-  variable from a high-dimensional observation. See Hughey et al. (2016)
+Description: Method for predicting the value of a periodic variable from a
+  high-dimensional observation. See Hughey et al. (2016)
   <doi:10.1093/nar/gkw030> and Hughey (2017) <doi:10.1186/s13073-017-0406-4>.
 URL: https://zeitzeiger.hugheylab.org, https://github.com/hugheylab/zeitzeiger
 License: GPL-2
@@ -18,17 +18,15 @@ Depends:
 Imports:
   abind (>= 1.4-3),
   bbmle (>= 1.0.17),
-  doParallel (>= 1.0.10),
-  dplyr (>= 0.5.0),
+  data.table (>= 1.14.3),
   foreach (>= 1.4.3),
   limma (>= 3.38.2),
-  magrittr (>= 1.5),
   PMA (>= 1.0.9),
   statmod (>= 1.4.30),
   sva (>= 3.18.0)
 Suggests:
+  doParallel (>= 1.0.10),
   ggplot2 (>= 3.1.0),
   knitr (>= 1.20),
-  rmarkdown (>= 1.10),
-  tidyr (>= 0.8.2)
+  rmarkdown (>= 1.10)
 VignetteBuilder: knitr

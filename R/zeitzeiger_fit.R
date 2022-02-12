@@ -1,8 +1,5 @@
-#' @importFrom foreach foreach
-#' @importFrom foreach %dopar%
-#' @importFrom foreach %do%
-#' @importFrom magrittr %>%
-#' @importFrom doParallel registerDoParallel
+#' @importFrom data.table data.table :=
+#' @importFrom foreach foreach %dopar% %do%
 NULL
 
 
