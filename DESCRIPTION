@@ -18,7 +18,7 @@ Depends:
 Imports:
   abind (>= 1.4-3),
   bbmle (>= 1.0.17),
-  data.table (>= 1.14.3),
+  data.table (>= 1.14.2),
   foreach (>= 1.4.3),
   limma (>= 3.38.2),
   PMA (>= 1.0.9),
