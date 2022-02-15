@@ -1,7 +1,6 @@
 Package: zeitzeiger
 Type: Package
-Title: Regularized Supervised Learning for High-Dimensional Data from an
-  Oscillatory System
+Title: Regularized Supervised Learning for Oscillatory System Data
 Version: 2.1.0
 Authors@R: person('Jake', 'Hughey', , 'jakejhughey@gmail.com', c('aut', 'cre'))
 Description: Method for predicting the value of a periodic variable from a

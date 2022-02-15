@@ -38,11 +38,9 @@ zeitzeigerPredictGivenDensityGroup = function(
                                                  xFitMean, xFitResid, knots,
                                                  logArg = TRUE))
     bbmle::parnames(negLogLikeFunc) = names(timeStart)
-    warnOrig = getOption('warn')
-    options(warn = -1)
-    mleFit[[ii]] = bbmle::mle2(negLogLikeFunc, start = timeStart, vecpar = TRUE,
-                               method = 'L-BFGS-B', lower = 0, upper = 1)
-    options(warn = warnOrig)}
+    suppressWarnings({
+      bbmle::mle2(negLogLikeFunc, start = timeStart, vecpar = TRUE,
+                  method = 'L-BFGS-B', lower = 0, upper = 1)})}
 
   timePred = sapply(mleFit, function(x) x@coef)
   return(list(timeDepLike = exp(-negLogLike), mleFit = mleFit, timePred = timePred))}
