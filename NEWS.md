@@ -1,3 +1,6 @@
+# zeitzeiger 2.1.1
+* Removed formerly deprecated functions.
+
 # zeitzeiger 2.1.0
 * Switched to `data.table`.
 
