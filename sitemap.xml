@@ -40,9 +40,6 @@
     <loc>https://zeitzeiger.hugheylab.org/reference/zeitzeigerEnsembleMean.html</loc>
   </url>
   <url>
-    <loc>https://zeitzeiger.hugheylab.org/reference/zeitzeigerExtrema.html</loc>
-  </url>
-  <url>
     <loc>https://zeitzeiger.hugheylab.org/reference/zeitzeigerFit.html</loc>
   </url>
   <url>
@@ -59,15 +56,6 @@
   </url>
   <url>
     <loc>https://zeitzeiger.hugheylab.org/reference/zeitzeigerPredictGroupCv.html</loc>
-  </url>
-  <url>
-    <loc>https://zeitzeiger.hugheylab.org/reference/zeitzeigerProp.html</loc>
-  </url>
-  <url>
-    <loc>https://zeitzeiger.hugheylab.org/reference/zeitzeigerSig.html</loc>
-  </url>
-  <url>
-    <loc>https://zeitzeiger.hugheylab.org/reference/zeitzeigerSnr.html</loc>
   </url>
   <url>
     <loc>https://zeitzeiger.hugheylab.org/reference/zeitzeigerSpc.html</loc>
