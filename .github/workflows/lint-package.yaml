@@ -30,7 +30,14 @@ jobs:
           repository = '${{ github.event.repository.name }}'
           branch = system("echo ${BRANCH_NAME}", intern = TRUE)
 
-          source(file.path('.github', 'workflows', 'custom-lint-script.R'))
+          lintFile = file.path('.github', 'workflows', 'custom-lint-script.R')
+
+          if (!file.exists(lintFile)) {
+            download.file(
+              'https://raw.githubusercontent.com/hugheylab/actions/main/workflows/custom-lint-script.R',
+              lintFile)}
+
+          source(lintFile)
 
           print(lfDt)
 
