@@ -34,7 +34,8 @@ newDefaults = with_defaults(double_quotes_linter = double_quotes_linter,
                             assignment_linter = NULL,
                             closed_curly_linter = NULL,
                             object_name_linter = object_name_linter('camelCase'),
-                            single_quotes_linter = NULL)
+                            single_quotes_linter = NULL,
+                            commented_code_linter = NULL)
 lintsFound = lint_package(linters = newDefaults)
 lint_package(linters = newDefaults)
 lfDt = unique(as.data.table(lintsFound), by = c('filename', 'line_number', 'message'))
