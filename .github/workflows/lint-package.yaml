@@ -28,7 +28,7 @@ jobs:
           install.packages('data.table')
 
           repository = '${{ github.event.repository.name }}'
-          branch = '${BRANCH_NAME}'
+          branch = 'master'
 
           source(file.path('.github', 'workflows', 'custom-lint-script.R'))
 
