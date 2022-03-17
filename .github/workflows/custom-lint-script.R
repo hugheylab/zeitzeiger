@@ -52,8 +52,6 @@ lfDt[, format_line :=
               lint_link, ')', newlineEsc, '```', newlineEsc, line, newlineEsc, '```')]
 issueStr = paste0(lfDt$format_line, collapse = newlineEsc)
 
-issueStr = gsub("'", "%27", issueStr)
+issueStr = gsub("'", "'\"'\"'", issueStr, fixed = TRUE)
 
 s = sprintf("echo '::set-output name=style_text::%s'", issueStr)
-
-system(s)
