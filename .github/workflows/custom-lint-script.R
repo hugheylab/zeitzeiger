@@ -37,7 +37,6 @@ newDefaults = with_defaults(double_quotes_linter = double_quotes_linter,
                             single_quotes_linter = NULL,
                             commented_code_linter = NULL)
 lintsFound = lint_package(linters = newDefaults)
-lint_package(linters = newDefaults)
 lfDt = unique(as.data.table(lintsFound), by = c('filename', 'line_number', 'message'))
 lfDt[, lint_link := paste0('https://github.com/hugheylab/', repository, '/blob/', branch, '/', filename, '#L', line_number)]
 lfDt[, line := trimws(line)]
