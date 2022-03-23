@@ -51,14 +51,14 @@ jobs:
         shell: Rscript {0}
 
   close_open_lint:
-    name: Close all issues labeled "lint-styling"
+    name: Close all issues labeled "lint"
     runs-on: ubuntu-latest
     steps:
       - name: Find all cran update issues
         id: issues
         uses: lee-dohm/select-matching-issues@v1.2.0
         with:
-          query: "label:lint-styling is:open"
+          query: "label:lint is:open"
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Close found issues
         run: |
@@ -96,4 +96,4 @@ jobs:
           body: |
             ${{ needs.lint_package.outputs.style_text }}
           labels: |
-            lint-styling
+            lint
