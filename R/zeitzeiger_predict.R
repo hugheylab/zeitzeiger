@@ -315,8 +315,8 @@ zeitzeigerEnsembleMean = function(timePredInput, timeMax = 1, naRm = TRUE) {
   x = cos(timePredInput / timeMax * 2 * pi)
   y = sin(timePredInput / timeMax * 2 * pi)
 
-  xMean = rowMeans(x, naRm = naRm)
-  yMean = rowMeans(y, naRm = naRm)
+  xMean = rowMeans(x, na.rm = naRm)
+  yMean = rowMeans(y, na.rm = naRm)
 
   timePred = atan2(yMean, xMean) / 2 / pi
   timePred = ifelse(timePred < 0, timePred + 1, timePred) * timeMax
