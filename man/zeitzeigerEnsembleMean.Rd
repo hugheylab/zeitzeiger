@@ -4,7 +4,7 @@
 \alias{zeitzeigerEnsembleMean}
 \title{Combine predictions into an ensemble using the circular mean}
 \usage{
-zeitzeigerEnsembleMean(timePredInput, timeMax = 1, na.rm = TRUE)
+zeitzeigerEnsembleMean(timePredInput, timeMax = 1, naRm = TRUE)
 }
 \arguments{
 \item{timePredInput}{Matrix of predicted times in which rows correspond to
@@ -13,7 +13,7 @@ observations and columns correspond to members of the ensemble.}
 \item{timeMax}{Maximum value of the periodic variable, i.e., the value that
 is equivalent to zero.}
 
-\item{na.rm}{Logical indicating whether \code{NA} values should be removed from
+\item{naRm}{Logical indicating whether \code{NA} values should be removed from
 the calculation.}
 }
 \value{

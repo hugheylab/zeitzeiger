@@ -112,7 +112,7 @@ zeitzeigerPredictCv = function(
   mleFit = vector('list', nSpcLen)
   mleFit = lapply(mleFit, function(a) vector('list', nrow(x)))
   for (foldidNow in foldidUnique) {
-    timeDepLike[foldid==foldidNow, , ] = predResultList[[which(foldidUnique == foldidNow)]]$timeDepLike
+    timeDepLike[foldid == foldidNow, , ] = predResultList[[which(foldidUnique == foldidNow)]]$timeDepLike
     for (ii in 1:nSpcLen) {
       mleFit[[ii]][foldid == foldidNow] = predResultList[[which(foldidUnique == foldidNow)]]$mleFit[[ii]]}
     timePred[foldid == foldidNow, ] = predResultList[[which(foldidUnique == foldidNow)]]$timePred}

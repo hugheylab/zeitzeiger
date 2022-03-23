@@ -1,3 +1,6 @@
+# zeitzeiger 2.1.2
+* Updated code style to conform to lab style linter.
+
 # zeitzeiger 2.1.1
 * Removed formerly deprecated functions.
 

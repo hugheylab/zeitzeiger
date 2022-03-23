@@ -3,10 +3,10 @@ fxGroup = function(x, timeDiff, time, xFitMean, xFitResid, knots, logArg = FALSE
   # length(timeDiff): m
   # length(time): n
   timeRep = rowSums(expand.grid(time, timeDiff)) %% 1
-  xRep = x[rep(1:nrow(x), each=length(time)), , drop = FALSE]
+  xRep = x[rep(seq_len(nrow(x)), each = length(time)), , drop = FALSE]
   logLike = matrix(data = NA, nrow = length(time), ncol = ncol(x))
 
-  for (jj in 1:ncol(x)) {
+  for (jj in seq_len(ncol(x))) {
     xPredMean = predictIntensity(
       xFitMean[jj, , drop = FALSE], timeRep, knots = knots)[, 1]
     logLikeTmp = stats::dnorm(
@@ -26,8 +26,8 @@ zeitzeigerPredictGivenDensityGroup = function(
   negLogLike = matrix(NA, nrow = length(groupsUnique), ncol = length(timeRange))
   mleFit = list()
 
-  for (ii in 1:length(groupsUnique)) {
-    xTestNow = xTest[groups == groupsUnique[ii], , drop=FALSE]
+  for (ii in seq_len(length(groupsUnique))) {
+    xTestNow = xTest[groups == groupsUnique[ii], , drop = FALSE]
     timeDiffNow = groupTest[groups == groupsUnique[ii], ]$timeDiff
     negLogLike[ii, ] = -fxGroup(xTestNow, timeDiffNow, timeRange, xFitMean,
                                 xFitResid, knots, logArg = TRUE)
@@ -103,17 +103,17 @@ zeitzeigerPredictGroup = function(
 
   knots = seq(0, 1 - 1 / nKnots, length = nKnots)
 
-  if (length(nSpc)==1 && is.na(nSpc)) {
-    nSpc = 1:length(spcResult$d)
+  if (length(nSpc) == 1 && is.na(nSpc)) {
+    nSpc = seq_len(length(spcResult$d))
   } else {
-    if (!all(nSpc %in% 1:length(spcResult$d)) || anyDuplicated(nSpc) > 0) {
+    if (!all(nSpc %in% seq_len(length(spcResult$d))) || anyDuplicated(nSpc) > 0) {
       stop('nSpc must be unique integers in 1 to the number of singular vectors.')}}
 
   timePred = matrix(NA, nrow = length(unique(groupTest$group)), length(nSpc))
   timeDepLike = array(
     NA, dim = c(length(unique(groupTest$group)), length(nSpc), length(timeRange)))
   mleFit = list() # list (for each nSpc) of lists (for each group)
-  for (ii in 1:length(nSpc)) {
+  for (ii in seq_len(length(nSpc))) {
     predResult = zeitzeigerPredictGivenDensityGroup(
       zTest[, 1:nSpc[ii], drop = FALSE], groupTest,
       zFitMean[1:nSpc[ii], , drop = FALSE], zFitResid[1:nSpc[ii]], knots,

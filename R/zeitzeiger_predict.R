@@ -5,7 +5,7 @@ zeitzeigerPredictGivenDensity = function(
     xTest, xFitMean, xFitResid, knots, timeRange, logArg = TRUE)
 
   mleFit = list()
-  for (ii in 1:nrow(xTest)) {
+  for (ii in seq_len(nrow(xTest))) {
     xTestNow = xTest[ii, , drop = FALSE]
     timeStart = timeRange[which.min(negLoglike[ii, ])]
     names(timeStart) = 'time'
@@ -68,15 +68,15 @@ zeitzeigerPredict = function(
   knots = seq(0, 1 - 1 / nKnots, length = nKnots)
 
   if (length(nSpc) == 1 && is.na(nSpc)) {
-    nSpc = 1:length(spcResult$d)
+    nSpc = seq_len(length(spcResult$d))
   } else {
-    if (!all(nSpc %in% 1:length(spcResult$d)) || anyDuplicated(nSpc) > 0) {
+    if (!all(nSpc %in% seq_len(length(spcResult$d))) || anyDuplicated(nSpc) > 0) {
       stop('nSpc must be unique integers in 1 to the number of singular vectors.')}}
 
   timePred = matrix(NA, nrow = nrow(xTest), ncol = length(nSpc))
   timeDepLike = array(NA, dim = c(nrow(xTest), length(nSpc), length(timeRange)))
   mleFit = list() # list (for each nSpc) of lists (for each observation)
-  for (ii in 1:length(nSpc)) {
+  for (ii in seq_len(length(nSpc))) {
     predResult = zeitzeigerPredictGivenDensity(
       zTest[, 1:nSpc[ii], drop = FALSE], zFitMean[1:nSpc[ii], , drop = FALSE],
       zFitResid[1:nSpc[ii]], knots, timeRange)
@@ -213,7 +213,7 @@ zeitzeigerBatch = function(
   batchResult = doOp(foreach(testStudyName = testStudyNames), {
     ematListNow = ematList[c(trainStudyNames, testStudyName)]
     if (!is.null(featuresExclude) && !is.na(featuresExclude[[testStudyName]])) {
-      f = function(emat) emat[!(rownames(emat) %in% featuresExclude[[testStudyName]]),]
+      f = function(emat) emat[!(rownames(emat) %in% featuresExclude[[testStudyName]])]
       ematListNow = lapply(ematListNow, f)}
 
     ematMerged = mergeStudyData(ematListNow, sampleMetadata, batchColname, covariateName)
@@ -231,7 +231,7 @@ zeitzeigerBatch = function(
       xTrain, timeTrain, xTest, spcResult, nKnots, nSpc, timeRange)
 
     dimnames(predResult$timeDepLike)[[1]] = rownames(xTest)
-    for (ii in 1:length(nSpc)) {
+    for (ii in seq_len(length(nSpc))) {
       names(predResult$mleFit[[ii]]) = rownames(xTest)}
     rownames(predResult$timePred) = rownames(xTest)
 
@@ -246,7 +246,7 @@ zeitzeigerBatch = function(
   # list (by batch) of lists (by nSpc) of lists (by obs)
   mleFitList = lapply(batchResult, function(x) x$predResult$mleFit)
   mleFit = list() # list (by nSpc) of lists (by obs)
-  for (ii in 1:length(nSpc)) {
+  for (ii in seq_len(length(nSpc))) {
     mleFit[[ii]] = do.call(c, lapply(mleFitList, function(x) x[[ii]]))}
 
   timePred = do.call(rbind, lapply(batchResult, function(x) x$predResult$timePred))
@@ -281,9 +281,9 @@ zeitzeigerEnsembleLikelihood = function(timeDepLike, timeRange) {
     if (!all(sapply(timeDepLike, is.matrix)) |
         !all(apply(sapply(timeDepLike, dim), 1, function(r) all(r == r[1])))) {
       stop('If timeDepLike is a list, each element must be a matrix of the same size.')}
-    timeDepLike = abind::abind(timeDepLike, along=3)
+    timeDepLike = abind::abind(timeDepLike, along = 3)
 
-  } else if (!is.array(timeDepLike) | length(dim(timeDepLike)) != 3){
+  } else if (!is.array(timeDepLike) | length(dim(timeDepLike)) != 3) {
     stop('timeDepLike must be a list or a 3-D array.')}
 
   loglike = apply(log(timeDepLike), 1:2, sum)
@@ -300,7 +300,7 @@ zeitzeigerEnsembleLikelihood = function(timeDepLike, timeRange) {
 #'   observations and columns correspond to members of the ensemble.
 #' @param timeMax Maximum value of the periodic variable, i.e., the value that
 #'   is equivalent to zero.
-#' @param na.rm Logical indicating whether `NA` values should be removed from
+#' @param naRm Logical indicating whether `NA` values should be removed from
 #'   the calculation.
 #'
 #' @return Matrix with a row for each observation and columns for the predicted
@@ -311,12 +311,12 @@ zeitzeigerEnsembleLikelihood = function(timeDepLike, timeRange) {
 #' @seealso [zeitzeigerPredict()], [zeitzeigerEnsembleLikelihood()]
 #'
 #' @export
-zeitzeigerEnsembleMean = function(timePredInput, timeMax = 1, na.rm = TRUE) {
+zeitzeigerEnsembleMean = function(timePredInput, timeMax = 1, naRm = TRUE) {
   x = cos(timePredInput / timeMax * 2 * pi)
   y = sin(timePredInput / timeMax * 2 * pi)
 
-  xMean = rowMeans(x, na.rm = na.rm)
-  yMean = rowMeans(y, na.rm = na.rm)
+  xMean = rowMeans(x, naRm = naRm)
+  yMean = rowMeans(y, naRm = naRm)
 
   timePred = atan2(yMean, xMean) / 2 / pi
   timePred = ifelse(timePred < 0, timePred + 1, timePred) * timeMax

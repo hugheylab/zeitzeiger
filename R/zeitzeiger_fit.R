@@ -44,7 +44,7 @@ getPeriodBsplineKnots = function(knots, degree = 3) {
     closeKnots1[i] = knots[nKnots] + knots[i + 1] - knots[1]}
 
   closeKnots2 = rep(0, degree)
-  for (i in 1:degree){
+  for (i in 1:degree) {
     closeKnots2[i] = knots[1] - knots[nKnots] + knots[nKnots - i]}
 
   closeKnots = c(closeKnots2, knots, closeKnots1)
@@ -142,7 +142,7 @@ fx = function(x, time, xFitMean, xFitResid, knots, logArg = FALSE) {
     x = matrix(x, nrow = 1)}
 
   like = matrix(data = 0, nrow = length(time), ncol = ncol(x))
-  for (jj in 1:ncol(x)) {
+  for (jj in seq_len(ncol(x))) {
     xPredMean = predictIntensity(xFitMean[jj, , drop = FALSE], time, knots = knots)[, 1]
     like[, jj] = stats::dnorm(x[, jj], mean = xPredMean, sd = xFitResid[jj], log = logArg)}
   return(like)}
@@ -170,7 +170,7 @@ zeitzeigerLikelihood = function(
   xTest, xFitMean, xFitResid, knots, timeRange = seq(0, 1 - 0.01, 0.01),
   logArg = FALSE) {
   loglike = matrix(NA, nrow = nrow(xTest), ncol = length(timeRange))
-  for (ii in 1:nrow(xTest)) {
+  for (ii in seq_len(nrow(xTest))) {
     xTestNow = xTest[ii, , drop = FALSE]
     loglikeTmp = fx(xTestNow, timeRange, xFitMean, xFitResid, knots, logArg = TRUE)
     loglike[ii, ] = rowSums(loglikeTmp)}

@@ -1,7 +1,7 @@
 Package: zeitzeiger
 Type: Package
 Title: Regularized Supervised Learning for Data from Rhythmic Systems
-Version: 2.1.1
+Version: 2.1.2
 Authors@R: person('Jake', 'Hughey', , 'jakejhughey@gmail.com', c('aut', 'cre'))
 Description: Method for predicting the value of a periodic variable from a
   high-dimensional observation. See Hughey et al. (2016)
