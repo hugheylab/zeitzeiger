@@ -37,7 +37,7 @@ amp = 0.5
 
 time = rep((0:9) / 10, length.out = nObs)
 set.seed(42)
-x = matrix(rnorm(nObs*nFeatures, sd = 0.7), nrow = nObs)
+x = matrix(rnorm(nObs * nFeatures, sd = 0.7), nrow = nObs)
 ```
 
 The oscillator will produce three patterns: a sine, a cosine, and a cosine with twice the frequency. For each of the three patterns, two features will have relatively strong signal and eight more will have relatively weak signal.
@@ -179,11 +179,11 @@ foldid = sample(rep(1:nFolds, length.out = nObs))
 fitResultList = zeitzeigerFitCv(x, time, foldid)
 
 spcResultList = list()
-for (ii in 1:length(sumabsv)) {
+for (ii in seq_len(length(sumabsv))) {
   spcResultList[[ii]] = zeitzeigerSpcCv(fitResultList, sumabsv = sumabsv[ii])}
 
 predResultList = list()
-for (ii in 1:length(sumabsv)) {
+for (ii in seq_len(length(sumabsv))) {
   predResultList[[ii]] = zeitzeigerPredictCv(
     x, time, foldid, spcResultList[[ii]], nSpc = nSpc)}
 ```
@@ -231,7 +231,7 @@ spcResultFinal = zeitzeigerSpc(
   fitResultFinal$xFitMean, fitResultFinal$xFitResid, sumabsv = 1.5)
 
 dfVar = data.table(
-  spc = 1:length(spcResultFinal$d),
+  spc = seq_len(length(spcResultFinal$d)),
   propVar = spcResultFinal$d^2 / sum(spcResultFinal$d^2))
 ```
 
