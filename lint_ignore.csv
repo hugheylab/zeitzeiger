@@ -1,0 +1,2 @@
+filename,line_number,message,line
+R/zeitzeiger_group.R,22,Variable and function names should not be longer than 30 characters.,zeitzeigerPredictGivenDensityGroup = function(
