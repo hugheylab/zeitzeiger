@@ -1,1 +1,3 @@
 url: https://zeitzeiger.hugheylab.org
+template:
+  bootstrap: 5
