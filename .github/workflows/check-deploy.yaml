@@ -1,6 +1,10 @@
-# Workflow derived from https://github.com/r-lib/actions/tree/master/examples
+# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
-on: push
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
 
 name: check-deploy
 
@@ -22,7 +26,6 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: hugheylab/actions/R-CMD-check@main
-
 
   drat-deployment:
     needs: R-CMD-check
