@@ -278,12 +278,12 @@ zeitzeigerBatch = function(
 #' @export
 zeitzeigerEnsembleLikelihood = function(timeDepLike, timeRange) {
   if (is.list(timeDepLike)) {
-    if (!all(sapply(timeDepLike, is.matrix)) |
+    if (!all(sapply(timeDepLike, is.matrix)) ||
         !all(apply(sapply(timeDepLike, dim), 1, function(r) all(r == r[1])))) {
       stop('If timeDepLike is a list, each element must be a matrix of the same size.')}
     timeDepLike = abind::abind(timeDepLike, along = 3)
 
-  } else if (!is.array(timeDepLike) | length(dim(timeDepLike)) != 3) {
+  } else if (!is.array(timeDepLike) || length(dim(timeDepLike)) != 3) {
     stop('timeDepLike must be a list or a 3-D array.')}
 
   loglike = apply(log(timeDepLike), 1:2, sum)

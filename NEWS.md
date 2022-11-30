@@ -1,3 +1,6 @@
+# zeitzeiger 2.1.3
+* Fixed issues found by lintr.
+
 # zeitzeiger 2.1.2
 * Updated code style to conform to lab style linter.
 

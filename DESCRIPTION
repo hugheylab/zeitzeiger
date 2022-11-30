@@ -1,7 +1,7 @@
 Package: zeitzeiger
 Type: Package
 Title: Regularized Supervised Learning for Data from Rhythmic Systems
-Version: 2.1.2
+Version: 2.1.3
 Authors@R: person('Jake', 'Hughey', , 'jakejhughey@gmail.com', c('aut', 'cre'))
 Description: Method for predicting the value of a periodic variable from a
   high-dimensional observation. See Hughey et al. (2016)
@@ -10,7 +10,7 @@ URL: https://zeitzeiger.hugheylab.org, https://github.com/hugheylab/zeitzeiger
 License: GPL-2
 Encoding: UTF-8
 LazyData: TRUE
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.2
 Roxygen: list(markdown = TRUE)
 Depends:
   R (>= 3.2)
