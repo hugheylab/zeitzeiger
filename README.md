@@ -1,7 +1,6 @@
 # zeitzeiger
 
 [![check-deploy](https://github.com/hugheylab/zeitzeiger/workflows/check-deploy/badge.svg)](https://github.com/hugheylab/zeitzeiger/actions)
-[![codecov](https://codecov.io/gh/hugheylab/zeitzeiger/branch/master/graph/badge.svg)](https://codecov.io/gh/hugheylab/zeitzeiger)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/80a704ab-1728-4e6a-a17d-a7cce4e6f198/deploy-status)](https://app.netlify.com/sites/dazzling-wilson-37374e/deploys)
 [![drat version](https://raw.githubusercontent.com/hugheylab/drat/gh-pages/badges/zeitzeiger_drat_badge.svg)](https://github.com/hugheylab/drat/tree/gh-pages/src/contrib)
 
